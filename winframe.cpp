@@ -1,6 +1,7 @@
 #include <pch.h>
 #include "utils/Utils.h"
 #include "engine/Link.h"
+#include "mod/Loader.h"
 
 typedef uint32 AppId_t;
 const AppId_t k_uAppId = 239140;
@@ -48,13 +49,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		Alert("Fatal Error", "Steam must be running to play Dying Light (SteamAPI_Init() failed).\n");
 		return EXIT_FAILURE;
 	}
-
-#ifdef _DEBUG
-	//not really a good thing but I use it alot
+	
+	/*
+	//not really good but I use it a lot
 	while (!::IsDebuggerPresent())
 		::Sleep(100);
-#endif
-
+	*/
+	
 	Utils::InitConsole();
 
 	if (!LoadGameLibarys()) {
@@ -62,8 +63,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 
 	std::string WorkingDirectory;
-	std::string gamedir = "DW";
-	std::string locale = "En";
+	std::string gamedir = "DW"; //Dead World lol
+	std::string locale = "En"; // ISteamApps::GetCurrentGameLanguage maybe some time
 	bool DumpRTTI = false;
 	bool WriteFullDump = false;
 
@@ -72,9 +73,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		WorkingDirectory = Utils::GetWorkingDirectory();
 	}
 
-	int EngineMain = Engine::Main();
-	if (EngineMain == NULL) {
-		return EXIT_SUCCESS;
+	if (!Engine::Main()) {
+		return EXIT_FAILURE;
 	}
 
 	// Get Resorces for splash
@@ -136,23 +136,25 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 
 	//Initalize Filesystem, last 4 flags might be unused
+	dbgprintf("Initalizing Filesystem at: %s, With Flags: %i\n", fsDestinationPath.c_str(), fsAddSourceFlags);
 	Filesystem::Init(fsDestinationPath.c_str(), fsAddSourceFlags, "out/cache", false, true, nullptr);
 
 	void* AssetMngVt = Engine::GetAssetManager();
 	Engine::AssetManager = *reinterpret_cast<Engine::T_AssetManager**>(AssetMngVt)[0];
 	Engine::AssetManager(AssetMngVt, gamedir.c_str(), WorkingDirectory.c_str(), 0, NULL, NULL);
 
-	//Low Priority Paks Here
+	Loader::IndexPaks();
+
 	// Define paths
-	std::string DW_Path = WorkingDirectory + gamedir;
+	std::string Game_Path = WorkingDirectory + gamedir;
 	std::string Data_Path = WorkingDirectory + gamedir + "/Data";
 	std::string Locale_Path = WorkingDirectory + gamedir + "/Data" + locale;
 	std::string LocalePak_Path = WorkingDirectory + gamedir + "/Data" + locale + ".pak";
 	std::string Speech_Path = WorkingDirectory + gamedir + "/speech" + locale;
 	std::string SpeechPak_Path = WorkingDirectory + gamedir + "/speech" + locale + ".pak";
 
-	// Add DW folder
-	Filesystem::Add_Source(DW_Path.c_str(), 258);
+	// Add Game/DW folder
+	Filesystem::Add_Source(Game_Path.c_str(), 258);
 
 	// Add data0-3.pak sources
 	for (int CurrentDataPak = 0; CurrentDataPak < 4; ++CurrentDataPak) {
@@ -166,11 +168,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Filesystem::Add_Source(LocalePak_Path.c_str(), 9);
 	Filesystem::Add_Source(Speech_Path.c_str(), 265);
 	Filesystem::Add_Source(SpeechPak_Path.c_str(), 9);
-	//High Priority Paks Here
 
-	//Calls SteamAPI_Init() and other online stuff
-	//Might be diffrent on some other chrome engine versions, such as SteamInitialize on older CE6 versions
+	Loader::LoadModPaks();
+	//with pak's the last loaded overwrites the previous
+	//with rpacks it's the opposite
+
+	//Calls SteamAPI_Init() and setup online
+	//Might be diffrent on some other chrome engine versions, named SteamInitialize on older CE6 versions
 	if (!Engine::InitializeOnlineServices()) {
+		dbgprintf("InitializeOnlineServices Failed!");
 		//Should not exit unless steam shanaigans, happened to a friend oddly
 		ExitProcess(1);
 	}
@@ -179,6 +185,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Engine::InitializeGameScript(GameDll_Path.c_str(), false);
 
 	void* pGame = Engine::CreateGame("GameDI", hInstance, true, gamedir.c_str());
+	dbgprintf("CreateGame GameDI at: %p\n", pGame);
+	dbgprintf("IGame::SetRootDirectory at: %s\n", WorkingDirectory.c_str());
 	Engine::SetRootDirectory(pGame, WorkingDirectory.c_str());
 
 	//MountHelper (Loads DLC's)
@@ -186,6 +194,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Engine::HideSplashscreen();
 
 	if (Engine::Initialize(pGame, lpCmdLine, nShowCmd, smallIcon, largeIcon, 0, 0, nullptr) != 0) {
+		dbgprintf("IGame::Initialize() failed\n");
 		OutputDebugString("IGame::Initialize() failed\n");
 		Alert("Fatal Error", "Game failed to initalize (IGame::Initialize() failed)\n");
 		return EXIT_FAILURE;

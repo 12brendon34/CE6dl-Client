@@ -12,3 +12,5 @@
 
 // Third-party
 #include "../steam/steam_api.h"
+
+namespace fs = std::filesystem;

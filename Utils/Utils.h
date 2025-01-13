@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef _DEBUG
-#  define dbgprintf(...) fprintf(stderr, __VA_ARGS__)
+#  define dbgprintf(...) fprintf(stdout, __VA_ARGS__)
 #else
 #  define dbgprintf(...) (void)NULL
 #endif
@@ -12,7 +12,11 @@ namespace Utils
 
 	void MsgBoxExit(UINT nType, LPCSTR lpCaption, LPCSTR sz, ...);
 
+	HMODULE LoadLibrarySimple(LPCSTR lpModuleName);
+
+	bool CreateFolder(const std::string& path);
+
 	std::string GetWorkingDirectory();
 
-	HMODULE LoadLibrarySimple(LPCSTR lpModuleName);
+	std::string str_tolower(std::string s);
 }
