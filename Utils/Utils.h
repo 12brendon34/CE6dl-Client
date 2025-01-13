@@ -3,8 +3,7 @@
 #ifdef _DEBUG
 #  define dbgprintf(...) fprintf(stderr, __VA_ARGS__)
 #else
-#  define dbgprintf(...) (void)0
-#  define _DEBUG 0
+#  define dbgprintf(...) (void)NULL
 #endif
 
 namespace Utils
