@@ -184,7 +184,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Utils\Utils.cpp" />
+    <ClCompile Include="utils\Utils.cpp" />
     <ClCompile Include="winframe.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -237,7 +237,7 @@
     <ClInclude Include="steam\steam_api_flat.h" />
     <ClInclude Include="steam\steam_api_internal.h" />
     <ClInclude Include="steam\steam_gameserver.h" />
-    <ClInclude Include="Utils\Utils.h" />
+    <ClInclude Include="utils\Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="lib\steam_api.dll" />
