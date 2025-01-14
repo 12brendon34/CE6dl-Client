@@ -47,6 +47,12 @@ namespace Engine {
 
     using T_ShutdownOnlineServices = void (*)(void);
     extern T_ShutdownOnlineServices ShutdownOnlineServices;
+
+    using T_CreateMountHelper = void* (*)(LPCSTR param_1, LPCSTR param_2, LPCSTR param_3);
+    extern T_CreateMountHelper CreateMountHelper;
+
+    using T_MountDLC = void(*)(void* pGame, const char** className, __int64* CRTTIVariant);
+    extern T_MountDLC MountDLC;
 }
 
 namespace Filesystem

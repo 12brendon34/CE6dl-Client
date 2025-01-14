@@ -144,7 +144,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Engine::AssetManager(AssetMngVt, gamedir.c_str(), WorkingDirectory.c_str(), 0, NULL, NULL);
 
 	Loader::IndexPaks();
-
 	// Define paths
 	std::string Game_Path = WorkingDirectory + gamedir;
 	std::string Data_Path = WorkingDirectory + gamedir + "/Data";
@@ -181,6 +180,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		ExitProcess(1);
 	}
 
+
 	std::string GameDll_Path = WorkingDirectory + "gamedll";
 	Engine::InitializeGameScript(GameDll_Path.c_str(), false);
 
@@ -189,9 +189,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	dbgprintf("IGame::SetRootDirectory at: %s\n", WorkingDirectory.c_str());
 	Engine::SetRootDirectory(pGame, WorkingDirectory.c_str());
 
-	//MountHelper (Loads DLC's)
 
-	Engine::HideSplashscreen();
+	//get mounthelper address for weird RTTI arguments in MountDLC 
+	auto mountHelper = Engine::CreateMountHelper(WorkingDirectory.c_str(), gamedir.c_str(), nullptr);
+
+	__int64 CRTTIVariant[2] = { 0 };
+	//CRTTIVariant[0] was 17 for some reason, but that's not needed I guess
+	CRTTIVariant[1] = reinterpret_cast<__int64>(mountHelper);
+	const char* ClassName = "MountHelper"; //idk bro class name or smt
+
+	//gets "MountDLC" function from offset of pGame vtable
+	void* pGameVT = *reinterpret_cast<void**>(pGame);
+	auto MountDLC = *reinterpret_cast<Engine::T_MountDLC*>(reinterpret_cast<uintptr_t>(pGameVT) + 0x188);
+	// Call the MountDLC function
+	MountDLC(pGame, &ClassName, CRTTIVariant);
 
 	if (Engine::Initialize(pGame, lpCmdLine, nShowCmd, smallIcon, largeIcon, 0, 0, nullptr) != 0) {
 		dbgprintf("IGame::Initialize() failed\n");
@@ -200,6 +211,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return EXIT_FAILURE;
 	}
 
+	//I like showing the splash "longer", instead of the split sec of nothing
+	Engine::HideSplashscreen();
+
+	//start rendering loop
 	GameLoop(pGame);
 
 	//Destroy Game instance if still running

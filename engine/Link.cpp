@@ -17,6 +17,8 @@ namespace Engine
     T_DestroyGame DestroyGame = nullptr;
     T_ShutdownOnlineServices ShutdownOnlineServices = nullptr;
     T_UninitializeGameScript UninitializeGameScript = nullptr;
+    T_CreateMountHelper CreateMountHelper = nullptr;
+    T_MountDLC MountDLC = nullptr;
 }
 
 namespace Filesystem
@@ -52,6 +54,7 @@ bool LoadGameLibarys() {
     Engine::DestroyGame = (Engine::T_DestroyGame)GetProcAddress(engine, "DestroyGame");
     Engine::ShutdownOnlineServices = (Engine::T_ShutdownOnlineServices)GetProcAddress(engine, "?ShutdownOnlineServices@IGame@@SAXXZ");
     Engine::UninitializeGameScript = (Engine::T_UninitializeGameScript)GetProcAddress(engine, "UninitializeGameScript");
+    Engine::CreateMountHelper = (Engine::T_CreateMountHelper)GetProcAddress(engine, "?CreateMountHelper@Mount@@YAPEAVIMountHelper@1@PEBD00@Z");
 
     //filesystem_x64_rwdi.dll
     Filesystem::WriteFullDump = (Filesystem::T_WriteFullDump)GetProcAddress(filesystem, "?WriteFullDump@@YAXKPEAU_EXCEPTION_POINTERS@@PEBD_NPEAD@Z");
