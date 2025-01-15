@@ -32,11 +32,46 @@ namespace Engine {
     using T_OnPaint = void* (*)(void*);
     extern T_OnPaint OnPaint;
 
-    using T_GetAssetManager = void* __ptr64 (*)(void);
-    extern T_GetAssetManager GetAssetManager;
+    class AssetManager {
+    public:
+        //RDPMainHeader::Platform
+        virtual ULONG SetGame(LPCSTR DW, LPCSTR WD, int Platform, bool, char const*);
 
-    using T_AssetManager = int(*)(void* param_1, LPCSTR DW, LPCSTR WD, int platform, void* param_5, char* param_6);
-    extern T_AssetManager AssetManager;
+        //Stripped
+        virtual void SetMountDirs(LPCSTR);
+
+        //sets param_1[1] and param_1[0]; to null when ran, prob stripped or smt
+        uint64_t* GetMountDirs(uint64_t* param_1);
+
+        //returns 6
+        virtual int64_t GetCurrentPlatform();
+
+        //Stripped, Returns 0 without doing anything
+        virtual int64_t SetForceRpackCreationMode();
+
+        //virtual void __thiscall RegRpack(CResourceDataPack*, ttl::string_base<char> const&)
+        virtual void RegRpack(void* CResourceDataPack, char const** string_base);
+        virtual void UnregRpack(void* CResourceDataPack, char const** string_base);
+
+        virtual void CopyPackData(void* CResourceDataPack);
+        virtual void PastePackData(void* CResourceDataPack);
+
+        /* AssetManagerImpl::LoadPackData(char const*, ttl::vector<SRLRResource>&, ttl::vector<EResType::ENUM> const&) */
+        virtual void LoadPackData(char const* param_1, long* param_3, long* param_4);
+        /* AssetManagerImpl::ChangePackMemory(CResourceDataPack*, ttl::vector<SRLRResource>&, ttl::vector<EResType::ENUM> const&) */
+        virtual void ChangePackMemory(void* CResourceDataPack, long* param_3, long* param_4); //calls CResourceDataPack::ChangePackMemoryAfterReload
+        virtual void CalcResPackInfo(); //CResourceLoadingRuntime::CalcResPackInfo(CResourceLoadingRuntime::s_This);
+        virtual void LoadAssetAutoBuild(char const* param_1, unsigned int param_2, char const*); //last arg unused
+        virtual void ReleasePack(void* CResourceDataPack);
+        virtual void Shutdown();
+        virtual void FixAfterReloadTexture(void* CTexture, void* CTexture_2, void* CResourceDataPack);
+        virtual void GetDataPackName(void* CResourceDataPack);
+
+        virtual ~AssetManager() = default;
+    };
+
+    using T_GetAssetManager = AssetManager* __ptr64 (*)(void);
+    extern T_GetAssetManager GetAssetManager;
 
     //unused params
     using T_DestroyGame = void (*)(__int64 param_1, __int64 param_2, __int64 param_3, __int64 param_4);

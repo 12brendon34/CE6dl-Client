@@ -13,7 +13,6 @@ namespace Engine
     T_Initialize Initialize = nullptr;
     T_OnPaint OnPaint = nullptr;
     T_GetAssetManager GetAssetManager = nullptr;
-    T_AssetManager AssetManager = nullptr;
     T_DestroyGame DestroyGame = nullptr;
     T_ShutdownOnlineServices ShutdownOnlineServices = nullptr;
     T_UninitializeGameScript UninitializeGameScript = nullptr;

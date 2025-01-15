@@ -139,9 +139,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	dbgprintf("Initalizing Filesystem at: %s, With Flags: %i\n", fsDestinationPath.c_str(), fsAddSourceFlags);
 	Filesystem::Init(fsDestinationPath.c_str(), fsAddSourceFlags, "out/cache", false, true, nullptr);
 
-	void* AssetMngVt = Engine::GetAssetManager();
-	Engine::AssetManager = *reinterpret_cast<Engine::T_AssetManager**>(AssetMngVt)[0];
-	Engine::AssetManager(AssetMngVt, gamedir.c_str(), WorkingDirectory.c_str(), 0, NULL, NULL);
+	Engine::AssetManager* s_AssetManagerImpl = Engine::GetAssetManager();
+	s_AssetManagerImpl->SetGame(gamedir.c_str(), WorkingDirectory.c_str(), 0, NULL, nullptr);
 
 	Loader::IndexPaks();
 	// Define paths
