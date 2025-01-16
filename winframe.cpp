@@ -8,13 +8,13 @@ const AppId_t k_uAppId = 239140;
 
 int Alert(const char* lpCaption, const char* lpText)
 {
-	return ::MessageBox(NULL, lpText, lpCaption, MB_OK);
+	return ::MessageBox(nullptr, lpText, lpCaption, MB_OK);
 }
 
 void MiniDumpFunction(unsigned int nExceptionCode, EXCEPTION_POINTERS* pException)
 {
 	bool MiniDumpType = false;
-	Filesystem::WriteFullDump(nExceptionCode, pException, NULL, MiniDumpType, NULL);
+	Filesystem::WriteFullDump(nExceptionCode, pException, nullptr, MiniDumpType, nullptr);
 }
 
 void GameLoop(void* pGame) {
@@ -76,6 +76,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (!Engine::Main()) {
 		return EXIT_FAILURE;
 	}
+
+	//feels resonable to load it here, might change to Link.cpp
+	Loader::LoadNativeMods();
 
 	// Get Resorces for splash
 	auto hSplash = MAKEINTRESOURCE(159);  // Game Splash Resource
@@ -194,12 +197,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	__int64 CRTTIVariant[2] = { 0 };
 	//CRTTIVariant[0] was 17 for some reason, but that's not needed I guess
-	CRTTIVariant[1] = reinterpret_cast<__int64>(mountHelper);
+	CRTTIVariant[1] = std::bit_cast<__int64>(mountHelper);
 	const char* ClassName = "MountHelper"; //idk bro class name or smt
 
 	//gets "MountDLC" function from offset of pGame vtable
-	void* pGameVT = *reinterpret_cast<void**>(pGame);
-	auto MountDLC = *reinterpret_cast<Engine::T_MountDLC*>(reinterpret_cast<uintptr_t>(pGameVT) + 0x188);
+	void* pGameVT = *static_cast<void**>(pGame);
+	auto MountDLC = *std::bit_cast<Engine::T_MountDLC*>(std::bit_cast<uintptr_t>(pGameVT) + 0x188);
 	// Call the MountDLC function
 	MountDLC(pGame, &ClassName, CRTTIVariant);
 

@@ -40,7 +40,8 @@ namespace Loader {
 
         for (const auto& entry : fs::directory_iterator(RpackDir))
         {
-            if (Utils::str_tolower(entry.path().extension().string()) == ".rpack" || Utils::str_tolower(entry.path().extension().string()) == ".rpaco" || Utils::str_tolower(entry.path().extension().string()) == ".rpacz")
+            auto ext = Utils::str_tolower(entry.path().extension().string());
+            if (ext == ".rpack" || ext == ".rpaco" || ext == ".rpacz")
             {
                 ModInfo currentMod;
                 currentMod.ModName = entry.path().stem().string();
@@ -52,6 +53,30 @@ namespace Loader {
         }
     }
 
+    void LoadNativeMods()
+    {
+        fs::path LibPath = SetupModFolder("Lib");
+
+        for (const auto& entry : fs::directory_iterator(LibPath))
+        {
+            auto ext = Utils::str_tolower(entry.path().extension().string());
+            auto c_str = entry.path().string().c_str();
+
+            if (ext == ".asi" || ext == ".dll")
+            {
+                ModInfo currentMod;
+                currentMod.ModName = entry.path().stem().string();
+                currentMod.IsEnabled = true;
+                currentMod.ModType = 3;
+                currentMod.ModPath = c_str;
+                ModInfoList.push_back(currentMod);
+                if (LoadLibrary(c_str))
+                    dbgprintf(">>Plugin loaded: %s\n", c_str);
+                else
+                    dbgprintf(">>Plugin error: %s\n", c_str);
+            }
+        }
+    }
 
     void LoadModPaks() {
         for (size_t i = 0; i < ModInfoList.size(); i++)
@@ -79,4 +104,6 @@ namespace Loader {
             }
         }
     }
+
+
 }

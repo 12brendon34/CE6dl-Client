@@ -12,6 +12,7 @@ namespace Loader {
 
     std::string SetupModFolder(const std::string& subDir);
     void IndexMods();
+    void LoadNativeMods();
     void LoadModPaks();
     void LoadResorcePacks(Engine::AssetManager* s_AssetManagerImpl);
 }
