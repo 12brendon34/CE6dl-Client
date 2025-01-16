@@ -1,45 +1,57 @@
 #include <pch.h>
 #include "Loader.h"
-#include "../engine/Link.h"
 
 namespace Loader {
 
     static std::vector<ModInfo> ModInfoList;
 
-    std::string CreateModsFolder() 
+    std::string SetupModFolder(const std::string& subDir)
     {
-        auto RootDL = Utils::GetWorkingDirectory();
+        const std::string baseDir = Utils::GetWorkingDirectory();
+        const std::string modsDir = baseDir + "Mods\\";
+        const std::string subDirPath = modsDir + subDir + "\\";
 
-        auto modsPath = RootDL + "Mods\\";
-        auto subPath = modsPath + "Paks\\";
+        Utils::CreateFolder(modsDir);
+        Utils::CreateFolder(subDirPath);
 
-        std::cout << "Mods Path: " << modsPath << std::endl;
-        std::cout << "Subfolder Path: " << subPath << std::endl;
-
-        Utils::CreateFolder(modsPath);
-        Utils::CreateFolder(subPath);
-
-        return subPath;
+        return subDirPath;
     }
 
-    void IndexPaks() 
+    void IndexMods()
     {
-        auto PaksFolder = CreateModsFolder();
+        auto PakDir = SetupModFolder("Paks");
+        auto RpackDir = SetupModFolder("Rpacks");
 
-        for (const auto& entry : fs::directory_iterator(PaksFolder))
+        Filesystem::Add_Source(PakDir.c_str(), 7);
+        Filesystem::Add_Source(RpackDir.c_str(), 7);
+
+        for (const auto& entry : fs::directory_iterator(PakDir)) 
         {
             if (Utils::str_tolower(entry.path().extension().string()) == ".pak")
             {
-                ModInfo CurrentMod;
-                CurrentMod.ModName = L"PlaceHolder";
-                CurrentMod.IsEnabled = true;
-                CurrentMod.ModType = 0;
-                CurrentMod.ModPath = entry.path().string();
-                std::cout << CurrentMod.ModPath << std::endl;
-                ModInfoList.push_back(CurrentMod);
+                ModInfo currentMod;
+                currentMod.ModName = entry.path().stem().string();
+                currentMod.IsEnabled = true;
+                currentMod.ModType = 0;
+                currentMod.ModPath = entry.path().string();
+                ModInfoList.push_back(currentMod);
+            }
+        }
+
+        for (const auto& entry : fs::directory_iterator(RpackDir))
+        {
+            if (Utils::str_tolower(entry.path().extension().string()) == ".rpack" || Utils::str_tolower(entry.path().extension().string()) == ".rpaco" || Utils::str_tolower(entry.path().extension().string()) == ".rpacz")
+            {
+                ModInfo currentMod;
+                currentMod.ModName = entry.path().stem().string();
+                currentMod.IsEnabled = true;
+                currentMod.ModType = 1;
+                currentMod.ModPath = entry.path().string();
+                ModInfoList.push_back(currentMod);
             }
         }
     }
+
 
     void LoadModPaks() {
         for (size_t i = 0; i < ModInfoList.size(); i++)
@@ -50,6 +62,20 @@ namespace Loader {
                 Filesystem::Add_Source(cPak, 9);
 
                 dbgprintf("Added Source : %s\n", cPak);
+            }
+        }
+    }
+
+    void LoadResorcePacks(Engine::AssetManager* s_AssetManagerImpl) {
+        for (size_t i = 0; i < ModInfoList.size(); i++)
+        {
+            if (ModInfoList[i].ModType == 1)
+            {
+                auto cRpack = ModInfoList[i].ModPath.c_str();
+
+                s_AssetManagerImpl->LoadAsset(cRpack, 256, NULL);
+
+                dbgprintf("Added Rpack : %s\n", cRpack);
             }
         }
     }

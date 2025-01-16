@@ -1,16 +1,17 @@
 #include "../utils/Utils.h"
+#include "../engine/Link.h"
 
 namespace Loader {
 
     struct ModInfo {
-        std::wstring ModName;
-        bool IsEnabled;
-        int ModType;
+        std::string ModName;
         std::string ModPath;
+        bool IsEnabled;
+        bool ModType;
     };
 
-    std::string CreateModsFolder();
-    void IndexPaks();
-    std::vector<ModInfo>& GetModInfoList();
+    std::string SetupModFolder(const std::string& subDir);
+    void IndexMods();
     void LoadModPaks();
+    void LoadResorcePacks(Engine::AssetManager* s_AssetManagerImpl);
 }

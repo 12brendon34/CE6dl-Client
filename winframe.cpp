@@ -142,7 +142,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Engine::AssetManager* s_AssetManagerImpl = Engine::GetAssetManager();
 	s_AssetManagerImpl->SetGame(gamedir.c_str(), WorkingDirectory.c_str(), 0, NULL, nullptr);
 
-	Loader::IndexPaks();
+	Loader::IndexMods();
 	// Define paths
 	std::string Game_Path = WorkingDirectory + gamedir;
 	std::string Data_Path = WorkingDirectory + gamedir + "/Data";
@@ -171,6 +171,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//with pak's the last loaded overwrites the previous
 	//with rpacks it's the opposite
 
+
 	//Calls SteamAPI_Init() and setup online
 	//Might be diffrent on some other chrome engine versions, named SteamInitialize on older CE6 versions
 	if (!Engine::InitializeOnlineServices()) {
@@ -178,7 +179,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//Should not exit unless steam shanaigans, happened to a friend oddly
 		ExitProcess(1);
 	}
-
 
 	std::string GameDll_Path = WorkingDirectory + "gamedll";
 	Engine::InitializeGameScript(GameDll_Path.c_str(), false);
@@ -188,7 +188,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	dbgprintf("IGame::SetRootDirectory at: %s\n", WorkingDirectory.c_str());
 	Engine::SetRootDirectory(pGame, WorkingDirectory.c_str());
 
-
+	//Mount DLC's
 	//get mounthelper address for weird RTTI arguments in MountDLC 
 	auto mountHelper = Engine::CreateMountHelper(WorkingDirectory.c_str(), gamedir.c_str(), nullptr);
 
@@ -203,6 +203,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// Call the MountDLC function
 	MountDLC(pGame, &ClassName, CRTTIVariant);
 
+	//hide spash
+	Engine::HideSplashscreen();
+
+	//Initalize Game
 	if (Engine::Initialize(pGame, lpCmdLine, nShowCmd, smallIcon, largeIcon, 0, 0, nullptr) != 0) {
 		dbgprintf("IGame::Initialize() failed\n");
 		OutputDebugString("IGame::Initialize() failed\n");
@@ -210,8 +214,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return EXIT_FAILURE;
 	}
 
-	//I like showing the splash "longer", instead of the split sec of nothing
-	Engine::HideSplashscreen();
+	//after InitalizeGame, which loads the basegame rpacks
+	//custom rpacks now loaded will not be able to replace base game rpacks
+	Loader::LoadResorcePacks(s_AssetManagerImpl);
 
 	//start rendering loop
 	GameLoop(pGame);
