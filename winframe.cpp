@@ -55,8 +55,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	while (!::IsDebuggerPresent())
 		::Sleep(100);
 	*/
-	
+
+#ifdef _DEBUG
 	Utils::InitConsole();
+#endif
 
 	if (!LoadGameLibarys()) {
 		return EXIT_FAILURE;

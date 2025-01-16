@@ -7,7 +7,7 @@ namespace Loader {
         std::string ModName;
         std::string ModPath;
         bool IsEnabled;
-        bool ModType;
+        int ModType;
     };
 
     std::string SetupModFolder(const std::string& subDir);
