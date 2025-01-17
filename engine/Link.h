@@ -1,9 +1,11 @@
 #pragma once
 #include "../Utils/Utils.h"
 
-bool LoadGameLibarys();
+bool LoadGameLibrarys();
 
 namespace Engine {
+    extern HMODULE Library;
+
     using t_Main = int (*)(void);
     extern t_Main Main;
 
@@ -132,10 +134,24 @@ namespace Engine {
 
     using T_MountDLC = void(*)(void* pGame, const char** className, __int64* CRTTIVariant);
     extern T_MountDLC MountDLC;
+
+    /* CMaterialMgr::LoadPack(char const*, IMaterialManager::ELoadPackOptions::ENUM) */
+
+    class CMaterialsPack {
+
+    };
+
+    class CMaterialMgr {
+    public:
+        virtual CMaterialsPack* LoadPack(LPCSTR Path, int ELoadPackOptions);
+        virtual ~CMaterialMgr() = default;
+    };
 }
 
 namespace Filesystem
 {
+    extern HMODULE Library;
+
     using T_WriteFullDump = void(*)(ULONG nExceptionCode, _EXCEPTION_POINTERS* pException, char* param_3, bool MiniDump, char* param_5);
     extern T_WriteFullDump WriteFullDump;
 

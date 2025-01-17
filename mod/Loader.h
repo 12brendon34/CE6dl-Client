@@ -15,4 +15,5 @@ namespace Loader {
     void LoadNativeMods();
     void LoadModPaks();
     void LoadResorcePacks(Engine::AssetManager* s_AssetManagerImpl);
+    void LoadMaterialPacks(Engine::CMaterialMgr* s_MaterialMgr);
 }

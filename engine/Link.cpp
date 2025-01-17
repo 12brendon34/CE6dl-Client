@@ -3,6 +3,8 @@
 
 namespace Engine
 {
+    HMODULE Library;
+
     t_Main Main = nullptr;
     T_ShowSplashscreen ShowSplashscreen = nullptr;
     T_HideSplashscreen HideSplashscreen = nullptr;
@@ -22,6 +24,8 @@ namespace Engine
 
 namespace Filesystem
 {
+    HMODULE Library;
+
     T_WriteFullDump WriteFullDump = nullptr;
     T_IsFullPath IsFullPath = nullptr;
     T_Init Init = nullptr;
@@ -30,38 +34,38 @@ namespace Filesystem
     T_Shutdown Shutdown = nullptr;
 }
 
-bool LoadGameLibarys() {
-    const HMODULE engine = Utils::LoadLibrarySimple("engine_x64_rwdi.dll");
-    const HMODULE filesystem = Utils::LoadLibrarySimple("filesystem_x64_rwdi.dll");
+bool LoadGameLibrarys() {
+    Engine::Library = Utils::LoadLibrarySimple("engine_x64_rwdi.dll");
+    Filesystem::Library = Utils::LoadLibrarySimple("filesystem_x64_rwdi.dll");
 
-    if (!engine || !filesystem) {// || !gamedll) {
+    if (!Engine::Library || !Filesystem::Library) {// || !gamedll) {
         dbgprintf("One or more DLLs failed to load. Exiting.");
         return false;
     }
 
     //engine_x64_rwdi.dll
-    Engine::Main = (Engine::t_Main)GetProcAddress(engine, "Main");
-    Engine::ShowSplashscreen = (Engine::T_ShowSplashscreen)GetProcAddress(engine, "ShowSplashscreen");
-    Engine::HideSplashscreen = (Engine::T_HideSplashscreen)GetProcAddress(engine, "HideSplashscreen");
-    Engine::InitializeOnlineServices = (Engine::T_InitializeOnlineServices)GetProcAddress(engine, "?InitializeOnlineServices@IGame@@SA_NPEAX@Z");
-    Engine::InitializeGameScript = (Engine::T_InitializeGameScript)GetProcAddress(engine, "InitializeGameScript");
-    Engine::CreateGame = (Engine::T_CreateGame)GetProcAddress(engine, "CreateGame");
-    Engine::SetRootDirectory = (Engine::T_SetRootDirectory)GetProcAddress(engine, "?SetRootDirectory@IGame@@QEAA_NPEBD@Z");
-    Engine::Initialize = (Engine::T_Initialize)GetProcAddress(engine, "?Initialize@IGame@@QEAAHPEADHPEAUHICON__@@1KKPEAVIProgressIndicator@@@Z");
-    Engine::OnPaint = (Engine::T_OnPaint)GetProcAddress(engine, "?OnPaint@IGame@@QEAAXXZ");
-    Engine::GetAssetManager = (Engine::T_GetAssetManager)GetProcAddress(engine, "?GetAssetManager@@YAPEAUAssetManager@@XZ");
-    Engine::DestroyGame = (Engine::T_DestroyGame)GetProcAddress(engine, "DestroyGame");
-    Engine::ShutdownOnlineServices = (Engine::T_ShutdownOnlineServices)GetProcAddress(engine, "?ShutdownOnlineServices@IGame@@SAXXZ");
-    Engine::UninitializeGameScript = (Engine::T_UninitializeGameScript)GetProcAddress(engine, "UninitializeGameScript");
-    Engine::CreateMountHelper = (Engine::T_CreateMountHelper)GetProcAddress(engine, "?CreateMountHelper@Mount@@YAPEAVIMountHelper@1@PEBD00@Z");
+    Engine::Main = (Engine::t_Main)GetProcAddress(Engine::Library, "Main");
+    Engine::ShowSplashscreen = (Engine::T_ShowSplashscreen)GetProcAddress(Engine::Library, "ShowSplashscreen");
+    Engine::HideSplashscreen = (Engine::T_HideSplashscreen)GetProcAddress(Engine::Library, "HideSplashscreen");
+    Engine::InitializeOnlineServices = (Engine::T_InitializeOnlineServices)GetProcAddress(Engine::Library, "?InitializeOnlineServices@IGame@@SA_NPEAX@Z");
+    Engine::InitializeGameScript = (Engine::T_InitializeGameScript)GetProcAddress(Engine::Library, "InitializeGameScript");
+    Engine::CreateGame = (Engine::T_CreateGame)GetProcAddress(Engine::Library, "CreateGame");
+    Engine::SetRootDirectory = (Engine::T_SetRootDirectory)GetProcAddress(Engine::Library, "?SetRootDirectory@IGame@@QEAA_NPEBD@Z");
+    Engine::Initialize = (Engine::T_Initialize)GetProcAddress(Engine::Library, "?Initialize@IGame@@QEAAHPEADHPEAUHICON__@@1KKPEAVIProgressIndicator@@@Z");
+    Engine::OnPaint = (Engine::T_OnPaint)GetProcAddress(Engine::Library, "?OnPaint@IGame@@QEAAXXZ");
+    Engine::GetAssetManager = (Engine::T_GetAssetManager)GetProcAddress(Engine::Library, "?GetAssetManager@@YAPEAUAssetManager@@XZ");
+    Engine::DestroyGame = (Engine::T_DestroyGame)GetProcAddress(Engine::Library, "DestroyGame");
+    Engine::ShutdownOnlineServices = (Engine::T_ShutdownOnlineServices)GetProcAddress(Engine::Library, "?ShutdownOnlineServices@IGame@@SAXXZ");
+    Engine::UninitializeGameScript = (Engine::T_UninitializeGameScript)GetProcAddress(Engine::Library, "UninitializeGameScript");
+    Engine::CreateMountHelper = (Engine::T_CreateMountHelper)GetProcAddress(Engine::Library, "?CreateMountHelper@Mount@@YAPEAVIMountHelper@1@PEBD00@Z");
 
     //filesystem_x64_rwdi.dll
-    Filesystem::WriteFullDump = (Filesystem::T_WriteFullDump)GetProcAddress(filesystem, "?WriteFullDump@@YAXKPEAU_EXCEPTION_POINTERS@@PEBD_NPEAD@Z");
-    Filesystem::IsFullPath = (Filesystem::T_IsFullPath)GetProcAddress(filesystem, "?is_full_path@fs@@YA_NPEBD@Z");//Filesystem::IsFullPath looks better than fs::is_full_path
-    Filesystem::Init = (Filesystem::T_Init)GetProcAddress(filesystem, "?init@fs@@YA_NPEBDW4ENUM@FFSAddSourceFlags@@0_N2PEAPEBD@Z");
-    Filesystem::Add_Source = (Filesystem::T_Add_Source)GetProcAddress(filesystem, "?add_source@fs@@YA_NPEBDW4ENUM@FFSAddSourceFlags@@@Z");
-    Filesystem::CrashClose = (Filesystem::T_CrashClose)GetProcAddress(filesystem, "?CrashClose@@YAXXZ");
-    Filesystem::Shutdown = (Filesystem::T_Shutdown)GetProcAddress(filesystem, "?shutdown@fs@@YAXXZ");
+    Filesystem::WriteFullDump = (Filesystem::T_WriteFullDump)GetProcAddress(Filesystem::Library, "?WriteFullDump@@YAXKPEAU_EXCEPTION_POINTERS@@PEBD_NPEAD@Z");
+    Filesystem::IsFullPath = (Filesystem::T_IsFullPath)GetProcAddress(Filesystem::Library, "?is_full_path@fs@@YA_NPEBD@Z");//Filesystem::IsFullPath looks better than fs::is_full_path
+    Filesystem::Init = (Filesystem::T_Init)GetProcAddress(Filesystem::Library, "?init@fs@@YA_NPEBDW4ENUM@FFSAddSourceFlags@@0_N2PEAPEBD@Z");
+    Filesystem::Add_Source = (Filesystem::T_Add_Source)GetProcAddress(Filesystem::Library, "?add_source@fs@@YA_NPEBDW4ENUM@FFSAddSourceFlags@@@Z");
+    Filesystem::CrashClose = (Filesystem::T_CrashClose)GetProcAddress(Filesystem::Library, "?CrashClose@@YAXXZ");
+    Filesystem::Shutdown = (Filesystem::T_Shutdown)GetProcAddress(Filesystem::Library, "?shutdown@fs@@YAXXZ");
 
     return true;
 }

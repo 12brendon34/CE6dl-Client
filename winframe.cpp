@@ -60,7 +60,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Utils::InitConsole();
 #endif
 
-	if (!LoadGameLibarys()) {
+	if (!LoadGameLibrarys()) {
 		return EXIT_FAILURE;
 	}
 
@@ -222,6 +222,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//after InitalizeGame, which loads the basegame rpacks
 	//custom rpacks now loaded will not be able to replace base game rpacks
 	Loader::LoadResorcePacks(s_AssetManagerImpl);
+
+	//load custom mp files here, base game calls initalize -> CRenderer::ApplyVideoSettings -> CMaterialMgr::Initialize
+	//CMaterialMgr::Initialize malloc's some mem then set's up the vtable and passes the address to 0xa402c0
+	//DAT_180a402c0 = plVar8;
+
+	auto vtablePtr = *reinterpret_cast<void**>(reinterpret_cast<uintptr_t>(Engine::Library) + 0xa402c0);
+	auto s_MaterialMgr = reinterpret_cast<Engine::CMaterialMgr*>(vtablePtr);
+
+	//auto s_MaterialMgr = std::bit_cast<Engine::CMaterialMgr*>(Engine::Library + 0xA402C0);
+	Loader::LoadMaterialPacks(s_MaterialMgr);
+	//s_MaterialMgr->LoadPack()
 
 	//start rendering loop
 	GameLoop(pGame);

@@ -19,4 +19,6 @@ namespace Utils
 	std::string GetWorkingDirectory();
 
 	std::string str_tolower(std::string s);
+
+	std::string RemoveSuffix(const std::string& input, const std::string& suffix);
 }
