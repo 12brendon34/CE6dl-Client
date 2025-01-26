@@ -82,10 +82,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//feels resonable to load it here, might change to Link.cpp
 	Loader::LoadNativeMods();
 
-	// Get Resorces for splash
-	auto hSplash = MAKEINTRESOURCE(159);  // Game Splash Resource
-	auto hText = MAKEINTRESOURCE(160);    // Dying Light String Resource
-	auto hIcon = MAKEINTRESOURCE(161);    // Game Icon Resource
+	unsigned int seed = static_cast<unsigned int>(std::time(0));
+	int randomSplash = 101 + (seed * 1103515245 + 12345) % 4;
+	auto hSplash = MAKEINTRESOURCE(randomSplash);  // Game Splash Resource
+
+	auto hText = MAKEINTRESOURCE(100);    // Dying Light String Resource
+	auto hIcon = MAKEINTRESOURCE(110);    // Game Icon Resource
 
 	int smallIconWidth = GetSystemMetrics(SM_CXSMICON);
 	int smallIconHeight = GetSystemMetrics(SM_CYSMICON);
@@ -95,6 +97,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	int largeIconHeight = GetSystemMetrics(SM_CYICON);
 	auto largeIcon = LoadImage(hInstance, hIcon, IMAGE_ICON, largeIconWidth, largeIconHeight, 0);
 	Engine::ShowSplashscreen(hInstance, hSplash, hText, smallIcon);
+	Sleep(2000);
 
 	//Filesystem Setup
 	int fsAddSourceFlags;

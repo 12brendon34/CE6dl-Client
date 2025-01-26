@@ -253,6 +253,8 @@
     <ResourceCompile Include="resources\DyingLightGame.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="resources\BASE.bmp" />
+    <Image Include="resources\BASE.ico" />
     <Image Include="resources\BITMAP159_1.bmp" />
     <Image Include="resources\ICON161_1.ico" />
   </ItemGroup>
