@@ -2,6 +2,7 @@
 #include "utils/Utils.h"
 #include "engine/Link.h"
 #include "mod/Loader.h"
+#include <random>
 
 typedef uint32 AppId_t;
 const AppId_t k_uAppId = 239140;
@@ -82,8 +83,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//feels resonable to load it here, might change to Link.cpp
 	Loader::LoadNativeMods();
 
-	unsigned int seed = static_cast<unsigned int>(std::time(0));
-	int randomSplash = 101 + (seed * 1103515245 + 12345) % 4;
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<int> dist(101, 106);
+
+	int randomSplash = dist(gen);
 	auto hSplash = MAKEINTRESOURCE(randomSplash);  // Game Splash Resource
 
 	auto hText = MAKEINTRESOURCE(100);    // Dying Light String Resource
@@ -227,13 +231,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Loader::LoadResorcePacks(s_AssetManagerImpl);
 
 	//load custom mp files here, base game calls initalize -> CRenderer::ApplyVideoSettings -> CMaterialMgr::Initialize
-	//CMaterialMgr::Initialize malloc's some mem then set's up the vtable and passes the address to 0xa402c0
+	//CMaterialMgr::Initialize malloc's some mem then set's up the vtable and passes the address to 0xa402b0
 	//DAT_180a402c0 = plVar8;
 
-	auto vtablePtr = *reinterpret_cast<void**>(reinterpret_cast<uintptr_t>(Engine::Library) + 0xa402c0);
+	auto vtablePtr = *reinterpret_cast<void**>(reinterpret_cast<uintptr_t>(Engine::Library) + 0xa402b0);
 	auto s_MaterialMgr = reinterpret_cast<Engine::CMaterialMgr*>(vtablePtr);
 
-	//auto s_MaterialMgr = std::bit_cast<Engine::CMaterialMgr*>(Engine::Library + 0xA402C0);
 	Loader::LoadMaterialPacks(s_MaterialMgr);
 	//s_MaterialMgr->LoadPack()
 
