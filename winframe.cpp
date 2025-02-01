@@ -211,9 +211,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	//gets "MountDLC" function from offset of pGame vtable
 	void* pGameVT = *static_cast<void**>(pGame);
-	auto MountDLC = *std::bit_cast<Engine::T_MountDLC*>(std::bit_cast<uintptr_t>(pGameVT) + 0x188);
+	Engine::MountDLC = *std::bit_cast<Engine::T_MountDLC*>(std::bit_cast<uintptr_t>(pGameVT) + 0x188);
 	// Call the MountDLC function
-	MountDLC(pGame, &ClassName, CRTTIVariant);
+	Engine::MountDLC(pGame, &ClassName, CRTTIVariant);
 
 	//hide spash
 	Engine::HideSplashscreen();
