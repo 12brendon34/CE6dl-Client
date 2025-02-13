@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <filesystem>
 #include <iostream>
+#include <vector>
 
 // Windows headers
 #include <Windows.h>

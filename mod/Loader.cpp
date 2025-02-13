@@ -1,6 +1,7 @@
 #include <pch.h>
 #include "Loader.h"
 
+
 namespace Loader {
 
     static std::vector<ModInfo> ModInfoList;
@@ -17,6 +18,8 @@ namespace Loader {
         return subDirPath;
     }
 
+    std::vector<HMODULE> NativeMods;
+
     void LoadNativeMods()
     {
         fs::path LibPath = SetupModFolder("Lib");
@@ -24,23 +27,36 @@ namespace Loader {
         for (const auto& entry : fs::directory_iterator(LibPath))
         {
             auto ext = Utils::str_tolower(entry.path().extension().string());
-            auto c_str = entry.path().string().c_str();
+            std::string modPathStr = entry.path().string(); // Store persistently
+            const char* c_str = modPathStr.c_str(); // Get pointer to valid memory
 
             if (ext == ".asi" || ext == ".dll")
             {
-                ModInfo currentMod;
-                currentMod.ModName = entry.path().stem().string();
-                currentMod.IsEnabled = true;
-                currentMod.ModType = 0;
-                currentMod.ModPath = c_str;
-                ModInfoList.push_back(currentMod);
-                if (LoadLibrary(c_str))
-                    dbgprintf(">>Plugin loaded: %s\n", c_str);
+                auto HModule = LoadLibrary(c_str);
+
+                if (HModule) {
+                    ModInfo currentMod;
+                    auto GetPluginName = (Engine::T_GetPluginName)GetProcAddress(HModule, "GetPluginName");
+
+                    if (GetPluginName)
+                        currentMod.ModName = GetPluginName();
+                    else
+                        currentMod.ModName = "PLUGIN_NAME_UNSET";
+
+                    currentMod.IsEnabled = true;
+                    currentMod.ModType = 0;
+                    currentMod.ModPath = modPathStr;
+
+                    dbgprintf("[Plugin] %s loaded: %s\n", currentMod.ModName, c_str);
+                    ModInfoList.push_back(currentMod);
+                    NativeMods.push_back(HModule);
+                }
                 else
-                    dbgprintf(">>Plugin error: %s\n", c_str);
+                    dbgprintf("[Plugin] Loading Error: %s\n", c_str);
             }
         }
     }
+
 
     void IndexMods()
     {
@@ -132,8 +148,38 @@ namespace Loader {
                 cMatPack = Utils::RemoveSuffix(cMatPack, "_dx11.mp");
                 s_MaterialMgr->LoadPack(cMatPack.c_str(), 1);//2 for local mp and 1 for built in or optimised? not sure, I'll go with 1
 
-                dbgprintf("Added Mat Pack : %s\n", cMatPack);
+                dbgprintf("Added Mat Pack : %s\n", cMatPack.c_str());
             }
+        }
+    }
+
+    void PreInitalize() {
+
+        for (int i = 0; i < NativeMods.size(); i++) {
+            if (NativeMods[i] == nullptr) {
+                MessageBoxA(0, "Module handle is null!", "Error", MB_ICONERROR);
+                return;
+            }
+
+            Engine::T_PreInitalize PreInitalize = (Engine::T_PreInitalize)GetProcAddress(NativeMods[i], "PreInitialize");
+
+            if (PreInitalize)
+                PreInitalize();
+        }
+    }
+
+    void PostInitalize() {
+
+        for (int i = 0; i < NativeMods.size(); i++) {
+            if (NativeMods[i] == nullptr) {
+                MessageBoxA(0, "Module handle is null!", "Error", MB_ICONERROR);
+                return;
+            }
+
+            Engine::T_PostInitalize PostInitalize = (Engine::T_PostInitalize)GetProcAddress(NativeMods[i], "PostInitialize");
+
+            if (PostInitalize)
+                PostInitalize();
         }
     }
 }

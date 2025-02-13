@@ -16,4 +16,6 @@ namespace Loader {
     void LoadModPaks();
     void LoadResorcePacks(Engine::AssetManager* s_AssetManagerImpl);
     void LoadMaterialPacks(Engine::CMaterialMgr* s_MaterialMgr);
+    void PreInitalize();
+    void PostInitalize();
 }

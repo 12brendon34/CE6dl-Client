@@ -192,10 +192,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		ExitProcess(1);
 	}
 
+	//PreInitializeGameScript
 	std::string GameDll_Path = WorkingDirectory + "gamedll";
 	Engine::InitializeGameScript(GameDll_Path.c_str(), false);
 
 	void* pGame = Engine::CreateGame("GameDI", hInstance, true, gamedir.c_str());
+
 	dbgprintf("CreateGame GameDI at: %p\n", pGame);
 	dbgprintf("IGame::SetRootDirectory at: %s\n", WorkingDirectory.c_str());
 	Engine::SetRootDirectory(pGame, WorkingDirectory.c_str());
@@ -219,12 +221,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Engine::HideSplashscreen();
 
 	//Initalize Game
+	Loader::PreInitalize();
 	if (Engine::Initialize(pGame, lpCmdLine, nShowCmd, smallIcon, largeIcon, 0, 0, nullptr) != 0) {
 		dbgprintf("IGame::Initialize() failed\n");
 		OutputDebugString("IGame::Initialize() failed\n");
 		Alert("Fatal Error", "Game failed to initalize (IGame::Initialize() failed)\n");
 		return EXIT_FAILURE;
 	}
+	Loader::PostInitalize();
 
 	//after InitalizeGame, which loads the basegame rpacks
 	//custom rpacks now loaded will not be able to replace base game rpacks

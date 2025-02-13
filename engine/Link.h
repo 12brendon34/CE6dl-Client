@@ -176,6 +176,11 @@ namespace Engine {
 
         virtual ~CMaterialMgr() = default;
     };
+
+    //plugins
+    using T_PreInitalize = void (*)(void);
+    using T_PostInitalize = void (*)(void);
+    using T_GetPluginName = const char* (*)(void);
 }
 
 namespace Filesystem
