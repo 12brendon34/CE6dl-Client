@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{52ca45d1-41df-4103-8c3d-1e122bf1c57c}</ProjectGuid>
+    <RootNamespace>DyingLightGame</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>DyingLightGame</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName)_$(PlatformTarget).pch</PrecompiledHeaderOutputFile>
+      <AdditionalIncludeDirectories>pch</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>lib/steam/steam_api64.lib;lib/engine/engine_x64_rwdi.lib;lib/filesystem/filesystem_x64_rwdi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /Y /I "lib\steam\steam_api64.dll" "$(OutDir)"
+xcopy /Y /I "lib\filesystem\filesystem_x64_rwdi.dll" "$(OutDir)"
+xcopy /Y /I "lib\engine\engine_x64_rwdi.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName)_$(PlatformTarget).pch</PrecompiledHeaderOutputFile>
+      <AdditionalIncludeDirectories>pch</AdditionalIncludeDirectories>
+      <Optimization>MaxSpeed</Optimization>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>lib/steam/steam_api64.lib;lib/engine/engine_x64_rwdi.lib;lib/filesystem/filesystem_x64_rwdi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /Y /I "lib\steam\steam_api64.dll" "$(OutDir)"
+xcopy /Y /I "lib\filesystem\filesystem_x64_rwdi.dll" "$(OutDir)"
+xcopy /Y /I "lib\engine\engine_x64_rwdi.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Pch\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Utils\Utils.cpp" />
+    <ClCompile Include="winframe.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Include\engine\IGame.h" />
+    <ClInclude Include="Include\engine\engine_x64_rwdi.h" />
+    <ClInclude Include="Include\filesystem\filesystem_x64_rwdi.h" />
+    <ClInclude Include="Include\TTL.h" />
+    <ClInclude Include="Pch\pch.h" />
+    <ClInclude Include="Resources\DyingLightGame.h" />
+    <ClInclude Include="Resources\Resource.h" />
+    <ClInclude Include="Include\steam\isteamapplist.h" />
+    <ClInclude Include="Include\steam\isteamapps.h" />
+    <ClInclude Include="Include\steam\isteamappticket.h" />
+    <ClInclude Include="Include\steam\isteamclient.h" />
+    <ClInclude Include="Include\steam\isteamcontroller.h" />
+    <ClInclude Include="Include\steam\isteamdualsense.h" />
+    <ClInclude Include="Include\steam\isteamfriends.h" />
+    <ClInclude Include="Include\steam\isteamgamecoordinator.h" />
+    <ClInclude Include="Include\steam\isteamgameserver.h" />
+    <ClInclude Include="Include\steam\isteamgameserverstats.h" />
+    <ClInclude Include="Include\steam\isteamhtmlsurface.h" />
+    <ClInclude Include="Include\steam\isteamhttp.h" />
+    <ClInclude Include="Include\steam\isteaminput.h" />
+    <ClInclude Include="Include\steam\isteaminventory.h" />
+    <ClInclude Include="Include\steam\isteammatchmaking.h" />
+    <ClInclude Include="Include\steam\isteammusic.h" />
+    <ClInclude Include="Include\steam\isteammusicremote.h" />
+    <ClInclude Include="Include\steam\isteamnetworking.h" />
+    <ClInclude Include="Include\steam\isteamnetworkingmessages.h" />
+    <ClInclude Include="Include\steam\isteamnetworkingsockets.h" />
+    <ClInclude Include="Include\steam\isteamnetworkingutils.h" />
+    <ClInclude Include="Include\steam\isteamparentalsettings.h" />
+    <ClInclude Include="Include\steam\isteamps3overlayrenderer.h" />
+    <ClInclude Include="Include\steam\isteamremoteplay.h" />
+    <ClInclude Include="Include\steam\isteamremotestorage.h" />
+    <ClInclude Include="Include\steam\isteamscreenshots.h" />
+    <ClInclude Include="Include\steam\isteamugc.h" />
+    <ClInclude Include="Include\steam\isteamuser.h" />
+    <ClInclude Include="Include\steam\isteamuserstats.h" />
+    <ClInclude Include="Include\steam\isteamutils.h" />
+    <ClInclude Include="Include\steam\isteamvideo.h" />
+    <ClInclude Include="Include\steam\matchmakingtypes.h" />
+    <ClInclude Include="Include\steam\steamclientpublic.h" />
+    <ClInclude Include="Include\steam\steamencryptedappticket.h" />
+    <ClInclude Include="Include\steam\steamhttpenums.h" />
+    <ClInclude Include="Include\steam\steamnetworkingfakeip.h" />
+    <ClInclude Include="Include\steam\steamnetworkingtypes.h" />
+    <ClInclude Include="Include\steam\steamps3params.h" />
+    <ClInclude Include="Include\steam\steamtypes.h" />
+    <ClInclude Include="Include\steam\steamuniverse.h" />
+    <ClInclude Include="Include\steam\steam_api.h" />
+    <ClInclude Include="Include\steam\steam_api_common.h" />
+    <ClInclude Include="Include\steam\steam_api_flat.h" />
+    <ClInclude Include="Include\steam\steam_api_internal.h" />
+    <ClInclude Include="Include\steam\steam_gameserver.h" />
+    <ClInclude Include="Utils\Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources\DyingLightGame.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\BASE.bmp" />
+    <Image Include="Resources\BASE.ico" />
+    <Image Include="resources\BITMAP159_1.bmp" />
+    <Image Include="resources\ICON161_1.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
