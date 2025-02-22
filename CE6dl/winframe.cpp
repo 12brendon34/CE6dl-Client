@@ -17,7 +17,7 @@ int Alert(const char* lpCaption, const char* lpText)
 void MiniDumpFunction(unsigned int nExceptionCode, EXCEPTION_POINTERS* pException)
 {
 	bool MiniDumpType = false;
-	//Filesystem::WriteFullDump(nExceptionCode, pException, nullptr, MiniDumpType, nullptr);
+	WriteFullDump(nExceptionCode, pException, nullptr, MiniDumpType, nullptr);
 }
 
 void GameLoop(IGame* pGame) {

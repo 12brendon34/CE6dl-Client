@@ -3,10 +3,10 @@
 
 namespace ttl {
     template <typename T>
-    struct string_base;
+    class string_base;
 
     template <>
-    struct string_base<char> {
+    class string_base<char> {
         char* m_Buffer;
         uint m_Size;
         uint m_Capacity;

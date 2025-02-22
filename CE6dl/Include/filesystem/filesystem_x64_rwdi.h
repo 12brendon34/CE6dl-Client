@@ -159,6 +159,7 @@ namespace fs {
 };
 
 extern "C" DLL_EXPORT bool Main(void);
+void WriteFullDump(unsigned long, struct _EXCEPTION_POINTERS* __ptr64, char const* __ptr64, bool, char* __ptr64);
 bool CrashCanShowMessageBox(void);
 void CrashClose(void);
 void CrashShowCallstackInAsserts(bool);

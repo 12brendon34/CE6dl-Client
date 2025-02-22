@@ -35,6 +35,7 @@ struct CRTTIVoidFunctor<IGSObject> {
 
 namespace Mount {
     class IMountHelper {
+        //figure out what's the constructor and destructor so 'Mount::IMountHelper' has virtual functions but non - virtual destructor
         virtual void Func_00(); // FUN_180257140
         virtual void Func_01(); // LAB_180257230
         virtual void Func_02(); // FUN_180258CB0
