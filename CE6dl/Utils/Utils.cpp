@@ -34,7 +34,7 @@ namespace Utils
 		return Handle;
 	}
 
-	bool CreateFolder(const std::filesystem::path& path) 
+	bool CreateFolder(const std::filesystem::path& path)
 	{
 		while (!std::filesystem::exists(path)) {
 			// Attempt to create the directory

@@ -14,7 +14,7 @@ namespace Utils
 
 	HMODULE LoadLibrarySimple(LPCSTR lpModuleName);
 
-	bool CreateFolder(const std::string& path);
+	bool CreateFolder(const std::filesystem::path& path);
 
 	std::string GetWorkingDirectory();
 

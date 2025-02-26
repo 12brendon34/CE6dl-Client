@@ -106,7 +106,7 @@ struct AssetManager* __cdecl GetAssetManager(void);
 
 
 //I still dk a better way
-using T_MountDLC = void(*)(void* pGame, const char** className, __int64* CRTTIVariant);
+//using T_MountDLC = void(*)(IGame* pGame, const char** className, __int64* CRTTIVariant);
 
 //same sig hopefully
 extern "C" DLL_EXPORT bool Main(void);

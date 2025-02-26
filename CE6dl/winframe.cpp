@@ -1,10 +1,11 @@
 #include <pch.h>
 #include <random>
 #include "Utils/Utils.h"
-#include "Include/engine/engine_x64_rwdi.h"
+#include "Core/Engine/engine_x64_rwdi.h"
 //#include "engine/Link.h"
 //#include "mod/Loader.h"
-#include "Include/filesystem/filesystem_x64_rwdi.h"
+#include "Core/Filesystem/filesystem_x64_rwdi.h"
+#include "Core/Loader.h"
 
 typedef uint32 AppId_t;
 const AppId_t k_uAppId = 239140;
@@ -53,11 +54,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return EXIT_FAILURE;
 	}
 	
-	
+	/*
 	//not really good but I use it a lot
 	while (!::IsDebuggerPresent())
 		::Sleep(100);
-	
+	*/
 
 #ifdef _DEBUG
 	Utils::InitConsole();
@@ -147,12 +148,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	//Initalize Filesystem, last 4 flags might be unused
 	dbgprintf("Initalizing Filesystem at: %s, With Flags: %i\n", fsDestinationPath.c_str(), fsAddSourceFlags);
-	fs::init(fsDestinationPath.c_str(), (FFSAddSourceFlags::ENUM)fsAddSourceFlags, "out/cache", false, true, nullptr);
+	fs::init(fsDestinationPath.c_str(), fsAddSourceFlags, "out/cache", false, true, nullptr);
 
 	auto s_AssetManagerImpl = GetAssetManager();
 	s_AssetManagerImpl->SetGame(gamedir.c_str(), WorkingDirectory.c_str(), 0, NULL, nullptr);
 
-	//Loader::IndexMods();
+	Loader::IndexMods();
 	// Define paths
 	std::string Game_Path = WorkingDirectory + gamedir;
 	std::string Data_Path = WorkingDirectory + gamedir + "/Data";
@@ -177,7 +178,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	fs::add_source(Speech_Path.c_str(), (FFSAddSourceFlags::ENUM)265);
 	fs::add_source(SpeechPak_Path.c_str(), (FFSAddSourceFlags::ENUM)9);
 
-	//Loader::LoadModPaks();
+	Loader::LoadModPaks();
 	//with pak's the last loaded overwrites the previous
 	//with rpacks it's the opposite
 
@@ -194,7 +195,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	std::string GameDll_Path = WorkingDirectory + "gamedll";
 	InitializeGameScript(GameDll_Path.c_str(), false);
 
-	auto pGame = CreateGame("GameDI", hInstance, true, gamedir.c_str());
+	IGame* pGame = CreateGame("GameDI", hInstance, true, gamedir.c_str());
 	dbgprintf("CreateGame GameDI at: %p\n", pGame);
 
 	pGame->SetRootDirectory(WorkingDirectory.c_str());
@@ -205,17 +206,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	auto mountHelper = Mount::CreateMountHelper(WorkingDirectory.c_str(), gamedir.c_str(), nullptr);
 
 	__int64 CRTTIVariant[2] = { 0 };
-	//CRTTIVariant[0] was 17 for some reason, but that's not needed I guess
 	CRTTIVariant[1] = std::bit_cast<__int64>(mountHelper);
-	const char* ClassName = "MountHelper"; //idk bro class name or smt
 
-	/*
-	//gets "MountDLC" function from offset of pGame vtable
-	void* pGameVT = *static_cast<void**>(pGame);
-	Engine::MountDLC = *std::bit_cast<T_MountDLC*>(std::bit_cast<uintptr_t>(pGameVT) + 0x188);
-	// Call the MountDLC function
-	Engine::MountDLC(pGame, &ClassName, CRTTIVariant);
-	*/
+	uintptr_t* vtable = *reinterpret_cast<uintptr_t**>(pGame);
+
+	using T_MountDLC = void(*)(IGame* pGame, ttl::string_base<char>, __int64* CRTTIVariant);
+	T_MountDLC MountDLC = reinterpret_cast<T_MountDLC>(vtable[49]);
+
+	ttl::string_base<char> ClassName("MountHelper");
+	MountDLC(pGame, ClassName, CRTTIVariant);
+
 
 	//hide spash
 	HideSplashscreen();
@@ -223,17 +223,31 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//Initalize Game
 	//Loader::PreInitalize();
 
+
+	//random test stuff
+	pGame->SetRenderDebugVis(true);
+	//pGame->GoDedicated();
+
+	std::cout << "IsGameInEditor" << pGame->IsGameInEditor() << std::endl;
+	std::cout << "IsDedicatedServer" << pGame->IsDedicatedServer() << std::endl;
+	std::cout << "VideoSettingsIsFullScreen" << pGame->VideoSettingsIsFullScreen() << std::endl;
+
 	if (pGame->Initialize(lpCmdLine, nShowCmd, (HICON__*)smallIcon, (HICON__*)largeIcon, 0, 0, nullptr) != 0) {
 		dbgprintf("IGame::Initialize() failed\n");
 		OutputDebugString("IGame::Initialize() failed\n");
 		Alert("Fatal Error", "Game failed to initalize (IGame::Initialize() failed)\n");
 		return EXIT_FAILURE;
 	}
+
+	ttl::string_base<char> TitleStr("Dying Light (CE6DL)");
+	pGame->SetGameName(TitleStr);
+
+
 	//Loader::PostInitalize();
 
 	//after InitalizeGame, which loads the basegame rpacks
 	//custom rpacks now loaded will not be able to replace base game rpacks
-	//Loader::LoadResorcePacks(s_AssetManagerImpl);
+	Loader::LoadResourcePaks(s_AssetManagerImpl);
 
 	//load custom mp files here, base game calls initalize -> CRenderer::ApplyVideoSettings -> CMaterialMgr::Initialize
 	//CMaterialMgr::Initialize malloc's some mem then set's up the vtable and passes the address to 0xa402b0

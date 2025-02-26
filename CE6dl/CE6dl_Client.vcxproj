@@ -100,6 +100,7 @@ xcopy /Y /I "lib\engine\engine_x64_rwdi.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Core\Loader.cpp" />
     <ClCompile Include="Pch\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -108,58 +109,59 @@ xcopy /Y /I "lib\engine\engine_x64_rwdi.dll" "$(OutDir)"</Command>
     <ClCompile Include="winframe.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Include\engine\IGame.h" />
-    <ClInclude Include="Include\engine\engine_x64_rwdi.h" />
-    <ClInclude Include="Include\filesystem\filesystem_x64_rwdi.h" />
-    <ClInclude Include="Include\TTL.h" />
+    <ClInclude Include="Core\Engine\IGame.h" />
+    <ClInclude Include="Core\Engine\engine_x64_rwdi.h" />
+    <ClInclude Include="Core\Filesystem\filesystem_x64_rwdi.h" />
+    <ClInclude Include="Core\Loader.h" />
+    <ClInclude Include="Core\TTL.h" />
     <ClInclude Include="Pch\pch.h" />
     <ClInclude Include="Resources\DyingLightGame.h" />
     <ClInclude Include="Resources\Resource.h" />
-    <ClInclude Include="Include\steam\isteamapplist.h" />
-    <ClInclude Include="Include\steam\isteamapps.h" />
-    <ClInclude Include="Include\steam\isteamappticket.h" />
-    <ClInclude Include="Include\steam\isteamclient.h" />
-    <ClInclude Include="Include\steam\isteamcontroller.h" />
-    <ClInclude Include="Include\steam\isteamdualsense.h" />
-    <ClInclude Include="Include\steam\isteamfriends.h" />
-    <ClInclude Include="Include\steam\isteamgamecoordinator.h" />
-    <ClInclude Include="Include\steam\isteamgameserver.h" />
-    <ClInclude Include="Include\steam\isteamgameserverstats.h" />
-    <ClInclude Include="Include\steam\isteamhtmlsurface.h" />
-    <ClInclude Include="Include\steam\isteamhttp.h" />
-    <ClInclude Include="Include\steam\isteaminput.h" />
-    <ClInclude Include="Include\steam\isteaminventory.h" />
-    <ClInclude Include="Include\steam\isteammatchmaking.h" />
-    <ClInclude Include="Include\steam\isteammusic.h" />
-    <ClInclude Include="Include\steam\isteammusicremote.h" />
-    <ClInclude Include="Include\steam\isteamnetworking.h" />
-    <ClInclude Include="Include\steam\isteamnetworkingmessages.h" />
-    <ClInclude Include="Include\steam\isteamnetworkingsockets.h" />
-    <ClInclude Include="Include\steam\isteamnetworkingutils.h" />
-    <ClInclude Include="Include\steam\isteamparentalsettings.h" />
-    <ClInclude Include="Include\steam\isteamps3overlayrenderer.h" />
-    <ClInclude Include="Include\steam\isteamremoteplay.h" />
-    <ClInclude Include="Include\steam\isteamremotestorage.h" />
-    <ClInclude Include="Include\steam\isteamscreenshots.h" />
-    <ClInclude Include="Include\steam\isteamugc.h" />
-    <ClInclude Include="Include\steam\isteamuser.h" />
-    <ClInclude Include="Include\steam\isteamuserstats.h" />
-    <ClInclude Include="Include\steam\isteamutils.h" />
-    <ClInclude Include="Include\steam\isteamvideo.h" />
-    <ClInclude Include="Include\steam\matchmakingtypes.h" />
-    <ClInclude Include="Include\steam\steamclientpublic.h" />
-    <ClInclude Include="Include\steam\steamencryptedappticket.h" />
-    <ClInclude Include="Include\steam\steamhttpenums.h" />
-    <ClInclude Include="Include\steam\steamnetworkingfakeip.h" />
-    <ClInclude Include="Include\steam\steamnetworkingtypes.h" />
-    <ClInclude Include="Include\steam\steamps3params.h" />
-    <ClInclude Include="Include\steam\steamtypes.h" />
-    <ClInclude Include="Include\steam\steamuniverse.h" />
-    <ClInclude Include="Include\steam\steam_api.h" />
-    <ClInclude Include="Include\steam\steam_api_common.h" />
-    <ClInclude Include="Include\steam\steam_api_flat.h" />
-    <ClInclude Include="Include\steam\steam_api_internal.h" />
-    <ClInclude Include="Include\steam\steam_gameserver.h" />
+    <ClInclude Include="Core\Steam\isteamapplist.h" />
+    <ClInclude Include="Core\Steam\isteamapps.h" />
+    <ClInclude Include="Core\Steam\isteamappticket.h" />
+    <ClInclude Include="Core\Steam\isteamclient.h" />
+    <ClInclude Include="Core\Steam\isteamcontroller.h" />
+    <ClInclude Include="Core\Steam\isteamdualsense.h" />
+    <ClInclude Include="Core\Steam\isteamfriends.h" />
+    <ClInclude Include="Core\Steam\isteamgamecoordinator.h" />
+    <ClInclude Include="Core\Steam\isteamgameserver.h" />
+    <ClInclude Include="Core\Steam\isteamgameserverstats.h" />
+    <ClInclude Include="Core\Steam\isteamhtmlsurface.h" />
+    <ClInclude Include="Core\Steam\isteamhttp.h" />
+    <ClInclude Include="Core\Steam\isteaminput.h" />
+    <ClInclude Include="Core\Steam\isteaminventory.h" />
+    <ClInclude Include="Core\Steam\isteammatchmaking.h" />
+    <ClInclude Include="Core\Steam\isteammusic.h" />
+    <ClInclude Include="Core\Steam\isteammusicremote.h" />
+    <ClInclude Include="Core\Steam\isteamnetworking.h" />
+    <ClInclude Include="Core\Steam\isteamnetworkingmessages.h" />
+    <ClInclude Include="Core\Steam\isteamnetworkingsockets.h" />
+    <ClInclude Include="Core\Steam\isteamnetworkingutils.h" />
+    <ClInclude Include="Core\Steam\isteamparentalsettings.h" />
+    <ClInclude Include="Core\Steam\isteamps3overlayrenderer.h" />
+    <ClInclude Include="Core\Steam\isteamremoteplay.h" />
+    <ClInclude Include="Core\Steam\isteamremotestorage.h" />
+    <ClInclude Include="Core\Steam\isteamscreenshots.h" />
+    <ClInclude Include="Core\Steam\isteamugc.h" />
+    <ClInclude Include="Core\Steam\isteamuser.h" />
+    <ClInclude Include="Core\Steam\isteamuserstats.h" />
+    <ClInclude Include="Core\Steam\isteamutils.h" />
+    <ClInclude Include="Core\Steam\isteamvideo.h" />
+    <ClInclude Include="Core\Steam\matchmakingtypes.h" />
+    <ClInclude Include="Core\Steam\steamclientpublic.h" />
+    <ClInclude Include="Core\Steam\steamencryptedappticket.h" />
+    <ClInclude Include="Core\Steam\steamhttpenums.h" />
+    <ClInclude Include="Core\Steam\steamnetworkingfakeip.h" />
+    <ClInclude Include="Core\Steam\steamnetworkingtypes.h" />
+    <ClInclude Include="Core\Steam\steamps3params.h" />
+    <ClInclude Include="Core\Steam\steamtypes.h" />
+    <ClInclude Include="Core\Steam\steamuniverse.h" />
+    <ClInclude Include="Core\Steam\steam_api.h" />
+    <ClInclude Include="Core\Steam\steam_api_common.h" />
+    <ClInclude Include="Core\Steam\steam_api_flat.h" />
+    <ClInclude Include="Core\Steam\steam_api_internal.h" />
+    <ClInclude Include="Core\Steam\steam_gameserver.h" />
     <ClInclude Include="Utils\Utils.h" />
   </ItemGroup>
   <ItemGroup>

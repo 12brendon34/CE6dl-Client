@@ -12,7 +12,8 @@
 #include <shlobj_core.h>
 
 // Third-party
-#include "../Include/steam/steam_api.h"
+#include "../Core/Steam/steam_api.h"
+#include "../Utils/Utils.h"
 
 //common typedef
 typedef unsigned int    uint;
