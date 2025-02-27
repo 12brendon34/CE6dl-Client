@@ -4,6 +4,9 @@
 #include "Engine/engine_x64_rwdi.h"
 
 namespace Loader {
+    using T_PreInitialize = void (*)(void);
+    using T_PostInitialize = void (*)(void);
+    using T_GetPluginName = const char* (*)(void);
 
     struct ModInfo {
         std::string ModName;
@@ -22,4 +25,8 @@ namespace Loader {
     void IndexMods();
     void LoadModPaks();
     void LoadResourcePaks(AssetManager* s_AssetManagerImpl);
+    void LoadNativeMods();
+
+    void PreInitialize();
+    void PostInitialize();
 }

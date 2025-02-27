@@ -78,9 +78,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (!Main()) {
 		return EXIT_FAILURE;
 	}
-	
-	//feels resonable to load it here, might change to Link.cpp
-	//Loader::LoadNativeMods();
 
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -150,10 +147,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	dbgprintf("Initalizing Filesystem at: %s, With Flags: %i\n", fsDestinationPath.c_str(), fsAddSourceFlags);
 	fs::init(fsDestinationPath.c_str(), fsAddSourceFlags, "out/cache", false, true, nullptr);
 
+	Loader::IndexMods(); //after FS init due to some fs::add_source calls
+	Loader::LoadNativeMods();
+
+	//call before InitalizeGameScript
 	auto s_AssetManagerImpl = GetAssetManager();
 	s_AssetManagerImpl->SetGame(gamedir.c_str(), WorkingDirectory.c_str(), 0, NULL, nullptr);
 
-	Loader::IndexMods();
 	// Define paths
 	std::string Game_Path = WorkingDirectory + gamedir;
 	std::string Data_Path = WorkingDirectory + gamedir + "/Data";
@@ -201,36 +201,34 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	pGame->SetRootDirectory(WorkingDirectory.c_str());
 	dbgprintf("IGame::SetRootDirectory at: %s\n", WorkingDirectory.c_str());
 
-	//Mount DLC's
-	//get mounthelper address for weird RTTI arguments in MountDLC 
+	//DLC
 	auto mountHelper = Mount::CreateMountHelper(WorkingDirectory.c_str(), gamedir.c_str(), nullptr);
-
-	__int64 CRTTIVariant[2] = { 0 };
-	CRTTIVariant[1] = std::bit_cast<__int64>(mountHelper);
-
-	uintptr_t* vtable = *reinterpret_cast<uintptr_t**>(pGame);
-
-	using T_MountDLC = void(*)(IGame* pGame, ttl::string_base<char>, __int64* CRTTIVariant);
-	T_MountDLC MountDLC = reinterpret_cast<T_MountDLC>(vtable[49]);
-
+	CRTTIVariant variant(mountHelper);
 	ttl::string_base<char> ClassName("MountHelper");
-	MountDLC(pGame, ClassName, CRTTIVariant);
 
+	pGame->SetProperty(ClassName, variant);
 
 	//hide spash
 	HideSplashscreen();
 
 	//Initalize Game
-	//Loader::PreInitalize();
+	Loader::PreInitialize();
 
 
 	//random test stuff
+	ttl::string_base<char> bruh("Debug");
+
 	pGame->SetRenderDebugVis(true);
+	pGame->EnableDebugSocket(true, &bruh);
+	//pGame->SetSpeedUpInternalOnLevels(20.0f);
+	//pGame->SetUseScaleToSafeArea(true, 0.75f);
+	//pGame->TimersUpdateFromServer(20.0f);
+	pGame->ReplDump("DebugReplDump.txt");
 	//pGame->GoDedicated();
 
-	std::cout << "IsGameInEditor" << pGame->IsGameInEditor() << std::endl;
-	std::cout << "IsDedicatedServer" << pGame->IsDedicatedServer() << std::endl;
-	std::cout << "VideoSettingsIsFullScreen" << pGame->VideoSettingsIsFullScreen() << std::endl;
+	std::cout << "IsGameInEditor " << pGame->IsGameInEditor() << std::endl;
+	std::cout << "IsDedicatedServer " << pGame->IsDedicatedServer() << std::endl;
+	std::cout << "VideoSettingsIsFullScreen " << pGame->VideoSettingsIsFullScreen() << std::endl;
 
 	if (pGame->Initialize(lpCmdLine, nShowCmd, (HICON__*)smallIcon, (HICON__*)largeIcon, 0, 0, nullptr) != 0) {
 		dbgprintf("IGame::Initialize() failed\n");
@@ -242,22 +240,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ttl::string_base<char> TitleStr("Dying Light (CE6DL)");
 	pGame->SetGameName(TitleStr);
 
+	Loader::PostInitialize();
 
-	//Loader::PostInitalize();
-
+	//might try IGame rpack load func pre init and see if that works
 	//after InitalizeGame, which loads the basegame rpacks
 	//custom rpacks now loaded will not be able to replace base game rpacks
 	Loader::LoadResourcePaks(s_AssetManagerImpl);
-
-	//load custom mp files here, base game calls initalize -> CRenderer::ApplyVideoSettings -> CMaterialMgr::Initialize
-	//CMaterialMgr::Initialize malloc's some mem then set's up the vtable and passes the address to 0xa402b0
-	//DAT_180a402c0 = plVar8;
-
-	//auto vtablePtr = *reinterpret_cast<void**>(reinterpret_cast<uintptr_t>(Engine::Library) + 0xa402b0);
-	//auto s_MaterialMgr = reinterpret_cast<Engine::CMaterialMgr*>(vtablePtr);
-
-	//Loader::LoadMaterialPacks(s_MaterialMgr);
-	//s_MaterialMgr->LoadPack()
 
 	//start rendering loop
 	GameLoop(pGame);

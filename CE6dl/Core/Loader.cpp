@@ -88,4 +88,64 @@ namespace Loader {
             }
         }
     }
+
+    std::vector<HMODULE> NativeMods;
+    void LoadNativeMods()
+    {
+        for (const auto& modInfo : ModInfoList)
+        {
+            if (modInfo.ModType == ModInfo::ASI)
+            {
+                auto HModule = LoadLibrary(modInfo.ModPath.c_str());
+
+                if (HModule) {
+                    ModInfo currentMod;
+                    auto GetPluginName = (T_GetPluginName)GetProcAddress(HModule, "GetPluginName");
+
+                    if (GetPluginName)
+                        currentMod.ModName = GetPluginName();
+                    else
+                        currentMod.ModName = "PLUGIN_NAME_UNSET"; //maybe change to dll file name + _unset
+
+                    dbgprintf("[Plugin] %s loaded: %s\n", currentMod.ModName, modInfo.ModPath.c_str());
+                    NativeMods.push_back(HModule);
+                }
+                else
+                    dbgprintf("[Plugin] Loading Error: %s\n", modInfo.ModPath.c_str());
+            }
+        }
+    }
+
+    void PreInitialize() {
+
+        for (const auto& HModule : NativeMods)
+        {
+            if (HModule == nullptr) {
+                MessageBoxA(0, "Module handle is null!", "Error", MB_ICONERROR);
+                return;
+            }
+
+            auto PreInitialize = (T_PreInitialize)GetProcAddress(HModule, "PreInitialize");
+
+            if (PreInitialize)
+                PreInitialize();
+        }
+    }
+
+
+    void PostInitialize() {
+
+        for (const auto& HModule : NativeMods)
+        {
+            if (HModule == nullptr) {
+                MessageBoxA(0, "Module handle is null!", "Error", MB_ICONERROR);
+                return;
+            }
+
+            auto PostInitialize = (T_PostInitialize)GetProcAddress(HModule, "PostInitialize");
+
+            if (PostInitialize)
+                PostInitialize();
+        }
+    }
 }
