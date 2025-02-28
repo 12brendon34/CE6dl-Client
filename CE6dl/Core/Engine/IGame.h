@@ -20,13 +20,13 @@ public:
 };
 
 class __declspec(dllimport) IGame {
-private:
+public:
+
     //this is the actuall struct, it's actually just empty in engine
     //prety much never used also I think, might just be cast to something like CResourceDataPack or smt IDGAF
     struct SRPackHandle {
     };
 
-public:
     __cdecl IGame(void);
     __cdecl IGame(class IGame const&);
 

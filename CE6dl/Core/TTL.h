@@ -12,32 +12,31 @@ namespace ttl {
         uint m_Capacity;
 
     public:
-        // Constructor (with basic initialization)
         explicit string_base(const char* str = "") {
-            m_Size = 0;
-            m_Capacity = 16; // Default capacity
-            m_Buffer = new char[m_Capacity];
-
-            // Copy the input string to the buffer
-            while (str[m_Size] != '\0') {
-                if (m_Size + 1 > m_Capacity) {
-                    m_Capacity *= 2;
-                    char* newBuffer = new char[m_Capacity];
-                    for (uint i = 0; i < m_Size; ++i) {
-                        newBuffer[i] = m_Buffer[i];
-                    }
-                    delete[] m_Buffer;
-                    m_Buffer = newBuffer;
-                }
-                m_Buffer[m_Size] = str[m_Size];
-                ++m_Size;
+            // Ensure non-null string
+            if (str == nullptr) {
+                m_Size = 0;
+                m_Capacity = 0;
+                m_Buffer = nullptr;
             }
-            m_Buffer[m_Size] = '\0'; // Null-terminate
+            else {
+                m_Size = std::strlen(str);
+                m_Capacity = m_Size + 1;
+
+                m_Buffer = new char[m_Capacity];
+                std::memcpy(m_Buffer, str, m_Size);
+                m_Buffer[m_Size] = '\0';
+            }
         }
 
-        // Destructor to free memory
         ~string_base() {
             delete[] m_Buffer;
+            m_Buffer = nullptr;
+        }
+
+        // Return the C-string
+        const char* c_str() const {
+            return m_Buffer;
         }
     };
     /*

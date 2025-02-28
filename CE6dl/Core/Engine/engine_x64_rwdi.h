@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "IGame.h"
+#include "CGame.h"
 
 #ifdef _WIN32
 #define DLL_EXPORT __declspec(dllimport) // For importing the function
@@ -32,6 +33,11 @@ struct CRTTIVoidFunctor<IGSObject> {
     struct CRTTIVoidMethod* method;
 };
 */
+
+struct CRTTI {
+    uint m_JobClassID;
+};
+
 
 namespace Mount {
     class IMountHelper {

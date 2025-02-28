@@ -13,9 +13,9 @@ namespace Loader {
         std::string ModPath;
         bool IsEnabled;
         enum {
-            PAK = 1,
-            RPACK = 2,
-            ASI = 3,
+            ASI = 1,
+            PAK = 2,
+            RPACK = 3,
             MP = 4
         } ModType;
     };
@@ -23,10 +23,12 @@ namespace Loader {
     std::string GetModFolderPath(const std::string& subDir);
     void ProcessModDirectory(const std::string& dir);
     void IndexMods();
-    void LoadModPaks();
-    void LoadResourcePaks(AssetManager* s_AssetManagerImpl);
+
     void LoadNativeMods();
 
     void PreInitialize();
     void PostInitialize();
+
+    void LoadModPaks();
+    void LoadResourcePaks(IGame* pGame);
 }

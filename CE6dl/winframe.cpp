@@ -6,6 +6,7 @@
 //#include "mod/Loader.h"
 #include "Core/Filesystem/filesystem_x64_rwdi.h"
 #include "Core/Loader.h"
+#include "Core/Engine/CResourceLoadingRuntime.h"
 
 typedef uint32 AppId_t;
 const AppId_t k_uAppId = 239140;
@@ -54,11 +55,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return EXIT_FAILURE;
 	}
 	
-	/*
+	
 	//not really good but I use it a lot
 	while (!::IsDebuggerPresent())
 		::Sleep(100);
-	*/
+	
 
 #ifdef _DEBUG
 	Utils::InitConsole();
@@ -196,6 +197,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	InitializeGameScript(GameDll_Path.c_str(), false);
 
 	IGame* pGame = CreateGame("GameDI", hInstance, true, gamedir.c_str());
+	CGame* pCGame = *(CGame**)((uintptr_t)pGame + 8);
+
+
+
 	dbgprintf("CreateGame GameDI at: %p\n", pGame);
 
 	pGame->SetRootDirectory(WorkingDirectory.c_str());
@@ -213,22 +218,59 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	//Initalize Game
 	Loader::PreInitialize();
+	//pGame->SetRenderDebugVis(true);
 
-
-	//random test stuff
-	ttl::string_base<char> bruh("Debug");
-
-	pGame->SetRenderDebugVis(true);
-	pGame->EnableDebugSocket(true, &bruh);
-	//pGame->SetSpeedUpInternalOnLevels(20.0f);
-	//pGame->SetUseScaleToSafeArea(true, 0.75f);
-	//pGame->TimersUpdateFromServer(20.0f);
-	pGame->ReplDump("DebugReplDump.txt");
-	//pGame->GoDedicated();
+	/*
+	uintptr_t** vtablePtr = *(uintptr_t***)pCGame;
+	typedef void* (__thiscall* ExecuteEditorCommand_t)(CGame*, ttl::string_base<char>, ttl::string_base<char>, ttl::string_base<char>);
+	ExecuteEditorCommand_t ExecuteEditorCommandFn = (ExecuteEditorCommand_t)vtablePtr[86];
+	auto resultMessage = ExecuteEditorCommandFn(pCGame, Command, Command, Command);
+	*/
+	// Define your commands as a list of ttl::string_base<char> instead of std::string
 
 	std::cout << "IsGameInEditor " << pGame->IsGameInEditor() << std::endl;
 	std::cout << "IsDedicatedServer " << pGame->IsDedicatedServer() << std::endl;
 	std::cout << "VideoSettingsIsFullScreen " << pGame->VideoSettingsIsFullScreen() << std::endl;
+
+	/*
+	//CResourceLoadingRuntime
+
+	auto CResource = CResourceLoadingRuntime::Create();
+
+	uintptr_t* ptrAt8 = *(uintptr_t**)((uintptr_t)pGame + 8);
+	*(CResourceLoadingRuntime**)((uintptr_t)ptrAt8 + 0xaf8) = CResource;
+
+	auto local_7b8 = *(int*)((uintptr_t)pGame + 0x15d);
+	CResource->LAB_180404970(local_7b8);
+
+	//(**(code**)(*CResource + 0x20))(CResource, &local_7b8);
+
+
+	//PackLoader::Load((longlong*)param_1[0x15f], "engine", (longlong**)pcVar13, 0, in_stack_fffffffffffff7c8, 1, 1);
+
+
+	typedef void(__fastcall* t_LoadPack)(CResourceLoadingRuntime* param_1, const char* PackName, LONGLONG** param_3, __int64 param_4, __int64 param_5, int param_6, int param_7);
+
+	HMODULE hModule = LoadLibraryA("engine_x64_rwdi.dll");
+
+	uintptr_t funcAddress = (uintptr_t)hModule + 0x401870; // Assuming fixed offset
+	t_LoadPack ctor = (t_LoadPack)funcAddress;
+
+
+	//need to call Rinitialize before this will work I think, getting so pissed might as well rewrite my own pGame->Initialize
+	ctor(CResource, "engine", nullptr, 0, 0xffffffff00000000, 1, 1);
+
+	//Loader::LoadResourcePaks(pGame);
+
+
+
+
+	//pGame->OnContentChanged()
+	//pGame[0x15f] = CResource;
+
+
+	//(**(code**)(*CResource + 0x20))(CResource, &local_7b8);
+	*/
 
 	if (pGame->Initialize(lpCmdLine, nShowCmd, (HICON__*)smallIcon, (HICON__*)largeIcon, 0, 0, nullptr) != 0) {
 		dbgprintf("IGame::Initialize() failed\n");
@@ -241,11 +283,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	pGame->SetGameName(TitleStr);
 
 	Loader::PostInitialize();
-
-	//might try IGame rpack load func pre init and see if that works
-	//after InitalizeGame, which loads the basegame rpacks
-	//custom rpacks now loaded will not be able to replace base game rpacks
-	Loader::LoadResourcePaks(s_AssetManagerImpl);
+	Loader::LoadResourcePaks(pGame);
 
 	//start rendering loop
 	GameLoop(pGame);
