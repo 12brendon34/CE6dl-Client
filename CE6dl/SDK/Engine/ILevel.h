@@ -371,6 +371,7 @@ public:
 	void ViewRenderTrees(CLevelView*, bool);
 	void ViewRenderWater(CLevelView*, bool);
 
+	CLevel* m_CLevel;
 	//Vtable
 	/*
 	virtual ~ILevel();

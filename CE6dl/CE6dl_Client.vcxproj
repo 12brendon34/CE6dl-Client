@@ -111,6 +111,7 @@ xcopy /Y /I "lib\engine\engine_x64_rwdi.dll" "$(OutDir)"</Command>
   <ItemGroup>
     <ClInclude Include="SDK\Engine\CGame.h" />
     <ClInclude Include="SDK\Engine\CResourceLoadingRuntime.h" />
+    <ClInclude Include="SDK\Engine\CRTTIManager.h" />
     <ClInclude Include="SDK\Engine\IGame.h" />
     <ClInclude Include="SDK\Engine\engine_x64_rwdi.h" />
     <ClInclude Include="SDK\Engine\ILevel.h" />

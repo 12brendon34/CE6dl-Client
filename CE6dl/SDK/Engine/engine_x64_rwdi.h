@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "IGame.h"
 #include "CGame.h"
+#include "CRTTIManager.h"
 
 #ifdef _WIN32
 #define DLL_EXPORT __declspec(dllimport) // For importing the function
@@ -125,3 +126,4 @@ extern "C" DLL_EXPORT bool InitializeGameScript(LPCSTR GameDll, ULONGLONG param_
 extern "C" DLL_EXPORT IGame* CreateGame(LPCSTR param_1, HINSTANCE hinstance, bool param_3, LPCSTR param_4);
 extern "C" DLL_EXPORT void DestroyGame(__int64 param_1, __int64 param_2, __int64 param_3, __int64 param_4);
 extern "C" DLL_EXPORT void UninitializeGameScript();
+extern "C" DLL_EXPORT CRTTIManager* GetRTTIManager(void);

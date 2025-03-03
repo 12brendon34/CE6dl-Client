@@ -112,6 +112,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	InitializeGameScript(GameDll_Path.c_str(), false);
 	IGame* pGame = CreateGame("GameDI", hInstance, true, gamedir.c_str());
+	//pGame->m_CGame;
+
 	dbgprintf("CreateGame IGame at: %p\n", pGame);
 
 	pGame->SetRootDirectory(WorkingDirectory.c_str());

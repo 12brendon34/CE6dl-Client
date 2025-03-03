@@ -236,6 +236,7 @@ public:
     //void StreamUnloadMesh(struct IGame::SRPackStreamHandle*);
 
 
+    CGame* m_CGame;
     //Vtable funcs, some of the "stripped" functions are prob just not exported and are set on runtime or smt idk
     virtual void __cdecl SetEngineObject(class CGSObject* __ptr64);
     virtual ~IGame(void);
@@ -427,7 +428,6 @@ public:
     virtual bool Stripped137();
 
     virtual class ttl::string_base<char> const& GetTitleStorageFullGameProductId_FUCKINGAGAINLIKEIMADAMWARLOCK(class ttl::string_base<char> const&) const; //again
-
     //idk DAT_1808d1390
     
 
