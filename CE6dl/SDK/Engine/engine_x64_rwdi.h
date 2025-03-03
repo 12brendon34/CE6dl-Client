@@ -34,10 +34,9 @@ struct CRTTIVoidFunctor<IGSObject> {
 };
 */
 
-struct CRTTI {
+class CRTTI {
     uint m_JobClassID;
 };
-
 
 namespace Mount {
     class IMountHelper {
@@ -118,6 +117,9 @@ struct AssetManager* __cdecl GetAssetManager(void);
 extern "C" DLL_EXPORT bool Main(void);
 extern "C" DLL_EXPORT int ShowSplashscreen(HINSTANCE hInst, LPCSTR Splash, LPSTR Title, HANDLE Icon);
 extern "C" DLL_EXPORT void HideSplashscreen();
+
+
+extern "C" DLL_EXPORT LONGLONG* Initialize(__int64 param_1, __int64 param_2, __int64 param_3, LONGLONG* param_4, const char* param_5, LPCSTR GameScriptDLL, char* param_7, char* param_8, __int64* param_9, LONGLONG* param_10);
 
 extern "C" DLL_EXPORT bool InitializeGameScript(LPCSTR GameDll, ULONGLONG param_2);
 extern "C" DLL_EXPORT IGame* CreateGame(LPCSTR param_1, HINSTANCE hinstance, bool param_3, LPCSTR param_4);

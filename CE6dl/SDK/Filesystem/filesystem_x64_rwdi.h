@@ -48,6 +48,13 @@ public:
     };
 };
 
+class EDumpResult {
+public:
+    enum TYPE {
+        //Unknown
+    };
+};
+
 namespace fs {
     void add_source(class CFSSource*, enum FFSAddSourceFlags::ENUM);
     bool add_source(char const*, enum FFSAddSourceFlags::ENUM);
@@ -159,6 +166,10 @@ namespace fs {
 };
 
 extern "C" DLL_EXPORT bool Main(void);
+
+EDumpResult::TYPE(__cdecl* __cdecl GetDumpFunction())(unsigned long, struct _EXCEPTION_POINTERS*);
+void SetDumpFunction(enum EDumpResult::TYPE(__cdecl*)(unsigned long, struct _EXCEPTION_POINTERS*));
+void GetDumpFunction(enum EDumpResult::TYPE(__cdecl*)(unsigned long, struct _EXCEPTION_POINTERS*));
 void WriteFullDump(unsigned long, struct _EXCEPTION_POINTERS* __ptr64, char const* __ptr64, bool, char* __ptr64);
 bool CrashCanShowMessageBox(void);
 void CrashClose(void);

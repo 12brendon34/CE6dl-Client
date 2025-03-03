@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Filesystem/filesystem_x64_rwdi.h"
-#include "Engine/engine_x64_rwdi.h"
+#include "../SDK/Filesystem/filesystem_x64_rwdi.h"
+#include "../SDK/Engine/engine_x64_rwdi.h"
 
 namespace Loader {
     using T_PreInitialize = void (*)(void);

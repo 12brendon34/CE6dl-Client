@@ -98,7 +98,7 @@ namespace Loader {
         for (const auto& HModule : NativeMods)
         {
             if (HModule == nullptr) {
-                MessageBoxA(0, "Module handle is null!", "Error", MB_ICONERROR);
+                MessageBoxA(nullptr, "Module handle is null!", "Error", MB_ICONERROR);
                 return;
             }
 
@@ -115,7 +115,7 @@ namespace Loader {
         for (const auto& HModule : NativeMods)
         {
             if (HModule == nullptr) {
-                MessageBoxA(0, "Module handle is null!", "Error", MB_ICONERROR);
+                MessageBoxA(nullptr, "Module handle is null!", "Error", MB_ICONERROR);
                 return;
             }
 

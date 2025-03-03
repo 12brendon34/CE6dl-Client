@@ -10,7 +10,7 @@ struct mtx34 {
 class CGame {
     public:
         virtual void FUN_180250540();
-        virtual void FUN_180226a10();
+        virtual ~CGame();
         virtual void FUN_18012c960();
         virtual void GetNativeClass();
         virtual void* IPhBody();

@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "../TTL.h"
+#include "ILevel.h"
 
 class CRTTIVariant {
 public:

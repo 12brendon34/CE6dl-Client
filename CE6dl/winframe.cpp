@@ -1,92 +1,59 @@
 #include <pch.h>
+#include "SDK/Engine/engine_x64_rwdi.h"
+#include "SDK/Filesystem/filesystem_x64_rwdi.h"
 #include <random>
-#include "Utils/Utils.h"
-#include "Core/Engine/engine_x64_rwdi.h"
-//#include "engine/Link.h"
-//#include "mod/Loader.h"
-#include "Core/Filesystem/filesystem_x64_rwdi.h"
 #include "Core/Loader.h"
-#include "Core/Engine/CResourceLoadingRuntime.h"
 
 typedef uint32 AppId_t;
 const AppId_t k_uAppId = 239140;
 
-int Alert(const char* lpCaption, const char* lpText)
-{
-	return ::MessageBox(nullptr, lpText, lpCaption, MB_OK);
-}
+bool SteamInit();
+bool FilesystemInit(std::string WorkingDirectory, std::string gameDir, bool useWorkingDir = false);
+void GameLoop(IGame* pGame);
+int Alert(const char* lpCaption, const char* lpText);
+void MiniDumpFunction(unsigned int nExceptionCode, EXCEPTION_POINTERS* pException);
 
-void MiniDumpFunction(unsigned int nExceptionCode, EXCEPTION_POINTERS* pException)
-{
-	bool MiniDumpType = false;
-	WriteFullDump(nExceptionCode, pException, nullptr, MiniDumpType, nullptr);
-}
-
-void GameLoop(IGame* pGame) {
-	MSG msg;
-
-	while (true) {
-		while (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE) == NULL) {
-			pGame->OnPaint();
-		}
-
-		if (msg.message == WM_QUIT)
-			break;
-
-		TranslateMessage(&msg);
-		DispatchMessageA(&msg);
-	}
-}
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
-	if (SteamAPI_RestartAppIfNecessary(k_uAppId))
-	{
-		// if Steam is not running or the game wasn't started through Steam, SteamAPI_RestartAppIfNecessary starts the 
-		// local Steam client and also launches this game again.
+	if(SteamInit())
 		return EXIT_FAILURE;
-	}
-
-	//IGame::InitializeOnlineServices will also call this
-	if (!SteamAPI_Init())
-	{
-		OutputDebugString("SteamAPI_Init() failed\n");
-		Alert("Fatal Error", "Steam must be running to play Dying Light (SteamAPI_Init() failed).\n");
-		return EXIT_FAILURE;
-	}
-	
-	
-	//not really good but I use it a lot
-	while (!::IsDebuggerPresent())
-		::Sleep(100);
-	
 
 #ifdef _DEBUG
 	Utils::InitConsole();
+	std::cout << "Attach Debugger" << std::endl;
+	
+	while (!::IsDebuggerPresent())
+		::Sleep(100);
 #endif
 
+	//parse arguments
 	std::string WorkingDirectory;
+
 	std::string gamedir = "DW"; //Dead World lol
 	std::string locale = "En"; // ISteamApps::GetCurrentGameLanguage maybe some time
-	bool DumpRTTI = false;
-	bool WriteFullDump = false;
 
-	//cmdline param's here
-	if (WorkingDirectory.empty()) {
+	if (WorkingDirectory.empty())
 		WorkingDirectory = Utils::GetWorkingDirectory();
-	}
 
-	if (!Main()) {
+	std::string GameDll_Path = WorkingDirectory + "gamedll";
+
+
+	if (!Main())
 		return EXIT_FAILURE;
-	}
 
+	//IDK what EDumpResult is so this is good enough I guess
+
+	auto DumpFunc = GetDumpFunction();
+	SetDumpFunction(reinterpret_cast<EDumpResult::TYPE(__cdecl*)(unsigned long, _EXCEPTION_POINTERS*)>(MiniDumpFunction));
+
+	//select a random splash
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<int> dist(101, 106);
 
 	int randomSplash = dist(gen);
-	auto hSplash = MAKEINTRESOURCE(randomSplash);  // Game Splash Resource
-
+	auto hSplash = MAKEINTRESOURCE(randomSplash);
 	auto hText = MAKEINTRESOURCE(100);    // Dying Light String Resource
 	auto hIcon = MAKEINTRESOURCE(110);    // Game Icon Resource
 
@@ -97,61 +64,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	int largeIconWidth = GetSystemMetrics(SM_CXICON);
 	int largeIconHeight = GetSystemMetrics(SM_CYICON);
 	auto largeIcon = LoadImage(hInstance, hIcon, IMAGE_ICON, largeIconWidth, largeIconHeight, 0);
+
 	ShowSplashscreen(hInstance, hSplash, hText, smallIcon);
-	Sleep(2000);
+	Sleep(1500);
 
-	//Filesystem Setup
-	FFSAddSourceFlags::ENUM fsAddSourceFlags;
-	std::string fsDestinationPath;
-	std::string fsSaveDir = "DyingLight"; // Default is Documents folder/DyingLight
-
-	bool useWorkingDir = false;
-	bool isFullPath = fs::is_full_path(fsSaveDir.c_str()) != NULL;
-
-	// Won't be a full path unless hardcoded
-	if (isFullPath) {
-		fsDestinationPath = fsSaveDir;
-		fsAddSourceFlags = FFSAddSourceFlags::SUBDIRS;
-	}
-	// If not hardcoded to use workingdir it will use the documents folder instead
-	// this is expected in most cases
-	if (!useWorkingDir) {
-		PWSTR path = nullptr;
-
-		// Retrieve the path to the Documents folder
-		HRESULT hr = SHGetKnownFolderPath(FOLDERID_Documents, 0, nullptr, &path);
-		if (SUCCEEDED(hr)) {
-			// Convert the wide string to a standard string
-			char pathBuffer[MAX_PATH];
-			WideCharToMultiByte(CP_UTF8, 0, path, -1, pathBuffer, MAX_PATH, NULL, NULL);
-
-			fsDestinationPath = std::string(pathBuffer) + "\\" + fsSaveDir;
-			fsAddSourceFlags = FFSAddSourceFlags::SUBDIRS;
-		}
-		else {
-			// Fallback to using the working directory
-			useWorkingDir = true;
-		}
-
-		if (path) {
-			CoTaskMemFree(path); // Free memory allocated by SHGetKnownFolderPath
-		}
-	}
-
-	//if this happens either it was forced, or it failed to get the documents folder for some reason
-	if (useWorkingDir) {
-		fsDestinationPath = WorkingDirectory + std::string(gamedir) + "\\out";
-		fsAddSourceFlags = (FFSAddSourceFlags::ENUM)5;
-	}
-
-	//Initalize Filesystem, last 4 flags might be unused
-	dbgprintf("Initalizing Filesystem at: %s, With Flags: %i\n", fsDestinationPath.c_str(), fsAddSourceFlags);
-	fs::init(fsDestinationPath.c_str(), fsAddSourceFlags, "out/cache", false, true, nullptr);
-
-	Loader::IndexMods(); //after FS init due to some fs::add_source calls
+	//Filesystem
+	FilesystemInit(WorkingDirectory, "DW", true);
+	Loader::IndexMods();
 	Loader::LoadNativeMods();
 
-	//call before InitalizeGameScript
+	//Needed for InitalizeGameScript
 	auto s_AssetManagerImpl = GetAssetManager();
 	s_AssetManagerImpl->SetGame(gamedir.c_str(), WorkingDirectory.c_str(), 0, NULL, nullptr);
 
@@ -180,28 +102,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	fs::add_source(SpeechPak_Path.c_str(), (FFSAddSourceFlags::ENUM)9);
 
 	Loader::LoadModPaks();
-	//with pak's the last loaded overwrites the previous
-	//with rpacks it's the opposite
 
 
-	//Calls SteamAPI_Init() and setup online
-	//Might be diffrent on some other chrome engine versions, named SteamInitialize on older CE6 versions
+	//Initalization
 	if (!IGame::InitializeOnlineServices(nullptr)) {
 		dbgprintf("InitializeOnlineServices Failed!");
-		//Should not exit unless steam shanaigans, happened to a friend oddly
 		ExitProcess(1);
 	}
 
-	//PreInitializeGameScript
-	std::string GameDll_Path = WorkingDirectory + "gamedll";
 	InitializeGameScript(GameDll_Path.c_str(), false);
-
 	IGame* pGame = CreateGame("GameDI", hInstance, true, gamedir.c_str());
-	CGame* pCGame = *(CGame**)((uintptr_t)pGame + 8);
-
-
-
-	dbgprintf("CreateGame GameDI at: %p\n", pGame);
+	dbgprintf("CreateGame IGame at: %p\n", pGame);
 
 	pGame->SetRootDirectory(WorkingDirectory.c_str());
 	dbgprintf("IGame::SetRootDirectory at: %s\n", WorkingDirectory.c_str());
@@ -212,72 +123,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ttl::string_base<char> ClassName("MountHelper");
 
 	pGame->SetProperty(ClassName, variant);
-
-	//hide spash
 	HideSplashscreen();
 
-	//Initalize Game
-	Loader::PreInitialize();
-	//pGame->SetRenderDebugVis(true);
-
-	/*
-	uintptr_t** vtablePtr = *(uintptr_t***)pCGame;
-	typedef void* (__thiscall* ExecuteEditorCommand_t)(CGame*, ttl::string_base<char>, ttl::string_base<char>, ttl::string_base<char>);
-	ExecuteEditorCommand_t ExecuteEditorCommandFn = (ExecuteEditorCommand_t)vtablePtr[86];
-	auto resultMessage = ExecuteEditorCommandFn(pCGame, Command, Command, Command);
-	*/
-	// Define your commands as a list of ttl::string_base<char> instead of std::string
-
-	std::cout << "IsGameInEditor " << pGame->IsGameInEditor() << std::endl;
-	std::cout << "IsDedicatedServer " << pGame->IsDedicatedServer() << std::endl;
-	std::cout << "VideoSettingsIsFullScreen " << pGame->VideoSettingsIsFullScreen() << std::endl;
-
-	/*
-	//CResourceLoadingRuntime
-
-	auto CResource = CResourceLoadingRuntime::Create();
-
-	uintptr_t* ptrAt8 = *(uintptr_t**)((uintptr_t)pGame + 8);
-	*(CResourceLoadingRuntime**)((uintptr_t)ptrAt8 + 0xaf8) = CResource;
-
-	auto local_7b8 = *(int*)((uintptr_t)pGame + 0x15d);
-	CResource->LAB_180404970(local_7b8);
-
-	//(**(code**)(*CResource + 0x20))(CResource, &local_7b8);
-
-
-	//PackLoader::Load((longlong*)param_1[0x15f], "engine", (longlong**)pcVar13, 0, in_stack_fffffffffffff7c8, 1, 1);
-
-
-	typedef void(__fastcall* t_LoadPack)(CResourceLoadingRuntime* param_1, const char* PackName, LONGLONG** param_3, __int64 param_4, __int64 param_5, int param_6, int param_7);
-
-	HMODULE hModule = LoadLibraryA("engine_x64_rwdi.dll");
-
-	uintptr_t funcAddress = (uintptr_t)hModule + 0x401870; // Assuming fixed offset
-	t_LoadPack ctor = (t_LoadPack)funcAddress;
-
-
-	//need to call Rinitialize before this will work I think, getting so pissed might as well rewrite my own pGame->Initialize
-	ctor(CResource, "engine", nullptr, 0, 0xffffffff00000000, 1, 1);
-
-	//Loader::LoadResourcePaks(pGame);
-
-
-
-
-	//pGame->OnContentChanged()
-	//pGame[0x15f] = CResource;
-
-
-	//(**(code**)(*CResource + 0x20))(CResource, &local_7b8);
-	*/
-
-	if (pGame->Initialize(lpCmdLine, nShowCmd, (HICON__*)smallIcon, (HICON__*)largeIcon, 0, 0, nullptr) != 0) {
+	Loader::PreInitialize();	
+	if (pGame->Initialize(lpCmdLine, nShowCmd, (HICON__*)smallIcon, (HICON__*)largeIcon, 0, 0, nullptr) != 0)
+	{
 		dbgprintf("IGame::Initialize() failed\n");
 		OutputDebugString("IGame::Initialize() failed\n");
 		Alert("Fatal Error", "Game failed to initalize (IGame::Initialize() failed)\n");
 		return EXIT_FAILURE;
 	}
+
+	std::cout << "IsGameInEditor " << pGame->IsGameInEditor() << std::endl;
+	std::cout << "IsDedicatedServer " << pGame->IsDedicatedServer() << std::endl;
+	std::cout << "VideoSettingsIsFullScreen " << pGame->VideoSettingsIsFullScreen() << std::endl;
 
 	ttl::string_base<char> TitleStr("Dying Light (CE6DL)");
 	pGame->SetGameName(TitleStr);
@@ -293,6 +152,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (pGame)
 		DestroyGame(NULL, NULL, NULL, NULL);
 
+	Mount::DestroyMountHelper(mountHelper);
+
 	// Shutdown the SteamAPI
 	SteamAPI_Shutdown();
 
@@ -302,9 +163,110 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//fs shutdown
 	CrashClose();
 	fs::shutdown();
+	SetDumpFunction(DumpFunc);
 
 	return EXIT_SUCCESS;
 }
+
+bool FilesystemInit(std::string WorkingDirectory, std::string gameDir, bool useWorkingDir)
+{
+	//Documents folder name or full path
+	std::string fsSaveDir("DyingLight");
+
+	if (fs::is_full_path(fsSaveDir.c_str()))
+		return fs::init(fsSaveDir.c_str(), FFSAddSourceFlags::SUBDIRS, "out/cache", false, true, nullptr);
+
+	if (!useWorkingDir)
+	{
+		PWSTR path = nullptr;
+		HRESULT hr = SHGetKnownFolderPath(FOLDERID_Documents, 0, nullptr, &path);
+
+		if (SUCCEEDED(hr)) {
+			char pathBuffer[MAX_PATH];
+			WideCharToMultiByte(CP_UTF8, 0, path, -1, pathBuffer, MAX_PATH, NULL, NULL);
+
+			CoTaskMemFree(path);
+
+			std::string fsDestinationPath = std::string(pathBuffer) + "\\" + fsSaveDir;
+			return fs::init(fsDestinationPath.c_str(), FFSAddSourceFlags::SUBDIRS, "out/cache", false, true, nullptr);
+		}
+
+		if (path) {
+			CoTaskMemFree(path);
+		}
+	}
+
+	std::string fsDestinationPath = WorkingDirectory + std::string(gameDir) + "\\out";
+	return fs::init(fsDestinationPath.c_str(), (FFSAddSourceFlags::ENUM)5, "out/cache", false, true, nullptr);
+}
+
+bool SteamInit() {
+	if (SteamAPI_RestartAppIfNecessary(k_uAppId))
+		return EXIT_FAILURE;
+
+	if (!SteamAPI_Init())
+	{
+		OutputDebugString("SteamAPI_Init() failed\n");
+		Alert("Fatal Error", "Steam must be running to play Dying Light (SteamAPI_Init() failed).\n");
+		return EXIT_FAILURE;
+	}
+
+	return EXIT_SUCCESS;
+}
+
+void GameLoop(IGame* pGame) {
+	MSG msg;
+
+
+	while (true) {
+		while (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE) == NULL) {
+			pGame->OnPaint();
+			auto bruh = pGame->GetActiveLevel();
+			if (bruh) {
+				if (bruh->GetLevelName())
+					std::cout << bruh->GetLevelName() << std::endl;
+				bruh->SetFXSimulationRange(10000.0f);
+				bruh->SetFXVisibilityRange(10000.0f);
+				auto mavity = new vec3;
+				mavity->x = 0.f;
+				mavity->y = 0.f;
+				mavity->z = 0.f;
+				bruh->NonDefaultGravityEnable(true);
+				bruh->SetNonDefaultGravity(1, *mavity);
+				bruh->NonDefaultGravityEnable(true);
+				bruh->SetObjectsVisibilityRange(10000.0f);
+				bruh->SetPhysicsDebugRenderMode(1.0f);
+				bruh->SetRenderFlag(true);
+				//SetSunColor(vec3 const&);
+				//SetSunDir(vec3 const&);
+				//SetTerrainError(float);
+				//SetTerrainMapValue(CTerrainType*, float, float, int);
+				//SetTerrainType(float, float, int);
+				bruh->SetUICameraFov(130.0f);
+				bruh->SetWindPower(10000.0f);
+			
+			}
+		}
+
+		if (msg.message == WM_QUIT)
+			break;
+
+		TranslateMessage(&msg);
+		DispatchMessageA(&msg);
+	}
+}
+
+void MiniDumpFunction(unsigned int nExceptionCode, EXCEPTION_POINTERS* pException)
+{
+	bool MiniDumpType = false;
+	WriteFullDump(nExceptionCode, pException, nullptr, MiniDumpType, nullptr);
+}
+
+int Alert(const char* lpCaption, const char* lpText)
+{
+	return ::MessageBox(nullptr, lpText, lpCaption, MB_OK);
+}
+
 
 // callback hook for debug text emitted from the Steam API
 extern "C" void __cdecl SteamAPIDebugTextHook(int, const char* pchDebugText)

@@ -1,19 +1,19 @@
 #pragma once
 #include "pch.h"
 
+
 namespace ttl {
     template <typename T>
     class string_base;
 
     template <>
     class string_base<char> {
-        char* m_Buffer;
+        std::unique_ptr<char[]> m_Buffer;
         uint m_Size;
         uint m_Capacity;
 
     public:
         explicit string_base(const char* str = "") {
-            // Ensure non-null string
             if (str == nullptr) {
                 m_Size = 0;
                 m_Capacity = 0;
@@ -23,20 +23,17 @@ namespace ttl {
                 m_Size = std::strlen(str);
                 m_Capacity = m_Size + 1;
 
-                m_Buffer = new char[m_Capacity];
-                std::memcpy(m_Buffer, str, m_Size);
+                m_Buffer = std::make_unique<char[]>(m_Capacity);
+                std::memcpy(m_Buffer.get(), str, m_Size);
                 m_Buffer[m_Size] = '\0';
             }
         }
 
-        ~string_base() {
-            delete[] m_Buffer;
-            m_Buffer = nullptr;
-        }
+        ~string_base() = default;
 
         // Return the C-string
         const char* c_str() const {
-            return m_Buffer;
+            return m_Buffer.get();
         }
     };
     /*

@@ -12,11 +12,12 @@
 #include <shlobj_core.h>
 
 // Third-party
-#include "../Core/Steam/steam_api.h"
-#include "../Utils/Utils.h"
+#include "../SDK/Steam/steam_api.h"
+#include "../Core/Utils.h"
 
 //common typedef
 typedef unsigned int    uint;
+typedef unsigned short    ushort;
 
 //namespace fs = std::filesystem;
 //Conflict with filesystem dll
