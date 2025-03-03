@@ -221,31 +221,6 @@ void GameLoop(IGame* pGame) {
 	while (true) {
 		while (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE) == NULL) {
 			pGame->OnPaint();
-			auto bruh = pGame->GetActiveLevel();
-			if (bruh) {
-				if (bruh->GetLevelName())
-					std::cout << bruh->GetLevelName() << std::endl;
-				bruh->SetFXSimulationRange(10000.0f);
-				bruh->SetFXVisibilityRange(10000.0f);
-				auto mavity = new vec3;
-				mavity->x = 0.f;
-				mavity->y = 0.f;
-				mavity->z = 0.f;
-				bruh->NonDefaultGravityEnable(true);
-				bruh->SetNonDefaultGravity(1, *mavity);
-				bruh->NonDefaultGravityEnable(true);
-				bruh->SetObjectsVisibilityRange(10000.0f);
-				bruh->SetPhysicsDebugRenderMode(1.0f);
-				bruh->SetRenderFlag(true);
-				//SetSunColor(vec3 const&);
-				//SetSunDir(vec3 const&);
-				//SetTerrainError(float);
-				//SetTerrainMapValue(CTerrainType*, float, float, int);
-				//SetTerrainType(float, float, int);
-				bruh->SetUICameraFov(130.0f);
-				bruh->SetWindPower(10000.0f);
-			
-			}
 		}
 
 		if (msg.message == WM_QUIT)
