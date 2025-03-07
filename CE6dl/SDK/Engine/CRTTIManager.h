@@ -1,8 +1,12 @@
 #pragma once
 #include <pch.h>
+#include "../TTL.h"
 
 class CRTTIManager {
 public:
+	struct ttl::list<ttl::CRTTIconst*, ttl::allocator> m_EngineClasses;
+	struct ttl::list<ttl::CRTTIconst*, ttl::allocator> m_ScriptClasses;
+
 	virtual ~CRTTIManager();
 	virtual uint64_t FindEngineClass(uint param_2);
 	virtual uint64_t FindScriptClass(uint param_2);
@@ -10,7 +14,7 @@ public:
 
 	virtual uint64_t FindClass(uint param_2);
 	virtual byte* FindClass(void* param_2);
-	virtual long FindClassNoCase(char* param_2);
+	virtual void* FindClassNoCase(char* param_2);
 
 	virtual uint64_t GetDerivedScriptClasses(CRTTI* param_2, long* param_3);
 	virtual uint64_t GetNotDerivedScriptClasses(CRTTI* param_2, long* param_3);
@@ -19,8 +23,16 @@ public:
 	virtual void* GetDerivedEngineClasses(CRTTI* param_2, long* param_3);
 
 	virtual class CRTTI* GetBaseClass(CRTTI* param_2, long* param_3);
+	virtual void FUN_18041bdb0();
+	virtual void FUN_18041bd60();
+
+	virtual uint64_t GetBaseClass(CRTTI* param_2, __int64 param_3, __int64 param_4);
+
+
 
 	//virtual uint64_t GetBaseClass(CRTTI* param_2, long* param_3);
+	//virtual void GetBaseClass(long** param_1);
+
 	//virtual void* GetBaseClass(uint64_t param_2);
 
 	//virtual class CRTTI* GetBaseClass(CRTTI* param_2, uint64_t param_3, uint64_t param_4);

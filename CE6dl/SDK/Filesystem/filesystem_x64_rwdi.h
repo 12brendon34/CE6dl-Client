@@ -175,3 +175,10 @@ bool CrashCanShowMessageBox(void);
 void CrashClose(void);
 void CrashShowCallstackInAsserts(bool);
 void CrashShowMessageBox(bool);
+void* __cdecl CrashGetConsoleHandle(void);
+void __cdecl CrashInitOutToConsole(void);
+
+class CLFilterAction {
+    public:
+    enum ENUM {};
+};

@@ -3,6 +3,7 @@
 #include "IGame.h"
 #include "CGame.h"
 #include "CRTTIManager.h"
+#include "../Filesystem/Log.h"
 
 #ifdef _WIN32
 #define DLL_EXPORT __declspec(dllimport) // For importing the function
@@ -110,6 +111,11 @@ struct AssetManager {
 
 struct AssetManager* __cdecl GetAssetManager(void);
 
+class __declspec(dllimport) CControlObject {
+public:
+    static void EnableCommentRender(bool);
+    static bool IsCommentRenderEnabled();
+};
 
 //I still dk a better way
 //using T_MountDLC = void(*)(IGame* pGame, const char** className, __int64* CRTTIVariant);
@@ -119,8 +125,9 @@ extern "C" DLL_EXPORT bool Main(void);
 extern "C" DLL_EXPORT int ShowSplashscreen(HINSTANCE hInst, LPCSTR Splash, LPSTR Title, HANDLE Icon);
 extern "C" DLL_EXPORT void HideSplashscreen();
 
+typedef void(__cdecl* LogCallback)(Log::ELevel::TYPE, const char*, const char*);
 
-extern "C" DLL_EXPORT LONGLONG* Initialize(__int64 param_1, __int64 param_2, __int64 param_3, LONGLONG* param_4, const char* param_5, LPCSTR GameScriptDLL, char* param_7, char* param_8, __int64* param_9, LONGLONG* param_10);
+extern "C" DLL_EXPORT LONGLONG* Initialize(HMODULE param_1, __int64 param_2, __int64 param_3, void* param_4, void* param_5, LPCSTR GameScriptDLL, const char* param_7, const char* param_8, LogCallback param_9, void* param_10);
 
 extern "C" DLL_EXPORT bool InitializeGameScript(LPCSTR GameDll, ULONGLONG param_2);
 extern "C" DLL_EXPORT IGame* CreateGame(LPCSTR param_1, HINSTANCE hinstance, bool param_3, LPCSTR param_4);

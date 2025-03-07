@@ -54,6 +54,7 @@ namespace Loader {
     void IndexMods()
     {
         auto pakPath = GetModFolderPath("Paks");
+        auto libPath = GetModFolderPath("Libs");
         auto rpackPath = GetModFolderPath("Rpacks");
         auto matpackPath = GetModFolderPath("MatPacks");
 
@@ -61,6 +62,7 @@ namespace Loader {
         fs::add_source(matpackPath.c_str(), (FFSAddSourceFlags::ENUM)7);
 
         ProcessModDirectory(pakPath);
+        ProcessModDirectory(libPath);
         ProcessModDirectory(rpackPath);
         ProcessModDirectory(matpackPath);
     }

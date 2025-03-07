@@ -13,6 +13,8 @@
 
 // Third-party
 #include "../SDK/Steam/steam_api.h"
+
+//
 #include "../Core/Utils.h"
 
 //common typedef

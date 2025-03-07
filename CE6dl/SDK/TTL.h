@@ -36,6 +36,36 @@ namespace ttl {
             return m_Buffer.get();
         }
     };
+
+
+
+
+
+
+
+
+
+    typedef enum TYPE {
+    };
+
+    struct allocator {
+        TYPE m_MemCategory;
+    };
+
+
+    class CRTTIconst {
+
+    };
+
+    template <typename T, typename Allocator>
+        class list {
+        public:
+            class iterator;
+            class const_iterator;
+            class reverse_iterator;
+            class const_reverse_iterator;
+    };
+
     /*
     //CE 5
     typedef enum TYPE {
@@ -105,6 +135,7 @@ namespace ttl {
         //idk bro
     };
     */
+
 
     template <typename T>
     class vector {

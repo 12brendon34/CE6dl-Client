@@ -3,6 +3,8 @@
 #include "SDK/Filesystem/filesystem_x64_rwdi.h"
 #include <random>
 #include "Core/Loader.h"
+#include "SDK/Filesystem/Log.h"
+#include "SDK/Engine/IEngineImpl.h"
 
 typedef uint32 AppId_t;
 const AppId_t k_uAppId = 239140;
@@ -13,19 +15,21 @@ void GameLoop(IGame* pGame);
 int Alert(const char* lpCaption, const char* lpText);
 void MiniDumpFunction(unsigned int nExceptionCode, EXCEPTION_POINTERS* pException);
 
-
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
 	if(SteamInit())
 		return EXIT_FAILURE;
 
-#ifdef _DEBUG
-	Utils::InitConsole();
-	std::cout << "Attach Debugger" << std::endl;
-	
-	while (!::IsDebuggerPresent())
-		::Sleep(100);
-#endif
+	if (!Main())
+		return EXIT_FAILURE;
+
+	#ifdef _DEBUG
+		Utils::InitConsole();
+		std::cout << "Attach Debugger" << std::endl;
+
+		while (!::IsDebuggerPresent())
+			::Sleep(100);
+	#endif
 
 	//parse arguments
 	std::string WorkingDirectory;
@@ -38,9 +42,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	std::string GameDll_Path = WorkingDirectory + "gamedll";
 
-
-	if (!Main())
-		return EXIT_FAILURE;
 
 	//IDK what EDumpResult is so this is good enough I guess
 
@@ -69,7 +70,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Sleep(1500);
 
 	//Filesystem
-	FilesystemInit(WorkingDirectory, "DW", true);
+	FilesystemInit(WorkingDirectory, "DW", false);
 	Loader::IndexMods();
 	Loader::LoadNativeMods();
 
@@ -103,17 +104,26 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	Loader::LoadModPaks();
 
-
 	//Initalization
 	if (!IGame::InitializeOnlineServices(nullptr)) {
 		dbgprintf("InitializeOnlineServices Failed!");
 		ExitProcess(1);
 	}
 
+	Loader::PreInitialize();
+#ifdef _DEBUG
+	CrashInitOutToConsole();
+#endif
+	
+	/*
+	//used in Devtools editor to load the engine, not the devtools player, the editor itself.
+	auto baseAddr = GetModuleHandle(NULL);
+	DummyClass* Dummy = new DummyClass();
+	auto IEngineImpl = Initialize(baseAddr, NULL, NULL, Dummy, "GameDI", GameDll_Path.c_str(), "Out/Settings/EditorVideo.scr", "Out/Settings/EditorAudio.scr", nullptr, nullptr);
+	*/
+	
 	InitializeGameScript(GameDll_Path.c_str(), false);
 	IGame* pGame = CreateGame("GameDI", hInstance, true, gamedir.c_str());
-	//pGame->m_CGame;
-
 	dbgprintf("CreateGame IGame at: %p\n", pGame);
 
 	pGame->SetRootDirectory(WorkingDirectory.c_str());
@@ -124,10 +134,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	CRTTIVariant variant(mountHelper);
 	ttl::string_base<char> ClassName("MountHelper");
 
+
 	pGame->SetProperty(ClassName, variant);
 	HideSplashscreen();
 
-	Loader::PreInitialize();	
+
 	if (pGame->Initialize(lpCmdLine, nShowCmd, (HICON__*)smallIcon, (HICON__*)largeIcon, 0, 0, nullptr) != 0)
 	{
 		dbgprintf("IGame::Initialize() failed\n");
