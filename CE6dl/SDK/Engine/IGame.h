@@ -32,9 +32,9 @@ public:
     __cdecl IGame(class IGame const&);
 
     //static
-    static bool InitializeOnlineServices(void*);
+    //static bool InitializeOnlineServices(void*);
     static bool IsOnlineServicesInitialized(void);
-    static void ShutdownOnlineServices(void);
+    //static void ShutdownOnlineServices(void);
     static class CRTTI const* __ptr64 GetNativeClass(void);
 
     static class ttl::string_base<char> GetDefaultLocaleID(void);

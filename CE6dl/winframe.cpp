@@ -103,24 +103,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	fs::add_source(SpeechPak_Path.c_str(), (FFSAddSourceFlags::ENUM)9);
 
 	Loader::LoadModPaks();
-
+	
+	/*
 	//Initalization
 	if (!IGame::InitializeOnlineServices(nullptr)) {
 		dbgprintf("InitializeOnlineServices Failed!");
 		ExitProcess(1);
 	}
+	*/
 
 	Loader::PreInitialize();
 #ifdef _DEBUG
 	CrashInitOutToConsole();
 #endif
 	
-	/*
 	//used in Devtools editor to load the engine, not the devtools player, the editor itself.
 	auto baseAddr = GetModuleHandle(NULL);
 	DummyClass* Dummy = new DummyClass();
 	auto IEngineImpl = Initialize(baseAddr, NULL, NULL, Dummy, "GameDI", GameDll_Path.c_str(), "Out/Settings/EditorVideo.scr", "Out/Settings/EditorAudio.scr", nullptr, nullptr);
-	*/
 	
 	InitializeGameScript(GameDll_Path.c_str(), false);
 	IGame* pGame = CreateGame("GameDI", hInstance, true, gamedir.c_str());
@@ -154,13 +154,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ttl::string_base<char> TitleStr("Dying Light (CE6DL)");
 	pGame->SetGameName(TitleStr);
 
-	Loader::PostInitialize();
+	//Loader::PostInitialize();
 	Loader::LoadResourcePaks(pGame);
 
 	//start rendering loop
 	GameLoop(pGame);
 
-	pGame->ShutdownOnlineServices();
+	//pGame->ShutdownOnlineServices();
 	//Destroy Game instance if still running
 	if (pGame)
 		DestroyGame(NULL, NULL, NULL, NULL);
