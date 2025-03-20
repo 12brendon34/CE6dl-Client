@@ -4,16 +4,22 @@
 #include <random>
 #include "Core/Loader.h"
 #include "SDK/Filesystem/Log.h"
-#include "SDK/Engine/IEngineImpl.h"
 
 typedef uint32 AppId_t;
 const AppId_t k_uAppId = 239140;
 
 bool SteamInit();
 bool FilesystemInit(std::string WorkingDirectory, std::string gameDir, bool useWorkingDir = false);
-void GameLoop(IGame* pGame);
+void GameLoop(IGame* pIGame);
 int Alert(const char* lpCaption, const char* lpText);
 void MiniDumpFunction(unsigned int nExceptionCode, EXCEPTION_POINTERS* pException);
+
+//Intended Editor Log Callback function
+void FUN_1402dcf50(int TypeLevel, const char* param_2, const char* param_3)
+{
+	dbgprintf(param_3);
+}
+
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
@@ -67,7 +73,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	auto largeIcon = LoadImage(hInstance, hIcon, IMAGE_ICON, largeIconWidth, largeIconHeight, 0);
 
 	ShowSplashscreen(hInstance, hSplash, hText, smallIcon);
-	Sleep(1500);
+	//Sleep(1500);
 
 	//Filesystem
 	FilesystemInit(WorkingDirectory, "DW", false);
@@ -102,7 +108,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	fs::add_source(Speech_Path.c_str(), (FFSAddSourceFlags::ENUM)265);
 	fs::add_source(SpeechPak_Path.c_str(), (FFSAddSourceFlags::ENUM)9);
 
-	Loader::LoadModPaks();
+	//Loader::LoadModPaks();
 
 	//Initalization
 	if (!IGame::InitializeOnlineServices(nullptr)) {
@@ -110,23 +116,39 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		ExitProcess(1);
 	}
 
-	Loader::PreInitialize();
+	//Loader::PreInitialize();
 #ifdef _DEBUG
 	CrashInitOutToConsole();
 #endif
+	//Loader::PostInitialize();
 	
-	/*
 	//used in Devtools editor to load the engine, not the devtools player, the editor itself.
 	auto baseAddr = GetModuleHandle(NULL);
-	DummyClass* Dummy = new DummyClass();
-	auto IEngineImpl = Initialize(baseAddr, NULL, NULL, Dummy, "GameDI", GameDll_Path.c_str(), "Out/Settings/EditorVideo.scr", "Out/Settings/EditorAudio.scr", nullptr, nullptr);
-	*/
-	
-	InitializeGameScript(GameDll_Path.c_str(), false);
-	IGame* pGame = CreateGame("GameDI", hInstance, true, gamedir.c_str());
-	dbgprintf("CreateGame IGame at: %p\n", pGame);
+	//Dummy is actually the Editor's Implementation of IEngineImpl somehow? it's at 141505AB8, it only has 58 functions compared to the Engines 215
+	auto local = new IEditorImpl();
+	//theres some other stuff in mem here, CWD, DW_DLC49, LevelDI, some other paths
+	//auto IProgress = new IProgressIndicator();
+	auto IEngineImpl = Initialize(baseAddr, 331818, 397064, local, "GameDI", GameDll_Path.c_str(), "data/settings/defaultvideoquality_xbox_series_x.scr", "data/settings/defaultaudio.scr", &FUN_1402dcf50, nullptr);
 
-	pGame->SetRootDirectory(WorkingDirectory.c_str());
+
+	dbgprintf("IEngineImpl at: %p\n", IEngineImpl);
+	dbgprintf("m_pGameEditor at: %p\n", IEngineImpl->m_pGameEditor);
+
+	IGame* pIGame = IEngineImpl->m_pGameEditor->m_pGame->m_IGame;
+	pIGame->m_CGame = IEngineImpl->m_pGameEditor->m_pGame;
+
+	//temp->m_CGame = IEngineImpl->m_pGameEditor->m_pGame;
+	///IGame* pIGame(temp);
+
+	dbgprintf("pIGame at: %p\n", pIGame);
+	dbgprintf("pGame at: %p\n", pIGame->m_CGame);
+
+	/*
+	InitializeGameScript(GameDll_Path.c_str(), false);
+	IGame* pIGame = CreateGame("GameDI", hInstance, true, gamedir.c_str());
+	dbgprintf("CreateGame IGame at: %p\n", pGame);
+	
+	pIGame->SetRootDirectory(WorkingDirectory.c_str());
 	dbgprintf("IGame::SetRootDirectory at: %s\n", WorkingDirectory.c_str());
 
 	//DLC
@@ -135,11 +157,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ttl::string_base<char> ClassName("MountHelper");
 
 
-	pGame->SetProperty(ClassName, variant);
+	pIGame->SetProperty(ClassName, variant);
+	*/
+
 	HideSplashscreen();
-
-
-	if (pGame->Initialize(lpCmdLine, nShowCmd, (HICON__*)smallIcon, (HICON__*)largeIcon, 0, 0, nullptr) != 0)
+	if (pIGame->Initialize(lpCmdLine, nShowCmd, (HICON__*)smallIcon, (HICON__*)largeIcon, 0, 0, nullptr) != 0)
 	{
 		dbgprintf("IGame::Initialize() failed\n");
 		OutputDebugString("IGame::Initialize() failed\n");
@@ -147,25 +169,27 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return EXIT_FAILURE;
 	}
 
-	std::cout << "IsGameInEditor " << pGame->IsGameInEditor() << std::endl;
-	std::cout << "IsDedicatedServer " << pGame->IsDedicatedServer() << std::endl;
-	std::cout << "VideoSettingsIsFullScreen " << pGame->VideoSettingsIsFullScreen() << std::endl;
+	std::cout << "IsGameInEditor " << pIGame->IsGameInEditor() << std::endl;
+	std::cout << "IsDedicatedServer " << pIGame->IsDedicatedServer() << std::endl;
+	//std::cout << "VideoSettingsIsFullScreen " << pIGame->VideoSettingsIsFullScreen() << std::endl;
+	std::cout << "IsGameRenderingEnabled " << pIGame->IsGameRenderingEnabled() << std::endl;
+	//pIGame->EnableGameRendering(true);
 
 	ttl::string_base<char> TitleStr("Dying Light (CE6DL)");
-	pGame->SetGameName(TitleStr);
+	pIGame->SetGameName(TitleStr);
 
-	Loader::PostInitialize();
-	Loader::LoadResourcePaks(pGame);
+	//Loader::PostInitialize();
+	//Loader::LoadResourcePaks(s_AssetManagerImpl);
 
 	//start rendering loop
-	GameLoop(pGame);
+	GameLoop(pIGame);
 
-	pGame->ShutdownOnlineServices();
+	pIGame->ShutdownOnlineServices();
 	//Destroy Game instance if still running
-	if (pGame)
+	if (pIGame)
 		DestroyGame(NULL, NULL, NULL, NULL);
 
-	Mount::DestroyMountHelper(mountHelper);
+	//Mount::DestroyMountHelper(mountHelper);
 
 	// Shutdown the SteamAPI
 	SteamAPI_Shutdown();
@@ -227,13 +251,13 @@ bool SteamInit() {
 	return EXIT_SUCCESS;
 }
 
-void GameLoop(IGame* pGame) {
+void GameLoop(IGame* pIGame) {
 	MSG msg;
 
 
 	while (true) {
 		while (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE) == NULL) {
-			pGame->OnPaint();
+			pIGame->OnPaint();
 		}
 
 		if (msg.message == WM_QUIT)

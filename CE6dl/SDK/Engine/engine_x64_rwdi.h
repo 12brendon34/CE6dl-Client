@@ -3,6 +3,7 @@
 #include "IGame.h"
 #include "CGame.h"
 #include "CRTTIManager.h"
+#include "IEngineImpl.h"
 #include "../Filesystem/Log.h"
 
 #ifdef _WIN32
@@ -117,6 +118,17 @@ public:
     static bool IsCommentRenderEnabled();
 };
 
+class __declspec(dllimport) IProgressIndicator {
+public:
+    IProgressIndicator(IProgressIndicator const&);
+    IProgressIndicator();
+    virtual ~IProgressIndicator();
+    virtual void AdvancePos(int, int);
+    virtual void EnableDebugProgressIndicator(bool);
+    virtual void SetPos(int, int);
+    virtual void SetRange(int, int, int);
+};
+
 //I still dk a better way
 //using T_MountDLC = void(*)(IGame* pGame, const char** className, __int64* CRTTIVariant);
 
@@ -125,9 +137,7 @@ extern "C" DLL_EXPORT bool Main(void);
 extern "C" DLL_EXPORT int ShowSplashscreen(HINSTANCE hInst, LPCSTR Splash, LPSTR Title, HANDLE Icon);
 extern "C" DLL_EXPORT void HideSplashscreen();
 
-typedef void(__cdecl* LogCallback)(Log::ELevel::TYPE, const char*, const char*);
-
-extern "C" DLL_EXPORT LONGLONG* Initialize(HMODULE param_1, __int64 param_2, __int64 param_3, void* param_4, void* param_5, LPCSTR GameScriptDLL, const char* param_7, const char* param_8, LogCallback param_9, void* param_10);
+extern "C" DLL_EXPORT IEngineImpl* Initialize(HMODULE param_1, __int64 param_2, __int64 param_3, void* param_4, const char* Class, LPCSTR GameScriptDLL, const char* param_7, const char* param_8, void* LogCallback, IProgressIndicator* IProgress);
 
 extern "C" DLL_EXPORT bool InitializeGameScript(LPCSTR GameDll, ULONGLONG param_2);
 extern "C" DLL_EXPORT IGame* CreateGame(LPCSTR param_1, HINSTANCE hinstance, bool param_3, LPCSTR param_4);

@@ -9,6 +9,8 @@ struct mtx34 {
 
 class CGame {
     public:
+        IGame* m_IGame;
+
         virtual void FUN_180250540();
         virtual ~CGame();
         virtual void FUN_18012c960();
@@ -157,7 +159,7 @@ class CGame {
         virtual void FUN_18024ff80();
         virtual void LAB_180250080();
         virtual void LAB_1802500d0();
-        virtual void FUN_180250090();
+        virtual void GoDedicated(); // I think
         virtual void LAB_18022e660();
         virtual void LAB_18022e680();
         virtual void LAB_18024fa10();

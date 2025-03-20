@@ -30,5 +30,5 @@ namespace Loader {
     void PostInitialize();
 
     void LoadModPaks();
-    void LoadResourcePaks(IGame* pGame);
+    void LoadResourcePaks(AssetManager* s_AssetManagerImpl);
 }

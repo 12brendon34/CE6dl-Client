@@ -1,5 +1,5 @@
 #pragma once
-#include "pch.h"
+#include <pch.h>
 #include "../TTL.h"
 #include "ILevel.h"
 
@@ -21,6 +21,10 @@ public:
 };
 
 class __declspec(dllimport) IGame {
+protected: 
+    //__cdecl IGame(void);
+    IGame(); 
+    //virtual ~IGame(void);
 public:
 
     //this is the actuall struct, it's actually just empty in engine
@@ -28,8 +32,10 @@ public:
     struct SRPackHandle {
     };
 
-    __cdecl IGame(void);
-    __cdecl IGame(class IGame const&);
+    //__cdecl IGame(void);
+
+    IGame(IGame const&);
+    //__cdecl IGame(IGame* param_1);
 
     //static
     static bool InitializeOnlineServices(void*);
@@ -239,7 +245,7 @@ public:
     CGame* m_CGame;
     //Vtable funcs, some of the "stripped" functions are prob just not exported and are set on runtime or smt idk
     virtual void __cdecl SetEngineObject(class CGSObject* __ptr64);
-    virtual ~IGame(void);
+    //virtual ~IGame(void);
 
     //stripped functions
     virtual void Stripped();//IPhBody::~IPhBody

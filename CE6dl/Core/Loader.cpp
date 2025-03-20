@@ -140,7 +140,7 @@ namespace Loader {
         }
     }
 
-    void LoadResourcePaks(IGame* pGame)
+    void LoadResourcePaks(AssetManager* s_AssetManagerImpl)
     {
         for (const auto& modInfo : ModInfoList)
         {
@@ -148,11 +148,8 @@ namespace Loader {
             {
                 ttl::string_base<char> PackPath(modInfo.ModPath.c_str());
                 std::cout << &PackPath << std::endl;
-
-
-                //at this point, If I want to add a pack earlier, I'm going to need to hook it
-                //first bool 0x4000000 secc 0x100, if neither returns -7
-                pGame->LoadPack(PackPath, true, true, nullptr);
+                //back to s_AssetManagerImpl as IGame's is per level
+                s_AssetManagerImpl->LoadAsset(PackPath.c_str(), 256, NULL);
                 dbgprintf("Added Rpack : %s\n", modInfo.ModPath.c_str());
             }
         }
