@@ -118,9 +118,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 #endif
 	
 	//used in Devtools editor to load the engine, not the devtools player, the editor itself.
-	auto baseAddr = GetModuleHandle(NULL);
-	DummyClass* Dummy = new DummyClass();
-	auto IEngineImpl = Initialize(baseAddr, NULL, NULL, Dummy, "GameDI", GameDll_Path.c_str(), "Out/Settings/EditorVideo.scr", "Out/Settings/EditorAudio.scr", nullptr, nullptr);
+	//auto baseAddr = GetModuleHandle(NULL);
+	//DummyClass* Dummy = new DummyClass();
+	//auto IEngineImpl = Initialize(baseAddr, NULL, NULL, Dummy, "GameDI", GameDll_Path.c_str(), "Out/Settings/EditorVideo.scr", "Out/Settings/EditorAudio.scr", nullptr, nullptr);
 	
 	InitializeGameScript(GameDll_Path.c_str(), false);
 	IGame* pGame = CreateGame("GameDI", hInstance, true, gamedir.c_str());
