@@ -1,241 +1,20 @@
 #include <pch.h>
-#include "SDK/Engine/engine_x64_rwdi.h"
-#include "SDK/Filesystem/filesystem_x64_rwdi.h"
-#include <random>
-#include "Core/Loader.h"
-#include "SDK/Filesystem/Log.h"
+#include "Resources/Resource.h"
+
+#include "Core/Sdk/Steam/steam_api.h"
+#include "Core/Sdk/Engine/engine.h"
+#include "Core/Util/Console.h"
+#include "Core/Util/Alert.h"
+#include "Core/Sdk/Filesystem/Filesystem.h"
+#include "Core/Util/String.h"
+#include "Core/Sdk/Engine/IGame.h"
 
 typedef uint32 AppId_t;
 const AppId_t k_uAppId = 239140;
-
-bool SteamInit();
-bool FilesystemInit(std::string WorkingDirectory, std::string gameDir, bool useWorkingDir = false);
-void GameLoop(IGame* pIGame);
-int Alert(const char* lpCaption, const char* lpText);
-void MiniDumpFunction(unsigned int nExceptionCode, EXCEPTION_POINTERS* pException);
-
-//Intended Editor Log Callback function
-void FUN_1402dcf50(int TypeLevel, const char* param_2, const char* param_3)
-{
-	dbgprintf(param_3);
-}
-
-
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
-{
-	if(SteamInit())
-		return EXIT_FAILURE;
-
-	if (!Main())
-		return EXIT_FAILURE;
-
-	#ifdef _DEBUG
-		Utils::InitConsole();
-		std::cout << "Attach Debugger" << std::endl;
-
-		while (!::IsDebuggerPresent())
-			::Sleep(100);
-	#endif
-
-	//parse arguments
-	std::string WorkingDirectory;
-
-	std::string gamedir = "DW"; //Dead World lol
-	std::string locale = "En"; // ISteamApps::GetCurrentGameLanguage maybe some time
-
-	if (WorkingDirectory.empty())
-		WorkingDirectory = Utils::GetWorkingDirectory();
-
-	std::string GameDll_Path = WorkingDirectory + "gamedll";
-
-
-	//IDK what EDumpResult is so this is good enough I guess
-
-	auto DumpFunc = GetDumpFunction();
-	SetDumpFunction(reinterpret_cast<EDumpResult::TYPE(__cdecl*)(unsigned long, _EXCEPTION_POINTERS*)>(MiniDumpFunction));
-
-	//select a random splash
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_int_distribution<int> dist(101, 106);
-
-	int randomSplash = dist(gen);
-	auto hSplash = MAKEINTRESOURCE(randomSplash);
-	auto hText = MAKEINTRESOURCE(100);    // Dying Light String Resource
-	auto hIcon = MAKEINTRESOURCE(110);    // Game Icon Resource
-
-	int smallIconWidth = GetSystemMetrics(SM_CXSMICON);
-	int smallIconHeight = GetSystemMetrics(SM_CYSMICON);
-	auto smallIcon = LoadImage(hInstance, hIcon, IMAGE_ICON, smallIconWidth, smallIconHeight, 0);
-
-	int largeIconWidth = GetSystemMetrics(SM_CXICON);
-	int largeIconHeight = GetSystemMetrics(SM_CYICON);
-	auto largeIcon = LoadImage(hInstance, hIcon, IMAGE_ICON, largeIconWidth, largeIconHeight, 0);
-
-	ShowSplashscreen(hInstance, hSplash, hText, smallIcon);
-	//Sleep(1500);
-
-	//Filesystem
-	FilesystemInit(WorkingDirectory, "DW", false);
-	Loader::IndexMods();
-	Loader::LoadNativeMods();
-
-	//Needed for InitalizeGameScript
-	auto s_AssetManagerImpl = GetAssetManager();
-	s_AssetManagerImpl->SetGame(gamedir.c_str(), WorkingDirectory.c_str(), 0, NULL, nullptr);
-
-	// Define paths
-	std::string Game_Path = WorkingDirectory + gamedir;
-	std::string Data_Path = WorkingDirectory + gamedir + "/Data";
-	std::string Locale_Path = WorkingDirectory + gamedir + "/Data" + locale;
-	std::string LocalePak_Path = WorkingDirectory + gamedir + "/Data" + locale + ".pak";
-	std::string Speech_Path = WorkingDirectory + gamedir + "/speech" + locale;
-	std::string SpeechPak_Path = WorkingDirectory + gamedir + "/speech" + locale + ".pak";
-
-	// Add Game/DW folder
-	fs::add_source(Game_Path.c_str(), (FFSAddSourceFlags::ENUM)258);
-
-	// Add data0-3.pak sources
-	for (int CurrentDataPak = 0; CurrentDataPak < 4; ++CurrentDataPak) {
-		std::string dataPakPath = WorkingDirectory + gamedir + "/Data" + std::to_string(CurrentDataPak) + ".pak";
-		fs::add_source(dataPakPath.c_str(), FFSAddSourceFlags::SUBDIRS);
-	}
-
-	// Add additional sources
-	fs::add_source(Data_Path.c_str(), (FFSAddSourceFlags::ENUM)7);
-	fs::add_source(Locale_Path.c_str(), (FFSAddSourceFlags::ENUM)265);
-	fs::add_source(LocalePak_Path.c_str(), (FFSAddSourceFlags::ENUM)9);
-	fs::add_source(Speech_Path.c_str(), (FFSAddSourceFlags::ENUM)265);
-	fs::add_source(SpeechPak_Path.c_str(), (FFSAddSourceFlags::ENUM)9);
-
-	//Loader::LoadModPaks();
-
-	//Initalization
-	if (!IGame::InitializeOnlineServices(nullptr)) {
-		dbgprintf("InitializeOnlineServices Failed!");
-		ExitProcess(1);
-	}
-
-	//Loader::PreInitialize();
-#ifdef _DEBUG
-	CrashInitOutToConsole();
-#endif
-	//Loader::PostInitialize();
-	
-	//used in Devtools editor to load the engine, not the devtools player, the editor itself.
-	auto baseAddr = GetModuleHandle(NULL);
-	//Dummy is actually the Editor's Implementation of IEngineImpl somehow? it's at 141505AB8, it only has 58 functions compared to the Engines 215
-	auto local = new IEditorImpl();
-	//theres some other stuff in mem here, CWD, DW_DLC49, LevelDI, some other paths
-	//auto IProgress = new IProgressIndicator();
-	auto IEngineImpl = Initialize(baseAddr, 331818, 397064, local, "GameDI", GameDll_Path.c_str(), "data/settings/defaultvideoquality_xbox_series_x.scr", "data/settings/defaultaudio.scr", &FUN_1402dcf50, nullptr);
-
-
-	dbgprintf("IEngineImpl at: %p\n", IEngineImpl);
-	dbgprintf("m_pGameEditor at: %p\n", IEngineImpl->m_pGameEditor);
-
-	IGame* pIGame = IEngineImpl->m_pGameEditor->m_pGame->m_IGame;
-	pIGame->m_CGame = IEngineImpl->m_pGameEditor->m_pGame;
-
-	//temp->m_CGame = IEngineImpl->m_pGameEditor->m_pGame;
-	///IGame* pIGame(temp);
-
-	dbgprintf("pIGame at: %p\n", pIGame);
-	dbgprintf("pGame at: %p\n", pIGame->m_CGame);
-
-	/*
-	InitializeGameScript(GameDll_Path.c_str(), false);
-	IGame* pIGame = CreateGame("GameDI", hInstance, true, gamedir.c_str());
-	dbgprintf("CreateGame IGame at: %p\n", pGame);
-	
-	pIGame->SetRootDirectory(WorkingDirectory.c_str());
-	dbgprintf("IGame::SetRootDirectory at: %s\n", WorkingDirectory.c_str());
-
-	//DLC
-	auto mountHelper = Mount::CreateMountHelper(WorkingDirectory.c_str(), gamedir.c_str(), nullptr);
-	CRTTIVariant variant(mountHelper);
-	ttl::string_base<char> ClassName("MountHelper");
-
-
-	pIGame->SetProperty(ClassName, variant);
-	*/
-
-	HideSplashscreen();
-	if (pIGame->Initialize(lpCmdLine, nShowCmd, (HICON__*)smallIcon, (HICON__*)largeIcon, 0, 0, nullptr) != 0)
-	{
-		dbgprintf("IGame::Initialize() failed\n");
-		OutputDebugString("IGame::Initialize() failed\n");
-		Alert("Fatal Error", "Game failed to initalize (IGame::Initialize() failed)\n");
-		return EXIT_FAILURE;
-	}
-
-	std::cout << "IsGameInEditor " << pIGame->IsGameInEditor() << std::endl;
-	std::cout << "IsDedicatedServer " << pIGame->IsDedicatedServer() << std::endl;
-	//std::cout << "VideoSettingsIsFullScreen " << pIGame->VideoSettingsIsFullScreen() << std::endl;
-	std::cout << "IsGameRenderingEnabled " << pIGame->IsGameRenderingEnabled() << std::endl;
-	//pIGame->EnableGameRendering(true);
-
-	ttl::string_base<char> TitleStr("Dying Light (CE6DL)");
-	pIGame->SetGameName(TitleStr);
-
-	//Loader::PostInitialize();
-	//Loader::LoadResourcePaks(s_AssetManagerImpl);
-
-	//start rendering loop
-	GameLoop(pIGame);
-
-	pIGame->ShutdownOnlineServices();
-	//Destroy Game instance if still running
-	if (pIGame)
-		DestroyGame(NULL, NULL, NULL, NULL);
-
-	//Mount::DestroyMountHelper(mountHelper);
-
-	// Shutdown the SteamAPI
-	SteamAPI_Shutdown();
-
-	//shutdown
-	UninitializeGameScript();
-
-	//fs shutdown
-	CrashClose();
-	fs::shutdown();
-	SetDumpFunction(DumpFunc);
-
-	return EXIT_SUCCESS;
-}
-
-bool FilesystemInit(std::string WorkingDirectory, std::string gameDir, bool useWorkingDir)
-{
-	//Documents folder name or full path
-	std::string fsSaveDir("DyingLight");
-
-	if (fs::is_full_path(fsSaveDir.c_str()))
-		return fs::init(fsSaveDir.c_str(), FFSAddSourceFlags::SUBDIRS, "out/cache", false, true, nullptr);
-
-	if (!useWorkingDir)
-	{
-		PWSTR path = nullptr;
-		HRESULT hr = SHGetKnownFolderPath(FOLDERID_Documents, 0, nullptr, &path);
-
-		if (SUCCEEDED(hr)) {
-			char pathBuffer[MAX_PATH];
-			WideCharToMultiByte(CP_UTF8, 0, path, -1, pathBuffer, MAX_PATH, NULL, NULL);
-
-			CoTaskMemFree(path);
-
-			std::string fsDestinationPath = std::string(pathBuffer) + "\\" + fsSaveDir;
-			return fs::init(fsDestinationPath.c_str(), FFSAddSourceFlags::SUBDIRS, "out/cache", false, true, nullptr);
-		}
-
-		if (path) {
-			CoTaskMemFree(path);
-		}
-	}
-
-	std::string fsDestinationPath = WorkingDirectory + std::string(gameDir) + "\\out";
-	return fs::init(fsDestinationPath.c_str(), (FFSAddSourceFlags::ENUM)5, "out/cache", false, true, nullptr);
-}
+std::string WorkingDirectory;
+//make not magic at some point
+constexpr const char* kGameDir = "DW"; //Dead World
+constexpr const char* KLocale = "En";
 
 bool SteamInit() {
 	if (SteamAPI_RestartAppIfNecessary(k_uAppId))
@@ -243,8 +22,9 @@ bool SteamInit() {
 
 	if (!SteamAPI_Init())
 	{
-		OutputDebugString("SteamAPI_Init() failed\n");
-		Alert("Fatal Error", "Steam must be running to play Dying Light (SteamAPI_Init() failed).\n");
+		dbgprintf("SteamAPI_Init() failed\n");
+		Utils::Alert("Fatal Error", "Steam must be running to play Dying Light (SteamAPI_Init() failed).\n");
+
 		return EXIT_FAILURE;
 	}
 
@@ -253,7 +33,6 @@ bool SteamInit() {
 
 void GameLoop(IGame* pIGame) {
 	MSG msg;
-
 
 	while (true) {
 		while (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE) == NULL) {
@@ -268,15 +47,164 @@ void GameLoop(IGame* pIGame) {
 	}
 }
 
-void MiniDumpFunction(unsigned int nExceptionCode, EXCEPTION_POINTERS* pException)
-{
-	bool MiniDumpType = false;
-	WriteFullDump(nExceptionCode, pException, nullptr, MiniDumpType, nullptr);
+//Calls fs::init, if fallback is true it will write to the CWD
+//if kSubPath is a full path, it will use that instead
+bool FilesystemInit(bool fallback = false) {
+	constexpr const char* kSubPath = "DyingLight";
+	constexpr const char* kCacheSubPath = "out/cache";
+
+	dbgprintf("FilesystemInit: Starting initialization (fallback = %s)\n", fallback ? "true" : "false");
+
+	// If subPath is already a full path, use it directly
+	if (fs::is_full_path(kSubPath)) {
+		dbgprintf("FilesystemInit: '%s' is a full path, using it directly.\n", kSubPath);
+		return fs::init(kSubPath, FFSAddSourceFlags::SUBDIRS, kCacheSubPath, false, true, nullptr);
+	}
+
+
+	// Try to get the Documents folder
+	PWSTR documentsPath = nullptr;
+	HRESULT hr = SHGetKnownFolderPath(FOLDERID_Documents, 0, nullptr, &documentsPath);
+
+	if (SUCCEEDED(hr) && documentsPath != nullptr) {
+		std::filesystem::path fullPath = std::filesystem::path(documentsPath) / kSubPath;
+		CoTaskMemFree(documentsPath);
+		dbgprintf("FilesystemInit: Got Documents folder, resolved path: %s\n", fullPath);
+
+		if (!fallback) {
+			return fs::init(fullPath.string().c_str(), FFSAddSourceFlags::SUBDIRS, kCacheSubPath, false, true, nullptr);
+		}
+	}
+	dbgprintf("FilesystemInit: Failed to get Documents folder (HRESULT: 0x%08X)\n", hr);
+
+	//cleanup if still existing
+	if (documentsPath) 
+		CoTaskMemFree(documentsPath);
+
+	// Fallback to using the working directory
+	std::filesystem::path fallbackPath = std::filesystem::path(WorkingDirectory) / kGameDir / "out";
+	dbgprintf("FilesystemInit: Falling back to working directory path: %s\n", fallbackPath.string().c_str());
+	return fs::init(fallbackPath.string().c_str(), (FFSAddSourceFlags::ENUM)5, kCacheSubPath, false, true, nullptr);
 }
 
-int Alert(const char* lpCaption, const char* lpText)
+
+void __cdecl LogCallback(enum Log::ELevel::TYPE level, const char* category, const char* message) {
+	printf("%s", message);
+}
+
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
-	return ::MessageBox(nullptr, lpText, lpCaption, MB_OK);
+	if (SteamInit())
+		return EXIT_FAILURE;
+
+	if (!Main())
+		return EXIT_FAILURE;
+
+#ifdef _DEBUG
+	Utils::InitConsole();
+	
+	CrashInitOutToConsole();
+	LogSetPrintCallback(LogCallback);
+#endif
+
+	//parse arguments
+	WorkingDirectory = Utils::GetWorkingDirectory();
+
+
+	auto hSplash = MAKEINTRESOURCE(IDB_SplashA); // Splash Screen
+	auto hText = MAKEINTRESOURCE(IDS_Title);    // Dying Light String Resource
+	auto hIcon = MAKEINTRESOURCE(IDI_ICON);    // Game Icon Resource
+
+	int smallIconWidth = GetSystemMetrics(SM_CXSMICON);
+	int smallIconHeight = GetSystemMetrics(SM_CYSMICON);
+	auto smallIcon = LoadImage(hInstance, hIcon, IMAGE_ICON, smallIconWidth, smallIconHeight, 0);
+
+	int largeIconWidth = GetSystemMetrics(SM_CXICON);
+	int largeIconHeight = GetSystemMetrics(SM_CYICON);
+	auto largeIcon = LoadImage(hInstance, hIcon, IMAGE_ICON, largeIconWidth, largeIconHeight, 0);
+
+	ShowSplashscreen(hInstance, hSplash, hText, smallIcon);
+	FilesystemInit();
+
+	auto s_AssetManagerImpl = GetAssetManager();
+	s_AssetManagerImpl->SetGame(kGameDir, WorkingDirectory.c_str(), 0, NULL, nullptr);
+
+	// Define paths
+	std::string Game_Path = WorkingDirectory + kGameDir;
+	std::string Data_Path = WorkingDirectory + kGameDir + "\\Data";
+	std::string Locale_Path = WorkingDirectory + kGameDir + "\\Data" + KLocale;
+	std::string LocalePak_Path = WorkingDirectory + kGameDir + "\\Data" + KLocale + ".pak";
+	std::string Speech_Path = WorkingDirectory + kGameDir + "\\Speech" + KLocale;
+	std::string SpeechPak_Path = WorkingDirectory + kGameDir + "\\Speech" + KLocale + ".pak";
+
+	// Add Game/DW folder
+	fs::add_source(Game_Path.c_str(), (FFSAddSourceFlags::ENUM)258);
+
+	// Add data0-3.pak sources
+	for (int CurrentDataPak = 0; CurrentDataPak < 4; ++CurrentDataPak) {
+		std::string dataPakPath = WorkingDirectory + kGameDir + "\\Data" + std::to_string(CurrentDataPak) + ".pak";
+		fs::add_source(dataPakPath.c_str(), FFSAddSourceFlags::SUBDIRS);
+	}
+
+	// Add additional sources
+	fs::add_source(Data_Path.c_str(), (FFSAddSourceFlags::ENUM)7);
+	fs::add_source(Locale_Path.c_str(), (FFSAddSourceFlags::ENUM)265);
+	fs::add_source(LocalePak_Path.c_str(), (FFSAddSourceFlags::ENUM)9);
+	fs::add_source(Speech_Path.c_str(), (FFSAddSourceFlags::ENUM)265);
+	fs::add_source(SpeechPak_Path.c_str(), (FFSAddSourceFlags::ENUM)9);
+
+	if (!IGame::InitializeOnlineServices(nullptr)) {
+		dbgprintf("IGame::InitializeOnlineServices Failed!");
+		ExitProcess(1);
+	}
+
+	std::string GameDll_Path = WorkingDirectory + "gamedll";
+	InitializeGameScript(GameDll_Path.c_str(), false);
+
+	IGame* pIGame = CreateGame("GameDI", hInstance, true, kGameDir);
+	dbgprintf("CreateGame GameDI at: %p\n", pIGame);
+
+	pIGame->SetRootDirectory(WorkingDirectory.c_str());
+	dbgprintf("IGame::SetRootDirectory at: %s\n", WorkingDirectory.c_str());
+
+	auto mountHelper = Mount::CreateMountHelper(WorkingDirectory.c_str(), kGameDir, nullptr);
+	CRTTIVariant variant(mountHelper);
+	ttl::string_base<char> ClassName("MountHelper");
+	pIGame->SetProperty(ClassName, variant);
+
+	HideSplashscreen();
+
+	dbgprintf("IsGameInEditor: %s\n", pIGame->IsGameInEditor());
+	dbgprintf("IsDedicatedServer: %s\n", pIGame->IsDedicatedServer());
+	dbgprintf("IsGameRenderingEnabled: %s\n", pIGame->IsGameRenderingEnabled());
+
+	if (pIGame->Initialize(lpCmdLine, nShowCmd, (HICON__*)smallIcon, (HICON__*)largeIcon, 0, 0, nullptr) != 0)
+	{
+		dbgprintf("IGame::Initialize() failed\n");
+		Utils::Alert("Fatal Error", "Game failed to initalize (IGame::Initialize() failed)\n");
+		return EXIT_FAILURE;
+	}
+
+	ttl::string_base<char> TitleStr("Dying Light (CE6DL)");
+	pIGame->SetGameName(TitleStr);
+
+	//start rendering loop
+	GameLoop(pIGame);
+
+	//pIGame->ShutdownOnlineServices();
+
+	if (pIGame)
+		DestroyGame(NULL, NULL, NULL, NULL);
+
+	IGame::ShutdownOnlineServices();
+	Mount::DestroyMountHelper(mountHelper);
+	UninitializeGameScript();
+	//CrashClose();
+	fs::shutdown();
+	//SetDumpFunction(DumpFunc);
+
+	return EXIT_SUCCESS;
 }
 
 

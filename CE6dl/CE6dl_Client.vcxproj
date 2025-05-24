@@ -10,6 +10,73 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Core\Pch\pch.cpp" />
+    <ClCompile Include="Core\Util\Alert.cpp" />
+    <ClCompile Include="Core\Util\Console.cpp" />
+    <ClCompile Include="Core\Util\String.cpp" />
+    <ClCompile Include="WinFrame.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Core\Pch\pch.h" />
+    <ClInclude Include="Core\Sdk\Engine\engine.h" />
+    <ClInclude Include="Core\Sdk\Engine\IGame.h" />
+    <ClInclude Include="Core\Sdk\Filesystem\Filesystem.h" />
+    <ClInclude Include="Core\Sdk\Filesystem\Log.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamapplist.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamapps.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamappticket.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamclient.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamcontroller.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamdualsense.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamfriends.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamgamecoordinator.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamgameserver.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamgameserverstats.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamhtmlsurface.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamhttp.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteaminput.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteaminventory.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteammatchmaking.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteammusic.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteammusicremote.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamnetworking.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamnetworkingmessages.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamnetworkingsockets.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamnetworkingutils.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamparentalsettings.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamps3overlayrenderer.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamremoteplay.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamremotestorage.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamscreenshots.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamugc.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamuser.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamuserstats.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamutils.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamvideo.h" />
+    <ClInclude Include="Core\Sdk\Steam\matchmakingtypes.h" />
+    <ClInclude Include="Core\Sdk\Steam\steamclientpublic.h" />
+    <ClInclude Include="Core\Sdk\Steam\steamencryptedappticket.h" />
+    <ClInclude Include="Core\Sdk\Steam\steamhttpenums.h" />
+    <ClInclude Include="Core\Sdk\Steam\steamnetworkingfakeip.h" />
+    <ClInclude Include="Core\Sdk\Steam\steamnetworkingtypes.h" />
+    <ClInclude Include="Core\Sdk\Steam\steamps3params.h" />
+    <ClInclude Include="Core\Sdk\Steam\steamtypes.h" />
+    <ClInclude Include="Core\Sdk\Steam\steamuniverse.h" />
+    <ClInclude Include="Core\Sdk\Steam\steam_api.h" />
+    <ClInclude Include="Core\Sdk\Steam\steam_api_common.h" />
+    <ClInclude Include="Core\Sdk\Steam\steam_api_flat.h" />
+    <ClInclude Include="Core\Sdk\Steam\steam_api_internal.h" />
+    <ClInclude Include="Core\Sdk\Steam\steam_gameserver.h" />
+    <ClInclude Include="Core\Sdk\TTL.h" />
+    <ClInclude Include="Core\Util\Alert.h" />
+    <ClInclude Include="Core\Util\Console.h" />
+    <ClInclude Include="Core\Util\String.h" />
+    <ClInclude Include="Resources\Resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources\Resource.rc" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -55,17 +122,17 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName)_$(PlatformTarget).pch</PrecompiledHeaderOutputFile>
-      <AdditionalIncludeDirectories>Pch</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Core/Pch</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>lib/steam/steam_api64.lib;lib/engine/engine_x64_rwdi.lib;lib/filesystem/filesystem_x64_rwdi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Core/Sdk/Lib/Engine/engine_x64_rwdi.lib;Core/Sdk/Lib/Filesystem/filesystem_x64_rwdi.lib;Core/Sdk/Lib/Steam/steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /I "lib\steam\steam_api64.dll" "$(OutDir)"
-xcopy /Y /I "lib\filesystem\filesystem_x64_rwdi.dll" "$(OutDir)"
-xcopy /Y /I "lib\engine\engine_x64_rwdi.dll" "$(OutDir)"</Command>
+      <Command>xcopy /Y /I "Core/Sdk/Lib/Steam/steam_api64.dll" "$(OutDir)"
+xcopy /Y /I "Core/Sdk/Lib/Filesystem/filesystem_x64_rwdi.dll" "$(OutDir)"
+xcopy /Y /I "Core/Sdk/Lib/Engine/engine_x64_rwdi.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -81,7 +148,7 @@ xcopy /Y /I "lib\engine\engine_x64_rwdi.dll" "$(OutDir)"</Command>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName)_$(PlatformTarget).pch</PrecompiledHeaderOutputFile>
-      <AdditionalIncludeDirectories>Pch</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Core/Pch</AdditionalIncludeDirectories>
       <Optimization>MaxSpeed</Optimization>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
@@ -91,96 +158,14 @@ xcopy /Y /I "lib\engine\engine_x64_rwdi.dll" "$(OutDir)"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>lib/steam/steam_api64.lib;lib/engine/engine_x64_rwdi.lib;lib/filesystem/filesystem_x64_rwdi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Core/Sdk/Lib/Engine/engine_x64_rwdi.lib;Core/Sdk/Lib/Filesystem/filesystem_x64_rwdi.lib;Core/Sdk/Lib/Steam/steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /I "lib\steam\steam_api64.dll" "$(OutDir)"
-xcopy /Y /I "lib\filesystem\filesystem_x64_rwdi.dll" "$(OutDir)"
-xcopy /Y /I "lib\engine\engine_x64_rwdi.dll" "$(OutDir)"</Command>
+      <Command>xcopy /Y /I "Core/Sdk/Lib/Steam/steam_api64.dll" "$(OutDir)"
+xcopy /Y /I "Core/Sdk/Lib/Filesystem/filesystem_x64_rwdi.dll" "$(OutDir)"
+xcopy /Y /I "Core/Sdk/Lib/Engine/engine_x64_rwdi.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Core\Loader.cpp" />
-    <ClCompile Include="Pch\pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Core\Utils.cpp" />
-    <ClCompile Include="winframe.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="SDK\Engine\CGame.h" />
-    <ClInclude Include="SDK\Engine\CLevel.h" />
-    <ClInclude Include="SDK\Engine\CResourceLoadingRuntime.h" />
-    <ClInclude Include="SDK\Engine\CRTTI.h" />
-    <ClInclude Include="SDK\Engine\CRTTIManager.h" />
-    <ClInclude Include="SDK\Engine\IEngineImpl.h" />
-    <ClInclude Include="SDK\Engine\IGame.h" />
-    <ClInclude Include="SDK\Engine\engine_x64_rwdi.h" />
-    <ClInclude Include="SDK\Engine\ILevel.h" />
-    <ClInclude Include="SDK\Filesystem\filesystem_x64_rwdi.h" />
-    <ClInclude Include="Core\Loader.h" />
-    <ClInclude Include="SDK\Filesystem\Log.h" />
-    <ClInclude Include="SDK\TTL.h" />
-    <ClInclude Include="Pch\pch.h" />
-    <ClInclude Include="Resources\DyingLightGame.h" />
-    <ClInclude Include="Resources\Resource.h" />
-    <ClInclude Include="SDK\Steam\isteamapplist.h" />
-    <ClInclude Include="SDK\Steam\isteamapps.h" />
-    <ClInclude Include="SDK\Steam\isteamappticket.h" />
-    <ClInclude Include="SDK\Steam\isteamclient.h" />
-    <ClInclude Include="SDK\Steam\isteamcontroller.h" />
-    <ClInclude Include="SDK\Steam\isteamdualsense.h" />
-    <ClInclude Include="SDK\Steam\isteamfriends.h" />
-    <ClInclude Include="SDK\Steam\isteamgamecoordinator.h" />
-    <ClInclude Include="SDK\Steam\isteamgameserver.h" />
-    <ClInclude Include="SDK\Steam\isteamgameserverstats.h" />
-    <ClInclude Include="SDK\Steam\isteamhtmlsurface.h" />
-    <ClInclude Include="SDK\Steam\isteamhttp.h" />
-    <ClInclude Include="SDK\Steam\isteaminput.h" />
-    <ClInclude Include="SDK\Steam\isteaminventory.h" />
-    <ClInclude Include="SDK\Steam\isteammatchmaking.h" />
-    <ClInclude Include="SDK\Steam\isteammusic.h" />
-    <ClInclude Include="SDK\Steam\isteammusicremote.h" />
-    <ClInclude Include="SDK\Steam\isteamnetworking.h" />
-    <ClInclude Include="SDK\Steam\isteamnetworkingmessages.h" />
-    <ClInclude Include="SDK\Steam\isteamnetworkingsockets.h" />
-    <ClInclude Include="SDK\Steam\isteamnetworkingutils.h" />
-    <ClInclude Include="SDK\Steam\isteamparentalsettings.h" />
-    <ClInclude Include="SDK\Steam\isteamps3overlayrenderer.h" />
-    <ClInclude Include="SDK\Steam\isteamremoteplay.h" />
-    <ClInclude Include="SDK\Steam\isteamremotestorage.h" />
-    <ClInclude Include="SDK\Steam\isteamscreenshots.h" />
-    <ClInclude Include="SDK\Steam\isteamugc.h" />
-    <ClInclude Include="SDK\Steam\isteamuser.h" />
-    <ClInclude Include="SDK\Steam\isteamuserstats.h" />
-    <ClInclude Include="SDK\Steam\isteamutils.h" />
-    <ClInclude Include="SDK\Steam\isteamvideo.h" />
-    <ClInclude Include="SDK\Steam\matchmakingtypes.h" />
-    <ClInclude Include="SDK\Steam\steamclientpublic.h" />
-    <ClInclude Include="SDK\Steam\steamencryptedappticket.h" />
-    <ClInclude Include="SDK\Steam\steamhttpenums.h" />
-    <ClInclude Include="SDK\Steam\steamnetworkingfakeip.h" />
-    <ClInclude Include="SDK\Steam\steamnetworkingtypes.h" />
-    <ClInclude Include="SDK\Steam\steamps3params.h" />
-    <ClInclude Include="SDK\Steam\steamtypes.h" />
-    <ClInclude Include="SDK\Steam\steamuniverse.h" />
-    <ClInclude Include="SDK\Steam\steam_api.h" />
-    <ClInclude Include="SDK\Steam\steam_api_common.h" />
-    <ClInclude Include="SDK\Steam\steam_api_flat.h" />
-    <ClInclude Include="SDK\Steam\steam_api_internal.h" />
-    <ClInclude Include="SDK\Steam\steam_gameserver.h" />
-    <ClInclude Include="Core\Utils.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Resources\DyingLightGame.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Resources\BASE.bmp" />
-    <Image Include="Resources\BASE.ico" />
-    <Image Include="resources\BITMAP159_1.bmp" />
-    <Image Include="resources\ICON161_1.ico" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>
