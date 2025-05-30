@@ -8,6 +8,9 @@
 #include "Core/Sdk/Filesystem/Filesystem.h"
 #include "Core/Util/String.h"
 #include "Core/Sdk/Engine/IGame.h"
+#include "Loader.h"
+#include "Core/Sdk/Engine/resource.h"
+#include "Hooks.h"
 
 typedef uint32 AppId_t;
 const AppId_t k_uAppId = 239140;
@@ -61,7 +64,6 @@ bool FilesystemInit(bool fallback = false) {
 		return fs::init(kSubPath, FFSAddSourceFlags::SUBDIRS, kCacheSubPath, false, true, nullptr);
 	}
 
-
 	// Try to get the Documents folder
 	PWSTR documentsPath = nullptr;
 	HRESULT hr = SHGetKnownFolderPath(FOLDERID_Documents, 0, nullptr, &documentsPath);
@@ -69,12 +71,15 @@ bool FilesystemInit(bool fallback = false) {
 	if (SUCCEEDED(hr) && documentsPath != nullptr) {
 		std::filesystem::path fullPath = std::filesystem::path(documentsPath) / kSubPath;
 		CoTaskMemFree(documentsPath);
-		dbgprintf("FilesystemInit: Got Documents folder, resolved path: %s\n", fullPath);
+
+		std::string fullPathStr = fullPath.string(); // Store the string to ensure lifetime
+		dbgprintf("FilesystemInit: Got Documents folder, resolved path: %s\n", fullPathStr.c_str());
 
 		if (!fallback) {
-			return fs::init(fullPath.string().c_str(), FFSAddSourceFlags::SUBDIRS, kCacheSubPath, false, true, nullptr);
+			return fs::init(fullPathStr.c_str(), FFSAddSourceFlags::SUBDIRS, kCacheSubPath, false, true, nullptr);
 		}
 	}
+
 	dbgprintf("FilesystemInit: Failed to get Documents folder (HRESULT: 0x%08X)\n", hr);
 
 	//cleanup if still existing
@@ -106,6 +111,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	
 	CrashInitOutToConsole();
 	LogSetPrintCallback(LogCallback);
+
+	while (!::IsDebuggerPresent())
+		::Sleep(100); // to avoid 100% CPU load
+
 #endif
 
 	//parse arguments
@@ -126,6 +135,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	ShowSplashscreen(hInstance, hSplash, hText, smallIcon);
 	FilesystemInit();
+	Loader::IndexMods();
+	Loader::LoadNativeMods();
+	Hooks::Init();
+	Hooks::Enable();
 
 	auto s_AssetManagerImpl = GetAssetManager();
 	s_AssetManagerImpl->SetGame(kGameDir, WorkingDirectory.c_str(), 0, NULL, nullptr);
@@ -154,6 +167,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	fs::add_source(Speech_Path.c_str(), (FFSAddSourceFlags::ENUM)265);
 	fs::add_source(SpeechPak_Path.c_str(), (FFSAddSourceFlags::ENUM)9);
 
+	Loader::LoadModPaks();
+
 	if (!IGame::InitializeOnlineServices(nullptr)) {
 		dbgprintf("IGame::InitializeOnlineServices Failed!");
 		ExitProcess(1);
@@ -175,9 +190,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	HideSplashscreen();
 
-	dbgprintf("IsGameInEditor: %s\n", pIGame->IsGameInEditor());
-	dbgprintf("IsDedicatedServer: %s\n", pIGame->IsDedicatedServer());
-	dbgprintf("IsGameRenderingEnabled: %s\n", pIGame->IsGameRenderingEnabled());
+	//dbgprintf("IsGameInEditor: %s\n", pIGame->IsGameInEditor() ? "true" : "false");
+	//dbgprintf("IsDedicatedServer: %s\n", pIGame->IsDedicatedServer() ? "true" : "false");
+	//dbgprintf("IsGameRenderingEnabled: %s\n", pIGame->IsGameRenderingEnabled() ? "true" : "false");
+
+	//callback for asi mods
+	Loader::PreInitialize();
 
 	if (pIGame->Initialize(lpCmdLine, nShowCmd, (HICON__*)smallIcon, (HICON__*)largeIcon, 0, 0, nullptr) != 0)
 	{
@@ -185,14 +203,26 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		Utils::Alert("Fatal Error", "Game failed to initalize (IGame::Initialize() failed)\n");
 		return EXIT_FAILURE;
 	}
+	Hooks::MaterialMgrInit();
 
+	//load rpacks
+	auto s_ResourceLoadingRuntime = CResourceLoadingRuntime::Get();
+	Loader::LoadResourcePaks(s_ResourceLoadingRuntime);
+
+	//load tiny rpacks
+	Loader::LoadTinyResourcePaks(pIGame);
+
+	Loader::LoadMaterialPacks(s_MaterialMgr);
+
+	//callback for asi mods
+	Loader::PostInitialize();
+
+	//set custom title
 	ttl::string_base<char> TitleStr("Dying Light (CE6DL)");
 	pIGame->SetGameName(TitleStr);
 
 	//start rendering loop
 	GameLoop(pIGame);
-
-	//pIGame->ShutdownOnlineServices();
 
 	if (pIGame)
 		DestroyGame(NULL, NULL, NULL, NULL);

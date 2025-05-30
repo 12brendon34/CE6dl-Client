@@ -1,5 +1,5 @@
 #pragma once
-#include "IGame.h"
+#include "igame.h"
 
 #define DLL_EXPORT __declspec(dllimport)
 
@@ -59,6 +59,41 @@ struct AssetManager {
     virtual void LoadAsset(char const* Path, UINT param_2, char const* param_3);
 
     virtual ~AssetManager() = default;
+};
+
+class CMaterialsPack {
+
+};
+
+class CMaterialMgr {
+public:
+    virtual CMaterialsPack* LoadPack(LPCSTR Path, int ELoadPackOptions);
+
+    /*
+    0147b9c0 a0 14 ec        addr       CMaterialMgr::FreePack
+    0147b9c8 f0 06 ec        addr       CMaterialMgr::LoadMaterial
+    0147b9d0 80 d8 eb        addr       CMaterialMgr::AddMaterialReference
+    0147b9d8 80 15 ec        addr       CMaterialMgr::ReleaseMaterial
+    0147b9e0 a0 d7 eb        addr       CMaterialMgr::DeleteWhenReleased
+    0147b9e8 60 dc eb        addr       CMaterialMgr::FindMaterial
+    0147b9f0 30 d7 eb        addr       CMaterialMgr::IsDefaultMaterial
+    0147b9f8 a0 d8 eb        addr       CMaterialMgr::GetDefaultMaterial
+    0147ba00 90 18 ec        addr       CMaterialMgr::DumpMaterials
+    0147ba08 b0 d7 eb        addr       CMaterialMgr::DumpMaterialsNames
+    0147ba10 30 3a ec        addr       CMaterialMgr::GetTechniqueName
+    0147ba18 00 eb eb        addr       CMaterialMgr::OnLevelExit
+    0147ba20 30 2d ec        addr       CMaterialMgr::ReloadLocalMaterials
+    0147ba28 20 3a ec        addr       CMaterialMgr::GetTechniqueID
+    0147ba30 40 d7 eb        addr       CMaterialMgr::SetUniqueDefMatMode
+    0147ba38 f0 d7 eb        addr       CMaterialMgr::GetMaterials
+    0147ba40 d0 d8 eb        addr       CMaterialMgr::AcquireLoadedMaterialVersions
+    0147ba48 c0 03 ec        addr       CMaterialMgr::CloneMaterial
+    0147ba50 50 d7 eb        addr       CMaterialMgr::CloneMaterialByName
+    0147ba58 a0 dd eb        addr       CMaterialMgr::ObtainTextuerQuality
+    0147ba60 a0 fc eb        addr       CMaterialMgr::VerifyTexturesArePresent
+    */
+
+    virtual ~CMaterialMgr() = default;
 };
 
 struct AssetManager* __cdecl GetAssetManager(void);

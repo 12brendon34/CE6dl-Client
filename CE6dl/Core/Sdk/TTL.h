@@ -134,4 +134,63 @@ namespace ttl {
     class vector {
         //idk bro
     };
+
+
+
+    //guess and shit
+    template<int MemType, typename T>
+    class vectorm {
+    private:
+        T* m_Data = nullptr;      // offset 0x0
+        uint32_t m_Size = 0;      // offset 0x8
+        uint32_t m_Capacity = 0;  // offset 0xC
+
+    public:
+        vectorm() = default;
+
+        ~vectorm() {
+            clear();
+            if (m_Data) {
+                free(m_Data);
+                m_Data = nullptr;
+            }
+            m_Size = 0;
+            m_Capacity = 0;
+        }
+
+        void push_back(const T& value) {
+            if (m_Size >= m_Capacity) {
+                grow();
+            }
+            m_Data[m_Size++] = value;
+        }
+
+        void clear() {
+            for (uint32_t i = 0; i < m_Size; ++i) {
+                m_Data[i].~T();
+            }
+            m_Size = 0;
+        }
+
+        size_t size() const {
+            return m_Size;
+        }
+
+        T& operator[](size_t index) {
+            if (index >= m_Size) throw std::out_of_range("Index out of bounds");
+            return m_Data[index];
+        }
+
+        const T& operator[](size_t index) const {
+            if (index >= m_Size) throw std::out_of_range("Index out of bounds");
+            return m_Data[index];
+        }
+
+    private:
+        void grow() {
+            m_Capacity = m_Capacity ? m_Capacity * 2 : 4;
+            m_Data = reinterpret_cast<T*>(realloc(m_Data, sizeof(T) * m_Capacity));
+            if (!m_Data) throw std::bad_alloc();
+        }
+    };
 }

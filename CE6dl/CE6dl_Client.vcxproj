@@ -14,13 +14,34 @@
     <ClCompile Include="Core\Pch\pch.cpp" />
     <ClCompile Include="Core\Util\Alert.cpp" />
     <ClCompile Include="Core\Util\Console.cpp" />
+    <ClCompile Include="Core\Util\Directory.cpp" />
+    <ClCompile Include="Core\Util\Mem.cpp" />
     <ClCompile Include="Core\Util\String.cpp" />
+    <ClCompile Include="Hooks.cpp" />
+    <ClCompile Include="Loader.cpp" />
+    <ClCompile Include="MinHook\buffer.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="MinHook\hde\hde64.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="MinHook\MinHook.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="MinHook\trampoline.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="WinFrame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Pch\pch.h" />
     <ClInclude Include="Core\Sdk\Engine\engine.h" />
-    <ClInclude Include="Core\Sdk\Engine\IGame.h" />
+    <ClInclude Include="Core\Sdk\Engine\igame.h" />
+    <ClInclude Include="Core\Sdk\Engine\resource.h" />
     <ClInclude Include="Core\Sdk\Filesystem\Filesystem.h" />
     <ClInclude Include="Core\Sdk\Filesystem\Log.h" />
     <ClInclude Include="Core\Sdk\Steam\isteamapplist.h" />
@@ -71,7 +92,17 @@
     <ClInclude Include="Core\Sdk\TTL.h" />
     <ClInclude Include="Core\Util\Alert.h" />
     <ClInclude Include="Core\Util\Console.h" />
+    <ClInclude Include="Core\Util\Directory.h" />
+    <ClInclude Include="Core\Util\Mem.h" />
     <ClInclude Include="Core\Util\String.h" />
+    <ClInclude Include="Hooks.h" />
+    <ClInclude Include="Loader.h" />
+    <ClInclude Include="MinHook\buffer.h" />
+    <ClInclude Include="MinHook\hde\hde64.h" />
+    <ClInclude Include="MinHook\hde\pstdint.h" />
+    <ClInclude Include="MinHook\hde\table64.h" />
+    <ClInclude Include="MinHook\MinHook.h" />
+    <ClInclude Include="MinHook\trampoline.h" />
     <ClInclude Include="Resources\Resource.h" />
   </ItemGroup>
   <ItemGroup>
