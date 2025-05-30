@@ -14,10 +14,6 @@ namespace Loader {
 
     void IndexMods()
     {
-        std::string WorkingPath = Utils::GetWorkingDirectory();
-        std::string ModsPath = WorkingPath + "mods/";
-
-        Utils::CreateFolder(ModsPath);
 
         /*
         * 
@@ -51,31 +47,54 @@ namespace Loader {
         */
 
 
+        std::filesystem::path WorkingPath = Utils::GetWorkingDirectory();
+        std::filesystem::path ModsPath = WorkingPath / "Mods";
+        std::filesystem::path GlobalPaksPath = ModsPath / "GlobalPaks";
+
+        Utils::CreateFolder(ModsPath);
+        Utils::CreateFolder(GlobalPaksPath);
+
+        //normal mods
         for (const auto& modEntry : std::filesystem::directory_iterator(ModsPath))
         {
+            std::filesystem::path ModBasePath = modEntry.path();
+            std::filesystem::path LibsPath = ModBasePath / "Libs";
+            std::filesystem::path PaksPath = ModBasePath / "Paks";
+            std::filesystem::path RpacksPath = ModBasePath / "Rpacks";
+            std::filesystem::path TinyRpacksPath = RpacksPath / "Tiny";
+            std::filesystem::path MatPacksPath = ModBasePath / "Matpacks";
+
             if (!std::filesystem::is_directory(modEntry.status()))
                 continue;
+
 
             Mod currentMod;
             currentMod.ModName = modEntry.path().filename().string();
             currentMod.IsEnabled = true;
 
-            /*
-            // Build paths relative to this mod folder
-            std::string ModBasePath = modEntry.path().string();
-            std::string LibsPath = ModBasePath + "/libs/";
-            std::string PaksPath = ModBasePath + "/paks/";
-            std::string RpacksPath = ModBasePath + "/rpacks/";
-            std::string TinyRpacksPath = RpacksPath + "/tiny/";
-            std::string MatPacksPath = ModBasePath + "/matpacks/";
-            */
+            //this section is for a "Global" mod, which is just for loading mods not made for this loader
+            //if in the "GlobalPaks" folder
+            if (currentMod.ModName == "GlobalPaks")
+            {
+                //for each file in "GlobalPaks"
+                for (const auto& file : std::filesystem::directory_iterator(ModBasePath))
+                {
+                    if (Utils::str_tolower(file.path().extension().string()) == ".pak")
+                    {
+                        SubMod pakMod;
+                        pakMod.ModName = file.path().stem().string();
+                        pakMod.ModType = SubMod::PAK;
+                        pakMod.ModPath = file.path().string();
+                        currentMod.SubMods.push_back(pakMod);
+                    }
+                }
 
-            std::filesystem::path ModBasePath = modEntry.path();
-            std::filesystem::path LibsPath = ModBasePath / "libs";
-            std::filesystem::path PaksPath = ModBasePath / "paks";
-            std::filesystem::path RpacksPath = ModBasePath / "rpacks";
-            std::filesystem::path TinyRpacksPath = RpacksPath / "tiny";
-            std::filesystem::path MatPacksPath = ModBasePath / "matpacks";
+                //only actually add the global "mod" if there are any paks
+                if (currentMod.SubMods.size() > 0)
+                    ModList.push_back(currentMod);
+
+                continue;
+            }
 
 
             // Ensure subfolders exist
@@ -85,8 +104,8 @@ namespace Loader {
             Utils::CreateFolder(TinyRpacksPath);
             Utils::CreateFolder(MatPacksPath);
 
-            fs::add_source(RpacksPath.string().c_str(), (FFSAddSourceFlags::ENUM)7);
             fs::add_source(TinyRpacksPath.string().c_str(), (FFSAddSourceFlags::ENUM)7);
+            fs::add_source(RpacksPath.string().c_str(), (FFSAddSourceFlags::ENUM)7);
             fs::add_source(MatPacksPath.string().c_str(), (FFSAddSourceFlags::ENUM)7);
 
             // Load .dll and .asi from Libs/
