@@ -23,7 +23,7 @@ namespace Loader {
     };
 
     using T_PreInitialize = void (*)(void);
-    using T_PostInitialize = void (*)(void);
+    using T_PostInitialize = void (*)(IGame* pIGame);
     using T_GetPluginName = const char* (*)(void);
 
     void IndexMods();
@@ -37,7 +37,7 @@ namespace Loader {
     void LoadMaterialPacks(CMaterialMgr* s_MaterialMgr);
 
     void PreInitialize();
-    void PostInitialize();
+    void PostInitialize(IGame* pIGame);
 
     /*
 

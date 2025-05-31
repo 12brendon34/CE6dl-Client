@@ -291,7 +291,7 @@ public:
 class __declspec(dllimport) CRTTI {
 public:
     CRTTI(CRTTI const&);
-    //CRTTI(char const*, int, (*);
+    CRTTI(char const*, int, (*);
     //void AddField(CRTTIField const*);
     void AddImplementation(CRTTI const*);
     void AddInterface(CRTTI const*);
@@ -302,7 +302,7 @@ public:
     void ClearClassFlags(int);
     void ClearFieldsList();
     void ClearFilterFlag(__int64) const;
-    //void Construct(int, (*);
+    void Construct(int, (*);
     bool CopyFields(CRTTIObject*, CRTTIObject const*, bool) const;
     bool CopyPointerFields(CRTTIObject*, CRTTIObject const*) const;
     static bool EatWhiteChars(char*&);

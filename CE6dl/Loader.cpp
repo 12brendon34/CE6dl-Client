@@ -318,7 +318,7 @@ namespace Loader {
         }
     }
 
-    void PostInitialize() {
+    void PostInitialize(IGame* pIGame) {
         for (const auto& HModule : NativeMods)
         {
             if (HModule == nullptr) {
@@ -329,7 +329,7 @@ namespace Loader {
             auto PostInitialize = (T_PostInitialize)GetProcAddress(HModule, "PostInitialize");
 
             if (PostInitialize)
-                PostInitialize();
+                PostInitialize(pIGame);
         }
     }
 }

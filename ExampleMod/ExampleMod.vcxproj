@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{f9743454-09f6-4625-84b1-fff6986a3527}</ProjectGuid>
+    <RootNamespace>ExampleMod</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;EXAMPLEMOD_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>Core/Pch</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>Core/Sdk/Lib/Engine/engine_x64_rwdi.lib;Core/Sdk/Lib/Filesystem/filesystem_x64_rwdi.lib;Core/Sdk/Lib/Steam/steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;EXAMPLEMOD_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>Core/Pch</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>Core/Sdk/Lib/Engine/engine_x64_rwdi.lib;Core/Sdk/Lib/Filesystem/filesystem_x64_rwdi.lib;Core/Sdk/Lib/Steam/steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;EXAMPLEMOD_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>Core/Pch</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>Core/Sdk/Lib/Engine/engine_x64_rwdi.lib;Core/Sdk/Lib/Filesystem/filesystem_x64_rwdi.lib;Core/Sdk/Lib/Steam/steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;EXAMPLEMOD_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>Core/Pch</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>Core/Sdk/Lib/Engine/engine_x64_rwdi.lib;Core/Sdk/Lib/Filesystem/filesystem_x64_rwdi.lib;Core/Sdk/Lib/Steam/steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Core\Pch\pch.h" />
+    <ClInclude Include="Core\Sdk\Engine\engine.h" />
+    <ClInclude Include="Core\Sdk\Engine\igame.h" />
+    <ClInclude Include="Core\Sdk\Engine\resource.h" />
+    <ClInclude Include="Core\Sdk\Filesystem\Filesystem.h" />
+    <ClInclude Include="Core\Sdk\Filesystem\Log.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamapplist.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamapps.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamappticket.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamclient.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamcontroller.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamdualsense.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamfriends.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamgamecoordinator.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamgameserver.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamgameserverstats.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamhtmlsurface.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamhttp.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteaminput.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteaminventory.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteammatchmaking.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteammusic.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteammusicremote.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamnetworking.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamnetworkingmessages.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamnetworkingsockets.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamnetworkingutils.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamparentalsettings.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamps3overlayrenderer.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamremoteplay.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamremotestorage.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamscreenshots.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamugc.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamuser.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamuserstats.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamutils.h" />
+    <ClInclude Include="Core\Sdk\Steam\isteamvideo.h" />
+    <ClInclude Include="Core\Sdk\Steam\matchmakingtypes.h" />
+    <ClInclude Include="Core\Sdk\Steam\steamclientpublic.h" />
+    <ClInclude Include="Core\Sdk\Steam\steamencryptedappticket.h" />
+    <ClInclude Include="Core\Sdk\Steam\steamhttpenums.h" />
+    <ClInclude Include="Core\Sdk\Steam\steamnetworkingfakeip.h" />
+    <ClInclude Include="Core\Sdk\Steam\steamnetworkingtypes.h" />
+    <ClInclude Include="Core\Sdk\Steam\steamps3params.h" />
+    <ClInclude Include="Core\Sdk\Steam\steamtypes.h" />
+    <ClInclude Include="Core\Sdk\Steam\steamuniverse.h" />
+    <ClInclude Include="Core\Sdk\Steam\steam_api.h" />
+    <ClInclude Include="Core\Sdk\Steam\steam_api_common.h" />
+    <ClInclude Include="Core\Sdk\Steam\steam_api_flat.h" />
+    <ClInclude Include="Core\Sdk\Steam\steam_api_internal.h" />
+    <ClInclude Include="Core\Sdk\Steam\steam_gameserver.h" />
+    <ClInclude Include="Core\Sdk\TTL.h" />
+    <ClInclude Include="Core\Util\Alert.h" />
+    <ClInclude Include="Core\Util\Console.h" />
+    <ClInclude Include="Core\Util\Directory.h" />
+    <ClInclude Include="Core\Util\Mem.h" />
+    <ClInclude Include="Core\Util\String.h" />
+    <ClInclude Include="MinHook\buffer.h" />
+    <ClInclude Include="MinHook\hde\hde64.h" />
+    <ClInclude Include="MinHook\hde\pstdint.h" />
+    <ClInclude Include="MinHook\hde\table64.h" />
+    <ClInclude Include="MinHook\MinHook.h" />
+    <ClInclude Include="MinHook\trampoline.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Core\Pch\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Core\Util\Alert.cpp" />
+    <ClCompile Include="Core\Util\Console.cpp" />
+    <ClCompile Include="Core\Util\Directory.cpp" />
+    <ClCompile Include="Core\Util\Mem.cpp" />
+    <ClCompile Include="Core\Util\String.cpp" />
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="MinHook\buffer.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="MinHook\hde\hde64.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="MinHook\MinHook.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="MinHook\trampoline.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

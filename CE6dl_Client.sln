@@ -3,30 +3,54 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{52CA45D1-41DF-4103-8C3D-1E122BF1C57C}") = "DyingLightGame", "CE6dl\CE6dl_Client.vcxproj", "{52CA45D1-41DF-4103-8C3D-1E122BF1C57C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DyingLightGame", "CE6dl\CE6dl_Client.vcxproj", "{52CA45D1-41DF-4103-8C3D-1E122BF1C57C}"
 EndProject
-Project("{CBA7B028-A93F-4577-8F31-3F8D81BAAEFD}") = "engine_x64_rwdi", "engine_x64_rwdi\engine_x64_rwdi.vcxproj", "{CBA7B028-A93F-4577-8F31-3F8D81BAAEFD}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "engine_x64_rwdi", "engine_x64_rwdi\engine_x64_rwdi.vcxproj", "{CBA7B028-A93F-4577-8F31-3F8D81BAAEFD}"
 EndProject
-Project("{E6ED9E82-BA5E-45AF-894F-05ABFF0DFDE6}") = "filesystem_x64_rwdi", "filesystem_x64_rwdi\filesystem_x64_rwdi.vcxproj", "{E6ED9E82-BA5E-45AF-894F-05ABFF0DFDE6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "filesystem_x64_rwdi", "filesystem_x64_rwdi\filesystem_x64_rwdi.vcxproj", "{E6ED9E82-BA5E-45AF-894F-05ABFF0DFDE6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExampleMod", "ExampleMod\ExampleMod.vcxproj", "{F9743454-09F6-4625-84B1-FFF6986A3527}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{52CA45D1-41DF-4103-8C3D-1E122BF1C57C}.Debug|x64.ActiveCfg = Debug|x64
 		{52CA45D1-41DF-4103-8C3D-1E122BF1C57C}.Debug|x64.Build.0 = Debug|x64
+		{52CA45D1-41DF-4103-8C3D-1E122BF1C57C}.Debug|x86.ActiveCfg = Debug|x64
+		{52CA45D1-41DF-4103-8C3D-1E122BF1C57C}.Debug|x86.Build.0 = Debug|x64
 		{52CA45D1-41DF-4103-8C3D-1E122BF1C57C}.Release|x64.ActiveCfg = Release|x64
 		{52CA45D1-41DF-4103-8C3D-1E122BF1C57C}.Release|x64.Build.0 = Release|x64
+		{52CA45D1-41DF-4103-8C3D-1E122BF1C57C}.Release|x86.ActiveCfg = Release|x64
+		{52CA45D1-41DF-4103-8C3D-1E122BF1C57C}.Release|x86.Build.0 = Release|x64
 		{CBA7B028-A93F-4577-8F31-3F8D81BAAEFD}.Debug|x64.ActiveCfg = Debug|x64
 		{CBA7B028-A93F-4577-8F31-3F8D81BAAEFD}.Debug|x64.Build.0 = Debug|x64
+		{CBA7B028-A93F-4577-8F31-3F8D81BAAEFD}.Debug|x86.ActiveCfg = Debug|x64
+		{CBA7B028-A93F-4577-8F31-3F8D81BAAEFD}.Debug|x86.Build.0 = Debug|x64
 		{CBA7B028-A93F-4577-8F31-3F8D81BAAEFD}.Release|x64.ActiveCfg = Release|x64
 		{CBA7B028-A93F-4577-8F31-3F8D81BAAEFD}.Release|x64.Build.0 = Release|x64
+		{CBA7B028-A93F-4577-8F31-3F8D81BAAEFD}.Release|x86.ActiveCfg = Release|x64
+		{CBA7B028-A93F-4577-8F31-3F8D81BAAEFD}.Release|x86.Build.0 = Release|x64
 		{E6ED9E82-BA5E-45AF-894F-05ABFF0DFDE6}.Debug|x64.ActiveCfg = Debug|x64
 		{E6ED9E82-BA5E-45AF-894F-05ABFF0DFDE6}.Debug|x64.Build.0 = Debug|x64
+		{E6ED9E82-BA5E-45AF-894F-05ABFF0DFDE6}.Debug|x86.ActiveCfg = Debug|x64
+		{E6ED9E82-BA5E-45AF-894F-05ABFF0DFDE6}.Debug|x86.Build.0 = Debug|x64
 		{E6ED9E82-BA5E-45AF-894F-05ABFF0DFDE6}.Release|x64.ActiveCfg = Release|x64
 		{E6ED9E82-BA5E-45AF-894F-05ABFF0DFDE6}.Release|x64.Build.0 = Release|x64
+		{E6ED9E82-BA5E-45AF-894F-05ABFF0DFDE6}.Release|x86.ActiveCfg = Release|x64
+		{E6ED9E82-BA5E-45AF-894F-05ABFF0DFDE6}.Release|x86.Build.0 = Release|x64
+		{F9743454-09F6-4625-84B1-FFF6986A3527}.Debug|x64.ActiveCfg = Debug|x64
+		{F9743454-09F6-4625-84B1-FFF6986A3527}.Debug|x64.Build.0 = Debug|x64
+		{F9743454-09F6-4625-84B1-FFF6986A3527}.Debug|x86.ActiveCfg = Debug|Win32
+		{F9743454-09F6-4625-84B1-FFF6986A3527}.Debug|x86.Build.0 = Debug|Win32
+		{F9743454-09F6-4625-84B1-FFF6986A3527}.Release|x64.ActiveCfg = Release|x64
+		{F9743454-09F6-4625-84B1-FFF6986A3527}.Release|x64.Build.0 = Release|x64
+		{F9743454-09F6-4625-84B1-FFF6986A3527}.Release|x86.ActiveCfg = Release|Win32
+		{F9743454-09F6-4625-84B1-FFF6986A3527}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

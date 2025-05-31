@@ -26,7 +26,7 @@ bool SteamInit() {
 	if (!SteamAPI_Init())
 	{
 		dbgprintf("SteamAPI_Init() failed\n");
-		Utils::Alert("Fatal Error", "Steam must be running to play Dying Light (SteamAPI_Init() failed).\n");
+		Utils::Alert("Fatal Error", "Steam must be running to play Dying Light (SteamAPI_Init() failed).");
 
 		return EXIT_FAILURE;
 	}
@@ -111,10 +111,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	
 	CrashInitOutToConsole();
 	LogSetPrintCallback(LogCallback);
-
-	while (!::IsDebuggerPresent())
-		::Sleep(100); // to avoid 100% CPU load
-
 #endif
 
 	//parse arguments
@@ -170,7 +166,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Loader::LoadModPaks();
 
 	if (!IGame::InitializeOnlineServices(nullptr)) {
-		dbgprintf("IGame::InitializeOnlineServices Failed!");
+		dbgprintf("IGame::InitializeOnlineServices Failed!\n");
 		ExitProcess(1);
 	}
 
@@ -203,6 +199,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		Utils::Alert("Fatal Error", "Game failed to initalize (IGame::Initialize() failed)\n");
 		return EXIT_FAILURE;
 	}
+
+
 	Hooks::MaterialMgrInit();
 
 	//load rpacks
@@ -215,7 +213,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Loader::LoadMaterialPacks(s_MaterialMgr);
 
 	//callback for asi mods
-	Loader::PostInitialize();
+	Loader::PostInitialize(pIGame);
 
 	//set custom title
 	ttl::string_base<char> TitleStr("Dying Light (CE6DL)");
