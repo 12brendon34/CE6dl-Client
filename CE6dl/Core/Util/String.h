@@ -10,7 +10,4 @@ namespace Utils
 
     // Converts PWSTR to std::string
     std::string PWSTRToString(PWSTR pwsz);
-
-    // Returns Current Workind Directory
-    std::string GetWorkingDirectory();
 }

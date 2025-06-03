@@ -1,26 +1,36 @@
 #pragma once
 #include "Core/Sdk/Engine/engine.h"
+#include "Core/Sdk/Engine/CMaterialMgr.h"
 #include "Core/Sdk/Engine/resource.h"
 
 namespace Loader {
+
     struct SubMod {
+        enum class Type {
+            ASI = 1,
+            PAK,
+            RPACK,
+            TINY_RPACK,
+            MP
+        };
+
         std::string ModName;
         std::string ModPath;
+        Type ModType;
 
-        enum ModTypeEnum {
-            ASI = 1,
-            PAK = 2,
-            RPACK = 3,
-            TINY_RPACK = 4,
-            MP = 5
-        } ModType;
+        SubMod(std::string name, std::string path, Type type)
+            : ModName(std::move(name)), ModPath(std::move(path)), ModType(type) {}
     };
 
     struct Mod {
-        std::string ModName; //Display name for future use
-        std::vector<SubMod> SubMods;  // <-- List of associated submods
-        bool IsEnabled; //future toggle
+        std::string ModName;                // Display name
+        std::vector<SubMod> SubMods;        // Associated submods
+        bool IsEnabled = true;              // Enabled toggle
+
+        Mod(std::string name)
+            : ModName(std::move(name)) {}
     };
+
 
     using T_PreInitialize = void (*)(void);
     using T_PostInitialize = void (*)(IGame* pIGame);
@@ -31,7 +41,7 @@ namespace Loader {
     void LoadNativeMods();
     void LoadModPaks();
 
-    CResourceDataPack* LoadResourcePaks(CResourceLoadingRuntime* s_ResourceLoadingRuntime);
+    void LoadResourcePaks(CResourceLoadingRuntime* s_ResourceLoadingRuntime);
     //void LoadTinyResourcePaks(AssetManager* s_AssetManagerImpl);
     void LoadTinyResourcePaks(IGame* pGame);
     void LoadMaterialPacks(CMaterialMgr* s_MaterialMgr);

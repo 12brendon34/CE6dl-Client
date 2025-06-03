@@ -4,6 +4,8 @@
 #include "Core/Sdk/Engine/resource.h"
 #include "MinHook/MinHook.h"
 #include "Core/Sdk/Engine/engine.h"
+#include "Core/Sdk/Engine/CMaterialMgr.h"
+
 
 enum class EIsGlobalPack : int {
     No = 0,

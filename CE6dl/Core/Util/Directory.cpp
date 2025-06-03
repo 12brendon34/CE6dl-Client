@@ -18,22 +18,20 @@ namespace Utils
 		}
 		return false;
 	}
-	
-	std::string GetWorkingDirectory()
-	{
-		char buffer[MAX_PATH];
 
-		// Get the current working directory
+	std::filesystem::path GetWorkingDirectory() {
+		char buffer[MAX_PATH];
 		DWORD length = GetCurrentDirectoryA(MAX_PATH, buffer);
+
 		if (length == 0) {
-			std::cerr << "Error getting current directory" << std::endl;
-			return "";
+			std::cerr << "Error getting current directory\n";
+			return {};
 		}
 
-		std::string workingDirectory(buffer);
+		std::filesystem::path workingDirectory(buffer);
 
-		// Append "\\" if not already present
-		if (!workingDirectory.empty() && workingDirectory.back() != '\\') {
+		// Ensure the path ends with a slash
+		if (workingDirectory.filename() != "") {
 			workingDirectory += "\\";
 		}
 

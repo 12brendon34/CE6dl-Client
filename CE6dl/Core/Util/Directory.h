@@ -6,5 +6,5 @@ namespace Utils
     bool CreateFolder(const std::filesystem::path& path);
 
     // Returns the current working directory with a trailing backslash.
-    std::string GetWorkingDirectory();
+    std::filesystem::path GetWorkingDirectory();
 }

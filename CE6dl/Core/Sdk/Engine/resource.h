@@ -1,30 +1,21 @@
 #pragma once
-#include <pch.h>
+
+#include <cstdint>
+#include "pch.h"
 #include "../TTL.h"
 
-typedef enum Status {
-    Ready = 0,
-    Queued = 1,
-    Loading = 2,
-    Complete = 3,
-    Cancelled = 4
-} Status;
-
-/*
-struct StreamOp {
-    enum Status m_Status;
-    uint m_RefCount;
-};
-*/
+// Forward declarations
+struct RDPResourceEntryHeader;
+struct RDPLogicalResourceEntryHeader;
 
 class ETextureQuality {
 public:
-    typedef enum TYPE {
+    enum TYPE {
         DONT_CARE = 1,
         VERY_LOW = 2,
         LOW = 3,
         HIGH = 4
-    } TYPE;
+    };
 };
 
 class EResType {
@@ -78,93 +69,71 @@ public:
     };
 };
 
+enum Status {
+    Ready = 0,
+    Queued = 1,
+    Loading = 2,
+    Complete = 3,
+    Cancelled = 4
+};
+
 class __declspec(dllimport) CResourceDataPack {
 public:
     CResourceDataPack();
     void AddRpackReference();
     void ClosePackFiles();
     void DeleteThis();
-    char const* GetPackName() const;
-
-    /*
-    char const* GetPhysicalResourceParentName(RDPResourceEntryHeader const&) const;
-    void* GetResourceMemoryPtr(RDPResourceEntryHeader const&, unsigned int*) const;
-    EResPackErrorCode::ENUM InitializeOverlappedIO(char const*, unsigned int);
-    EResPackErrorCode::ENUM LoadData(bool);
-    void OnDemandSetResourceMemory(RDPResourceEntryHeader const&, *);
-    EResPackErrorCode::ENUM OpenPack(char const*, unsigned int);
-    */
+    const char* GetPackName() const;
     unsigned int ReleaseRpackReference();
 };
 
 class __declspec(dllimport) CResourceLoadingRuntime {
 public:
     struct StreamOp {
-        enum Status m_Status;
-        uint m_RefCount;
+        Status m_Status;
+        uint32_t m_RefCount;
     };
 
     struct SOnDemandResource {
-
         struct SubResource {
-            struct RDPResourceEntryHeader* m_Entry;
-            struct StreamOp* m_StreamOp;
+            RDPResourceEntryHeader* m_Entry;
+            StreamOp* m_StreamOp;
             void* m_Memory;
-            uint m_ReleaseAfterRegister : 1;
+            uint32_t m_ReleaseAfterRegister : 1;
         };
 
-        struct ttl::vectorm<40, SubResource> m_SubResources;
-        struct CResourceDataPack* m_Container;
-        struct RDPLogicalResourceEntryHeader* m_Entry;
+        ttl::vectorm<40, SubResource> m_SubResources;
+        CResourceDataPack* m_Container;
+        RDPLogicalResourceEntryHeader* m_Entry;
         long m_LeftToLoad;
-        enum Status m_Status;
+        Status m_Status;
         void* m_RegisterData;
         int m_Priority;
         bool m_Failed;
-        struct ttl::string_base<char> m_ResourceName;
+        ttl::string_base<char> m_ResourceName;
     };
 
     enum class StreamStatus {
         Loading = 0,
         Succeeded = 1,
         Failed = 2
-    }; 
-    
+    };
+
     enum class WaitFlags : uint32_t {
         None = 0,
         WaitForEvent = 1
     };
 
-    //Chrome Engine 5
-    /*
-    struct vector<ttl::string_base<char>_> m_PackFileNames;
-    struct vector<CResourceLoadingRuntime::PackData> m_Packs;
-    struct vector<CResourceDataPack_*> m_GlobalPacks;
-    struct CResourceDataPack* m_TexturesPack;
-    enum EGfxPlatform m_Platform;
-    enum TYPE m_ShadowQuality;
-    int m_MaterialQuality;
-    enum TYPE m_TextureQuality;
-    bool m_DeferredLoadingMechanismEnabled;
-    bool m_DeferredLoadingEnabled;
-    short _padding_;
-    struct vector<CResourceDataPack_*> m_DeferredPacks;
-    struct sp_thread m_DeferedLoaderThread;
-    struct listm<40, CResourceLoadingRuntime::SOnDemandResource, ttl::allocator> m_OnDemandResources;
-    struct sp_autocriticalsection m_OnDemandResourcesLock;
-    */
-
-
-    bool CancelResource(StreamOp*, bool);
+    bool CancelResource(StreamOp* op, bool forceCancel);
     static CResourceLoadingRuntime* Get();
-    int GetSkipMipLevelsBasedOnTexQuality(ETextureQuality::TYPE) const;
+    int GetSkipMipLevelsBasedOnTexQuality(ETextureQuality::TYPE quality) const;
     void OnDemandEvictAll();
-    void OnDemandEvictAllFromPack(CResourceDataPack*);
-    bool OnDemandIsLoaded(SOnDemandResource*, bool&);
-    SOnDemandResource* OnDemandSchedule(CResourceDataPack*, char const*, EResType::ENUM, int, WaitFlags);
-    void OnDemandUnload(SOnDemandResource*);
-    void OnDemandWaitForResource(SOnDemandResource*, bool&);
-    //bool StreamResource(StreamOp*, CResourceDataPack*, RDPResourceEntryHeader const*, *, (*);
+    void OnDemandEvictAllFromPack(CResourceDataPack* pack);
+    bool OnDemandIsLoaded(SOnDemandResource* res, bool& outLoaded);
+    SOnDemandResource* OnDemandSchedule(CResourceDataPack* pack, const char* resourceName, EResType::ENUM type, int priority, WaitFlags flags);
+    void OnDemandUnload(SOnDemandResource* res);
+    void OnDemandWaitForResource(SOnDemandResource* res, bool& outStatus);
+
     bool StreamResource(
         StreamOp* op,
         CResourceDataPack* pack,
@@ -176,5 +145,4 @@ public:
         int param2,
         int param3
     );
-
 };

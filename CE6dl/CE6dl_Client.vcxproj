@@ -38,9 +38,13 @@
     <ClCompile Include="WinFrame.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\Sdk\ChromeCommon.h" />
     <ClInclude Include="Core\Pch\pch.h" />
+    <ClInclude Include="Core\Sdk\Engine\CMaterialMgr.h" />
     <ClInclude Include="Core\Sdk\Engine\engine.h" />
     <ClInclude Include="Core\Sdk\Engine\igame.h" />
+    <ClInclude Include="Core\Sdk\Engine\IUIElement.h" />
+    <ClInclude Include="Core\Sdk\Engine\IUIElementControl.h" />
     <ClInclude Include="Core\Sdk\Engine\resource.h" />
     <ClInclude Include="Core\Sdk\Filesystem\Filesystem.h" />
     <ClInclude Include="Core\Sdk\Filesystem\Log.h" />

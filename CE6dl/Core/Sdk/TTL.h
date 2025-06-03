@@ -29,6 +29,35 @@ namespace ttl {
             }
         }
 
+        string_base(const string_base& other) {
+            m_Size = other.m_Size;
+            m_Capacity = other.m_Capacity;
+
+            if (m_Capacity > 0) {
+                m_Buffer = std::make_unique<char[]>(m_Capacity);
+                std::memcpy(m_Buffer.get(), other.m_Buffer.get(), m_Capacity);
+            }
+            else {
+                m_Buffer = nullptr;
+            }
+        }
+
+        string_base& operator=(const string_base& other) {
+            if (this != &other) {
+                m_Size = other.m_Size;
+                m_Capacity = other.m_Capacity;
+
+                if (m_Capacity > 0) {
+                    m_Buffer = std::make_unique<char[]>(m_Capacity);
+                    std::memcpy(m_Buffer.get(), other.m_Buffer.get(), m_Capacity);
+                }
+                else {
+                    m_Buffer = nullptr;
+                }
+            }
+            return *this;
+        }
+
         ~string_base() = default;
 
         // Return the C-string

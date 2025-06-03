@@ -1,15 +1,18 @@
 #include <pch.h>
 #include "Resources/Resource.h"
-
 #include "Core/Sdk/Steam/steam_api.h"
-#include "Core/Sdk/Engine/engine.h"
-#include "Core/Util/Console.h"
-#include "Core/Util/Alert.h"
+//Game
 #include "Core/Sdk/Filesystem/Filesystem.h"
-#include "Core/Util/String.h"
+#include "Core/Sdk/Engine/engine.h"
 #include "Core/Sdk/Engine/IGame.h"
+
+//Utils
+#include "Core/Util/Alert.h"
+#include "Core/Util/Directory.h"
+#include "Core/Util/Console.h"
+
+//Loader
 #include "Loader.h"
-#include "Core/Sdk/Engine/resource.h"
 #include "Hooks.h"
 
 typedef uint32 AppId_t;
@@ -111,10 +114,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	
 	CrashInitOutToConsole();
 	LogSetPrintCallback(LogCallback);
+
 #endif
 
 	//parse arguments
-	WorkingDirectory = Utils::GetWorkingDirectory();
+	WorkingDirectory = Utils::GetWorkingDirectory().string();
 
 
 	auto hSplash = MAKEINTRESOURCE(IDB_SplashA); // Splash Screen

@@ -31,7 +31,7 @@ bool PackLoader::Load(CResourceLoadingRuntime* runtime, const char* path, CResou
     bool result = oLoad(runtime, path, outPack, isGlobal, isContent, useCache, isCrossLevel, kind);
 
     printf("  Result: %s\n", result ? "Success" : "Failure");
-    printf("  outPack: %p\n", (void*)*outPack);
+    //printf("  outPack: %p\n", (void*)*outPack);
 
     return result;
 }
