@@ -42,6 +42,7 @@ public:
 
 
 class __declspec(dllimport) CMaterialsPack {
+public:
     enum ELoadFlags {};
 
 public:
@@ -56,6 +57,32 @@ public:
 class CMaterialMgr {
 public:
     virtual CMaterialsPack* LoadPack(LPCSTR Path, int ELoadPackOptions);
+    virtual void FreePack(class CMaterialsPack* param_1, int param_2);
+    virtual class IMaterial* LoadMaterial(uint64_t param_2, char* param_3, int param_4);
+    virtual void AddMaterialReference(class IMaterial* param_2);
+    virtual void ReleaseMaterial(uint64_t param_1);
+    //stripped function
+    virtual uint64_t DeleteWhenReleased();
+    virtual long FindMaterial(char* param_1, uint64_t param_2);
+
+    //unchecked, may not be accurate
+    virtual bool IsDefaultMaterial(long param_1);
+    virtual class IMaterial* GetDefaultMaterial();
+    virtual void DumpMaterials(uint64_t param_1);
+    virtual void DumpMaterialsNames();
+    virtual void GetTechniqueName(byte param_1);
+    virtual void OnLevelExit();
+    virtual int ReloadLocalMaterials();
+    virtual void GetTechniqueID(char* param_1);
+    virtual void SetUniqueDefMatMode(class CMaterialMgr* param_2);
+    virtual void GetMaterials(long* param_1);
+    virtual uint AcquireLoadedMaterialVersions(uint64_t param_2_00, int* param_2, uint param_3);
+    virtual uint64_t CloneMaterial(class IMaterial* param_1, char* param_2);
+    virtual uint64_t CloneMaterialByName(uint64_t param_1, uint64_t param_2, uint64_t param_3);
+    virtual uint64_t ObtainTextuerQuality(void* param_1, uint64_t param_2);
+    virtual class CMaterialMgr* VerifyTexturesArePresent(long param_1, char param_2);
+    //virtual void operator.delete[]();
+
 
     /*
     0147b9c0 a0 14 ec        addr       CMaterialMgr::FreePack

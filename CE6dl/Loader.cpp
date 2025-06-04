@@ -140,7 +140,7 @@ namespace Loader {
                     s_ResourceLoadingRuntime,
                     packname.c_str(),
                     nullptr,
-                    EIsGlobalPack::No,
+                    EIsGlobalPack::Yes,
                     EIsContentPack::No,
                     EUseCachePartition::Yes,
                     EIsCrossLevelPack::Yes,
@@ -172,7 +172,7 @@ namespace Loader {
                     continue;
 
                 auto matName = Utils::RemoveSuffix(subModInfo.ModPath, "_dx11.mp");
-                s_MaterialMgr->LoadPack(matName.c_str(), 2); // 1 or 2, changes global vs local?
+                s_MaterialMgr->LoadPack(matName.c_str(), 1); // 1 or 2, changes global vs local?
             }
         }
     }

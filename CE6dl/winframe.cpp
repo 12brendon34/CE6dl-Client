@@ -112,9 +112,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 #ifdef _DEBUG
 	Utils::InitConsole();
 	
-	CrashInitOutToConsole();
 	LogSetPrintCallback(LogCallback);
-
 #endif
 
 	//parse arguments
@@ -203,20 +201,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		Utils::Alert("Fatal Error", "Game failed to initalize (IGame::Initialize() failed)\n");
 		return EXIT_FAILURE;
 	}
-
-
 	Hooks::MaterialMgrInit();
-
-	//load rpacks
 	auto s_ResourceLoadingRuntime = CResourceLoadingRuntime::Get();
-	Loader::LoadResourcePaks(s_ResourceLoadingRuntime);
-
-	//load tiny rpacks
-	Loader::LoadTinyResourcePaks(pIGame);
 
 	Loader::LoadMaterialPacks(s_MaterialMgr);
-
-	//callback for asi mods
+	Loader::LoadResourcePaks(s_ResourceLoadingRuntime);
+	Loader::LoadTinyResourcePaks(pIGame);
 	Loader::PostInitialize(pIGame);
 
 	//set custom title
