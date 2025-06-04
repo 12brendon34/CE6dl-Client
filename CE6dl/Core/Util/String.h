@@ -10,4 +10,7 @@ namespace Utils
 
     // Converts PWSTR to std::string
     std::string PWSTRToString(PWSTR pwsz);
+
+    // Convert Steam's language name to a web-friendly code (e.g., "english" -> "en")
+    std::string ConvertSteamLangToWebLang(const std::string& steamLang);
 }

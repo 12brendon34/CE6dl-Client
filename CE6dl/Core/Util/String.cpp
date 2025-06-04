@@ -1,5 +1,6 @@
 #include <pch.h>
 #include "String.h"
+#include <map>
 
 namespace Utils
 {
@@ -27,5 +28,39 @@ namespace Utils
 		WideCharToMultiByte(CP_UTF8, 0, pwsz, -1, &result[0], sizeNeeded, nullptr, nullptr);
 		result.pop_back(); // remove null terminator
 		return result;
+	}
+
+	std::string ConvertSteamLangToWebLang(const std::string& steamLang) {
+		static const std::map<std::string, std::string> langMap = {
+			{"english", "en"},
+			{"brazilian", "br"},
+			{"spanish", "es"},
+			{"german", "de"},
+			{"french", "fr"},
+			{"italian", "it"},
+			{"polish", "pl"},
+			{"tchinese", "tw"},
+			{"schinese", "cn"},
+			{"turkish", "tr"},
+			{"thai", "th"},
+			{"russian", "ru"},
+			{"koreana", "ko"},
+			{"japanese", "ja"},
+			{"dutch", "nl"},
+			{"czech", "cs"},
+			{"latam", "es"},
+		};
+
+		auto it = langMap.find(steamLang); 
+		
+		if (it != langMap.end()) {
+			//found match
+			return it->second;
+		}
+		else {
+			//fallback en
+			return "en";
+		}
+
 	}
 }
