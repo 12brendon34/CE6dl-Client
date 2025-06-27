@@ -11,10 +11,13 @@ namespace Utils
 		return s;
 	}
 
+
 	std::string RemoveSuffix(const std::string& input, const std::string& suffix) {
-		if (input.size() >= suffix.size() &&
-			input.compare(input.size() - suffix.size(), suffix.size(), suffix) == 0) {
-			return input.substr(0, input.size() - suffix.size());
+		if (input.size() >= suffix.size()) {
+			std::string inputSuffix = input.substr(input.size() - suffix.size());
+			if (str_tolower(inputSuffix) == str_tolower(suffix)) {
+				return input.substr(0, input.size() - suffix.size());
+			}
 		}
 		return input; // return if no match
 	}
