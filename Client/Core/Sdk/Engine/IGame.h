@@ -1,6 +1,7 @@
 #pragma once
 #include <pch.h>
 #include "../TTL.h"
+#include "ILevel.h"
 
 class CRTTIVariant {
 public:
@@ -51,9 +52,9 @@ public:
     bool IsAnyRPackLoaded(void);
 
     //Level
-    class ILevel* __ptr64 GetActiveLevel(void);
-    class ILevel* __ptr64 LoadModule(class ttl::string_base<char> const&, class IGSObject*, class IProgressIndicator*);
-    class ILevel* __ptr64 LoadModuleEnd(struct SLoadModuleData*, bool);
+    ILevel* __ptr64 GetActiveLevel(void);
+    ILevel* __ptr64 LoadModule(class ttl::string_base<char> const&, class IGSObject*, class IProgressIndicator*);
+    ILevel* __ptr64 LoadModuleEnd(struct SLoadModuleData*, bool);
 
     //CGame
     class CGame* __ptr64 ToCGame(void);

@@ -14,6 +14,7 @@ namespace Loader {
             MP
         };
 
+        HMODULE ModHandle;
         std::string ModName;
         std::string ModPath;
         Type ModType;
@@ -26,13 +27,13 @@ namespace Loader {
         std::string ModName;                // Display name
         std::vector<SubMod> SubMods;        // Associated submods
         bool IsEnabled = true;              // Enabled toggle
+        bool IsPriority = false;            // Overwrite base game rpacks
 
-        Mod(std::string name)
-            : ModName(std::move(name)) {}
+        Mod(std::string name) : ModName(std::move(name)) {}
     };
 
 
-    using T_PreInitialize = void (*)(void);
+    using T_PreInitialize = void (*)(std::string ModDir);
     using T_PostInitialize = void (*)(IGame* pIGame);
     using T_GetPluginName = const char* (*)(void);
 
@@ -41,7 +42,7 @@ namespace Loader {
     void LoadNativeMods();
     void LoadModPaks();
 
-    void LoadResourcePaks(CResourceLoadingRuntime* s_ResourceLoadingRuntime);
+    void LoadResourcePaks(CResourceLoadingRuntime* s_ResourceLoadingRuntime, bool priority_only = false);
     //void LoadTinyResourcePaks(AssetManager* s_AssetManagerImpl);
     void LoadTinyResourcePaks(IGame* pGame);
     void LoadMaterialPacks(CMaterialMgr* s_MaterialMgr);

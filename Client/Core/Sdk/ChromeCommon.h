@@ -1,27 +1,50 @@
 #pragma once
 
 //common chrome types
-struct vec3 {
-	float x;
-	float y;
-	float z;
+class vec3 {
+public:
+	float x, y, z;
+
+	// Default constructor
+	vec3() : x(0.0f), y(0.0f), z(0.0f) {}
+
+	// Parameterized constructor
+	vec3(float x, float y, float z) : x(x), y(y), z(z) {}
+
+	// Copy constructor
+	vec3(const vec3& other) : x(other.x), y(other.y), z(other.z) {}
 };
 
-struct vec4 {
-	float x;
-	float y;
-	float z;
-	float w;
+class vec4 {
+public:
+	float x, y, z, w;
+
+	// Default constructor
+	vec4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
+
+	// Parameterized constructor
+	vec4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
+
+	// Copy constructor
+	vec4(const vec4& other) : x(other.x), y(other.y), z(other.z), w(other.w) {}
 };
 
-struct quat {
-	float x;
-	float y;
-	float z;
-	float w;
+class quat {
+public:
+	float x, y, z, w;
+
+	// Default constructor
+	quat() : x(0.0f), y(0.0f), z(0.0f), w(1.0f) {} // Default to identity quaternion
+
+	// Parameterized constructor
+	quat(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
+
+	// Copy constructor
+	quat(const quat& other) : x(other.x), y(other.y), z(other.z), w(other.w) {}
 };
 
-struct mtx34 {
+
+class mtx34 {
 	float m[3][4];
 };
 

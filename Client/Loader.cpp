@@ -3,13 +3,15 @@
 //#include "Core/Sdk/Engine/engine.h"
 //#include "Core/Sdk/Engine/resource.h"
 #include "Core/Util/Directory.h"
-#include "Core/Util/String.h"
-#include "Hooks.h"
+#include "Core/Util/UString.h"
+//#include "Hooks.h"
 #include "Core/Sdk/Filesystem/Filesystem.h"
+#include "Core/Util/IniConfig.h"
+#include "Hooks/PackLoader.h"
 
 
 namespace Loader {
-    std::vector<HMODULE> NativeMods;
+    //std::vector<HMODULE> NativeMods;
     static std::vector<Mod> ModList;
 
     void ProcessModFolder(Mod& mod, const std::filesystem::path& folderPath, SubMod::Type modType, const std::string& expectedExtension) {
@@ -29,60 +31,67 @@ namespace Loader {
         }
     }
 
-
     void IndexMods() {
         using namespace std::filesystem;
 
         path ModsPath = Utils::GetWorkingDirectory() / "Mods";
+        path LoadOrderPath = ModsPath / "load_order.ini";
         Utils::CreateFolder(ModsPath);
 
-        path GlobalPaksPath = ModsPath / "GlobalPaks"; //for unsupported mod paks
-        path TinyRpacksPath = ModsPath / "TinyRpacks"; //for mod developers
-
-
-        /*
-            MODS
-            │
-            └───ExampleMod
-                │   Data2.pak
-                │
-                └───Data
-                        Textures_PC.rpack
-                        local_dx11.mp
-        */
-
-
+        std::vector<std::string> discoveredMods;
         for (const auto& entry : directory_iterator(ModsPath)) {
-            path entryPath = entry.path();
+            if (entry.is_directory()) {
+                std::string name = entry.path().filename().string();
+                if (name != "GlobalPaks" && name != "TinyRpacks")
+                    discoveredMods.push_back(name);
+            }
+        }
 
-            if (!is_directory(entryPath))
+        if (!exists(LoadOrderPath)) {
+            std::ofstream iniOut(LoadOrderPath);
+            for (const auto& modName : discoveredMods)
+                iniOut << modName << "\n";
+            iniOut.close();
+        }
+
+        std::vector<std::string> loadOrder;
+        std::ifstream iniIn(LoadOrderPath);
+        std::string line;
+        while (std::getline(iniIn, line)) {
+            line.erase(0, line.find_first_not_of(" \t\r\n"));
+            line.erase(line.find_last_not_of(" \t\r\n") + 1);
+            if (!line.empty())
+                loadOrder.push_back(line);
+        }
+
+        for (const auto& modFolder : loadOrder) {
+            path modPath = ModsPath / modFolder;
+            if (!exists(modPath) || !is_directory(modPath))
                 continue;
 
-            // Special mod folders
-            if (entryPath == GlobalPaksPath) {
-                Mod mod("GlobalPaks");
-                ProcessModFolder(mod, entryPath, SubMod::Type::PAK, ".pak");
-                if (!mod.SubMods.empty())
-                    ModList.push_back(std::move(mod));
-                continue;
+            Mod mod(modFolder);
+
+            path configPath = modPath / "modinfo.ini";
+            if (!exists(configPath)) {
+                std::ofstream defaultConfig(configPath);
+                defaultConfig << "enabled=true\n";
+                defaultConfig << "priority=false\n";
+                defaultConfig.close();
             }
 
-            if (entryPath == TinyRpacksPath) {
-                Mod mod("TinyRpacks");
-                ProcessModFolder(mod, entryPath, SubMod::Type::TINY_RPACK, ".rpack");
-                if (!mod.SubMods.empty())
-                    ModList.push_back(std::move(mod));
-                continue;
+            auto config = Utils::ReadSimpleIni(configPath);
+            if (config["enabled"] == "false" || config["enabled"] == "0") {
+                continue; // Skip disabled mods
+            }
+            if (config["priority"] == "true" || config["priority"] == "1") {
+                mod.IsPriority = true;
             }
 
-            // Regular mod folder
-            Mod mod(entryPath.filename().string());
-            auto moddata = entryPath / "data";
+            ProcessModFolder(mod, modPath, SubMod::Type::PAK, ".pak");
+            ProcessModFolder(mod, modPath, SubMod::Type::ASI, ".dll");
+            ProcessModFolder(mod, modPath, SubMod::Type::ASI, ".asi");
 
-            ProcessModFolder(mod, entryPath, SubMod::Type::PAK, ".pak");
-            ProcessModFolder(mod, entryPath, SubMod::Type::ASI, ".dll");
-            ProcessModFolder(mod, entryPath, SubMod::Type::ASI, ".asi");
-
+            path moddata = modPath / "data";
             if (exists(moddata) && is_directory(moddata)) {
                 fs::add_source(moddata.string().c_str(), static_cast<FFSAddSourceFlags::ENUM>(7));
                 ProcessModFolder(mod, moddata, SubMod::Type::RPACK, ".rpack");
@@ -92,8 +101,24 @@ namespace Loader {
             if (!mod.SubMods.empty())
                 ModList.push_back(std::move(mod));
         }
-    }
 
+        //Global special folders
+        path GlobalPaksPath = ModsPath / "GlobalPaks";
+        if (exists(GlobalPaksPath)) {
+            Mod mod("GlobalPaks");
+            ProcessModFolder(mod, GlobalPaksPath, SubMod::Type::PAK, ".pak");
+            if (!mod.SubMods.empty())
+                ModList.push_back(std::move(mod));
+        }
+
+        path TinyRpacksPath = ModsPath / "TinyRpacks";
+        if (exists(TinyRpacksPath)) {
+            Mod mod("TinyRpacks");
+            ProcessModFolder(mod, TinyRpacksPath, SubMod::Type::TINY_RPACK, ".rpack");
+            if (!mod.SubMods.empty())
+                ModList.push_back(std::move(mod));
+        }
+    }
 
     void LoadNativeMods() {
         for (auto& modInfo : ModList) {
@@ -111,7 +136,7 @@ namespace Loader {
                     subModInfo.ModName = GetPluginName();
 
                 dbgprintf("[Plugin] %s loaded: %s\n", modInfo.ModName.c_str(), subModInfo.ModPath.c_str());
-                NativeMods.push_back(HModule);
+                subModInfo.ModHandle = HModule;
             }
         }
     }
@@ -128,13 +153,26 @@ namespace Loader {
         }
     }
 
-    void LoadResourcePaks(CResourceLoadingRuntime* s_ResourceLoadingRuntime) {
+    void LoadResourcePaks(CResourceLoadingRuntime* s_ResourceLoadingRuntime, bool priority_only) {
         for (const auto& modInfo : ModList) {
             for (const auto& subModInfo : modInfo.SubMods) {
                 if (subModInfo.ModType != SubMod::Type::RPACK)
                     continue;
 
+                const bool isPriority = modInfo.IsPriority;
+
+                // If we're only loading priority packs, skip non-priority
+                if (priority_only && !isPriority)
+                    continue;
+
+                // If we're only loading non-priority packs, skip priority
+                if (!priority_only && isPriority)
+                    continue;
+
                 auto packname = Utils::RemoveSuffix(subModInfo.ModPath, "_pc.rpack");
+
+                std::cout << "Loading " << (isPriority ? "priority" : "non-priority")
+                    << " pack: " << packname << std::endl;
 
                 PackLoader::Load(
                     s_ResourceLoadingRuntime,
@@ -149,6 +187,7 @@ namespace Loader {
             }
         }
     }
+
 
     void LoadTinyResourcePaks(IGame* pIGame) {
         for (const auto& modInfo : ModList) {
@@ -179,29 +218,38 @@ namespace Loader {
 
     //callbacks for native mods
     void PreInitialize() {
-        for (const auto& HModule : NativeMods) {
-            if (!HModule) {
-                MessageBoxA(nullptr, "Module handle is null!", "Error", MB_ICONERROR);
-                return;
-            }
+        for (const auto& modInfo : ModList) {
+            for (const auto& subModInfo : modInfo.SubMods) {
+                if (subModInfo.ModType != SubMod::Type::ASI)
+                    continue;
 
-            auto PreInitialize = (T_PreInitialize)GetProcAddress(HModule, "PreInitialize");
-            if (PreInitialize)
-                PreInitialize();
+                if (!subModInfo.ModHandle) {
+                    MessageBoxA(nullptr, "Module handle is null!", "Error", MB_ICONERROR);
+                    return;
+                }
+
+                auto PreInitialize = (T_PreInitialize)GetProcAddress(subModInfo.ModHandle, "PreInitialize");
+                if (PreInitialize)
+                    PreInitialize(subModInfo.ModPath);
+            }
         }
     }
 
     void PostInitialize(IGame* pIGame) {
-        for (const auto& HModule : NativeMods) {
-            if (!HModule) {
-                MessageBoxA(nullptr, "Module handle is null!", "Error", MB_ICONERROR);
-                return;
-            }
+        for (const auto& modInfo : ModList) {
+            for (const auto& subModInfo : modInfo.SubMods) {
+                if (subModInfo.ModType != SubMod::Type::ASI)
+                    continue;
 
-            auto PostInitialize = (T_PostInitialize)GetProcAddress(HModule, "PostInitialize");
-            if (PostInitialize)
-                PostInitialize(pIGame);
+                if (!subModInfo.ModHandle) {
+                    MessageBoxA(nullptr, "Module handle is null!", "Error", MB_ICONERROR);
+                    return;
+                }
+
+                auto PostInitialize = (T_PostInitialize)GetProcAddress(subModInfo.ModHandle, "PostInitialize");
+                if (PostInitialize)
+                    PostInitialize(pIGame);
+            }
         }
     }
-
 }

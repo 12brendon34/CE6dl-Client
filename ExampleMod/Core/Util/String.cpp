@@ -1,6 +1,5 @@
 #include <pch.h>
 #include "String.h"
-#include <map>
 
 namespace Utils
 {

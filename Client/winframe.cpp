@@ -5,6 +5,7 @@
 #include "Core/Sdk/Steam/steam_api.h"
 #include "Core/Sdk/Filesystem/Filesystem.h"
 #include "Core/Sdk/Engine/engine.h"
+#include "Core/Sdk/Engine/ILevel.h"
 #include "Core/Sdk/Engine/IGame.h"
 
 // Game Resources
@@ -13,14 +14,17 @@
 // Utils
 #include "Core/Util/Alert.h"
 #include "Core/Util/Directory.h"
-#include "Core/Util/String.h"
+#include "Core/Util/UString.h"
 #include "Core/Util/Console.h"
 
 // Loader and Hooks
 #include "Loader.h"
-#include "Hooks.h"
+//#include "Hooks.h"
 
 #include <filesystem>
+#include "Hooks/HookManager.h"
+#include "Hooks/PackLoader.h"
+#include "Hooks/CTechniquesIni.h"
 
 typedef uint32 AppId_t;
 const AppId_t k_uAppId = 239140;
@@ -130,8 +134,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	FilesystemInit();
 	Loader::IndexMods();
 	Loader::LoadNativeMods();
-	Hooks::Init();
-	Hooks::Enable();
+
+
+	HookManager::get().add(std::make_unique<PackLoader>());
+	HookManager::get().add(std::make_unique<CTechniquesIni>());
+	//auto Hooks = new HookManager();
+	//Hooks->setup();
+	//Hooks->enable();
+	//Hooks::Init();
+	//Hooks::Enable();
 
 	//get assetmanager and call setgame (required for rpack stuff/dlc)
 	auto s_AssetManagerImpl = GetAssetManager();
@@ -194,11 +205,39 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 
 	//get material manager
-	Hooks::MaterialMgrInit();
+	//Hooks::MaterialMgrInit();
 	auto s_ResourceLoadingRuntime = CResourceLoadingRuntime::Get();
 
+	//need to do this better somehow
+	auto EngineDll = GetModuleHandleA("engine_x64_rwdi.dll");
+
+	//CreateMaterialManager is inlined into CMaterialMgr::Initialize
+	//should be roughly
+	/*
+	CMaterialMgr *this;
+  
+	this = (CMaterialMgr *)malloc(0xb8);
+	CMaterialMgr::CMaterialMgr(this);
+	r_MatMgr = this;
+	CMaterialMgr::Initialize(this,param_1);
+	g_pMatMgr = r_MatMgr;
+	return;
+	*/
+
+
+	//instead of using DAT_180a402b0 directly, I can hook CTechniquesIni::Create, capture the first (argument-1) and that should give me r_MatMgr
+	/*
+	  DAT_180a402b0 = plVar7;
+	  FUN_18076fd20(uVar5,param_2,param_3,param_4);
+	  CTechniquesIni::Create((void **)(plVar7 + 1),param_2,param_3,param_4);
+	*/
+
+    //auto r_MatMgr = *reinterpret_cast<void**>(reinterpret_cast<uintptr_t>(EngineDll) + 0xa402b0);
+    auto g_pMatMgr = reinterpret_cast<CMaterialMgr*>(r_MatMgr);
+
+
 	//load matpaks, rpacks, call post init for asi mods
-	Loader::LoadMaterialPacks(s_MaterialMgr);
+	Loader::LoadMaterialPacks(g_pMatMgr);
 	Loader::LoadResourcePaks(s_ResourceLoadingRuntime);
 	Loader::LoadTinyResourcePaks(pIGame);
 	Loader::PostInitialize(pIGame);
@@ -212,7 +251,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//shutdown game
 	if (pIGame)
 		DestroyGame(NULL, NULL, NULL, NULL);
-
+	
+	//Hooks->shutdown();
 	IGame::ShutdownOnlineServices();
 	Mount::DestroyMountHelper(mountHelper);
 	UninitializeGameScript();

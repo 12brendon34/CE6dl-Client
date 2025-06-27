@@ -7,15 +7,16 @@
 #endif
 
 // Standard library headers
-#include <algorithm>
-#include <cstdio>
+//#include <algorithm>
+//#include <cstdio>
 #include <filesystem>
 #include <iostream>
-#include <vector>
+#include <map>
+//#include <vector>
 
 // Windows headers
 #include <Windows.h>
-#include <shlobj_core.h>
+//#include <shlobj_core.h>
 
 //common typedef
 typedef unsigned int    uint;

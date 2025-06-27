@@ -58,7 +58,7 @@ extern "C" __declspec(dllexport) const char* GetPluginName() {
 }
 
 // Called before CGame::Initialize
-extern "C" __declspec(dllexport) void PreInitialize() {
+extern "C" __declspec(dllexport) void PreInitialize(std::string ModPath) {
     dbgprintf("[%s] PreInitialize\n", kPluginName);
 
     HMODULE gameModule = GetModuleHandleA("gamedll_x64_rwdi.dll");
@@ -67,8 +67,8 @@ extern "C" __declspec(dllexport) void PreInitialize() {
         return;
     }
 
-    auto* onInitAddr = reinterpret_cast<void*>((uintptr_t)gameModule + 0x1251090);
-    auto* adjustSliderAddr = reinterpret_cast<void*>((uintptr_t)gameModule + 0x117AE90);
+    auto* onInitAddr = reinterpret_cast<void*>((uintptr_t)gameModule + 0x1251630); //god I need to setup aob//0x1251090);
+    auto* adjustSliderAddr = reinterpret_cast<void*>((uintptr_t)gameModule + 0x117b430);//0x117AE90);
 
     CheckMH(MH_Initialize());
 
