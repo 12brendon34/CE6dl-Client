@@ -18,9 +18,13 @@ void UIOptionSliderHook::install() {
     }
 
     // TODO: Provide actual signature in findSig call
-    auto target = Utils::findSig(gamedll, "");
-    detour = std::make_unique<PLH::x64Detour>(target, reinterpret_cast<uint64_t>(&UIOptionSliderHook::AdjustSlider), reinterpret_cast<uint64_t*>(&oAdjustSlider));
+    auto target = Utils::findSig(gamedll, "40 55 57 48 8D 6C 24 ? 48 81 EC ? ? ? ? 8B 81");
+    if (!target) {
+        MessageBoxA(nullptr, "Signature for UIOptionSlider::AdjustSlider not found", "Error", MB_ICONERROR);
+        return;
+    }
 
+    detour = std::make_unique<PLH::x64Detour>(target, reinterpret_cast<uint64_t>(&UIOptionSliderHook::AdjustSlider), reinterpret_cast<uint64_t*>(&oAdjustSlider));
     if (!detour->hook()) {
         MessageBoxA(nullptr, "Failed to hook UIOptionSlider::AdjustSlider", "Error", MB_ICONERROR);
     }

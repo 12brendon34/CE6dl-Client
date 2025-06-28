@@ -31,14 +31,13 @@ void MenuOptionsGameHook::install() {
         return;
     }
 
-    auto target = Utils::findSig(gamedll, "");
+    auto target = Utils::findSig(gamedll, "48 89 5C 24 ? 48 89 74 24 ? 48 89 7C 24 ? 55 41 54 41 55 41 56 41 57 48 8B EC 48 83 EC ? 48 8B F1 E8 ? ? ? ? 45 33 F6"); //gross sig
     if (!target) {
         MessageBoxA(nullptr, "Signature for MenuOptionsGame::OnInit not found", "Error", MB_ICONERROR);
         return;
     }
 
     detour = std::make_unique<PLH::x64Detour>(target, reinterpret_cast<uint64_t>(&MenuOptionsGameHook::OnInit), reinterpret_cast<uint64_t*>(&oOnInit));
-
     if (!detour->hook()) {
         MessageBoxA(nullptr, "Failed to hook MenuOptionsGame::OnInit", "Error", MB_ICONERROR);
     }

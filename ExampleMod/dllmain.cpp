@@ -6,7 +6,7 @@
 #include "Core/Util/IniConfig.h"
 
 class IGame;
-const char* const kPluginName = "ExtraFov";
+const char* const kPluginName = "SimpleFov";
 
 extern "C" __declspec(dllexport) const char* GetPluginName() {
     return kPluginName;
@@ -15,11 +15,8 @@ extern "C" __declspec(dllexport) const char* GetPluginName() {
 extern "C" __declspec(dllexport) void PreInitialize(std::string ModPath) {
     dbgprintf("[%s] PreInitialize\n", kPluginName);
 
-    std::filesystem::path modDir = ModPath;
-    std::filesystem::path iniPath = modDir / "ExtraFov.ini";
-
-
-
+    std::filesystem::path modDir = std::filesystem::path(ModPath).parent_path();
+    std::filesystem::path iniPath = modDir / (std::string(kPluginName) + ".ini");
 
     if (!std::filesystem::exists(iniPath)) {
         std::ofstream defaultConfig(iniPath);
