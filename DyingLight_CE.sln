@@ -11,8 +11,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "filesystem_x64_rwdi", "File
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExampleMod", "ExampleMod\ExampleMod.vcxproj", "{F9743454-09F6-4625-84B1-FFF6986A3527}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PriorityLoader", "PriorityLoader\PriorityLoader.vcxproj", "{07568F6E-6DAB-4A46-B912-20BAFEE8CB59}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -35,10 +33,6 @@ Global
 		{F9743454-09F6-4625-84B1-FFF6986A3527}.Debug|x64.Build.0 = Debug|x64
 		{F9743454-09F6-4625-84B1-FFF6986A3527}.Release|x64.ActiveCfg = Release|x64
 		{F9743454-09F6-4625-84B1-FFF6986A3527}.Release|x64.Build.0 = Release|x64
-		{07568F6E-6DAB-4A46-B912-20BAFEE8CB59}.Debug|x64.ActiveCfg = Debug|x64
-		{07568F6E-6DAB-4A46-B912-20BAFEE8CB59}.Debug|x64.Build.0 = Debug|x64
-		{07568F6E-6DAB-4A46-B912-20BAFEE8CB59}.Release|x64.ActiveCfg = Release|x64
-		{07568F6E-6DAB-4A46-B912-20BAFEE8CB59}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

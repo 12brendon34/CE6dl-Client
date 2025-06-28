@@ -1,69 +1,59 @@
 #include <pch.h>
-#include "Core/Sdk/Engine/igame.h"
+#include "PluginInfo.h"
+#include "Hooks/HookManager.h"
+#include "Hooks/UIOptionSliderHook.h"
+#include "Hooks/MenuOptionsGameHook.h"
+#include "Core/Util/IniConfig.h"
 
-// plugin name
-static constexpr const char* kPluginName = "ExtraFov";
+class IGame;
+const char* const kPluginName = "ExtraFov";
 
 extern "C" __declspec(dllexport) const char* GetPluginName() {
     return kPluginName;
 }
 
-// Called post CGame::Initialize
-extern "C" __declspec(dllexport) void PostInitialize(IGame* gameInstance) {
-    dbgprintf("[%s] PostInitialize\n", kPluginName);
-    dbgprintf("IGame Ptr: %p\n", gameInstance);
-}
-
-BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved) {
-    if (ul_reason_for_call == DLL_PROCESS_ATTACH) {
-        dbgprintf("[%s] DLL_PROCESS_ATTACH\n", kPluginName);
-    }
-    return TRUE;
-}
-
-struct UIOptionSlider {
-    char padding[0xAC];
-    int maxValue;  // Offset 0xAC
-    int minValue;  // Offset 0xB0
-};
-
-static void(__fastcall* OriginalOnInit)(void*) = nullptr;
-static void __fastcall OnInit_Hook(void* self) {
-    dbgprintf("[%s] OnInit hook triggered. this = %p\n", kPluginName, self);
-
-    if (OriginalOnInit)
-        OriginalOnInit(self);
-
-    auto* slider = *reinterpret_cast<UIOptionSlider**>((uintptr_t)self + 0x540);
-    if (!slider) {
-        dbgprintf("[%s] UIOptionSlider at 0x540 is null!\n", kPluginName);
-        return;
-    }
-
-    slider->maxValue = 40;
-    AdjustSlider_Hook(slider, 1);
-}
-
-static void(__fastcall* OriginalAdjustSlider)(void*, char) = nullptr;
-static void __fastcall AdjustSlider_Hook(UIOptionSlider* self, char param) {
-    dbgprintf("[%s] AdjustSlider called. this = %p, param = %d, Max = %d, Min = %d\n", kPluginName, self, param, self->maxValue, self->minValue);
-
-    if (OriginalAdjustSlider)
-        OriginalAdjustSlider(self, param);
-}
-
 extern "C" __declspec(dllexport) void PreInitialize(std::string ModPath) {
     dbgprintf("[%s] PreInitialize\n", kPluginName);
 
-    HMODULE gameModule = GetModuleHandleA("gamedll_x64_rwdi.dll");
-    if (!gameModule) {
-        dbgprintf("[%s] Failed to get game module handle\n", kPluginName);
-        return;
+    std::filesystem::path modDir = ModPath;
+    std::filesystem::path iniPath = modDir / "ExtraFov.ini";
+
+
+
+
+    if (!std::filesystem::exists(iniPath)) {
+        std::ofstream defaultConfig(iniPath);
+        if (defaultConfig.is_open()) {
+            defaultConfig << "maxfov=" << g_maxFov << "\n";
+            defaultConfig.close();
+            dbgprintf("[%s] Created default ini at %s\n", kPluginName, iniPath.string().c_str());
+        }
+        else {
+            dbgprintf("[%s] Failed to create ini at %s\n", kPluginName, iniPath.string().c_str());
+        }
     }
 
-    auto* onInitAddr = reinterpret_cast<void*>((uintptr_t)gameModule + 0x1251630); //god I need to setup aob//0x1251090);
-    auto* adjustSliderAddr = reinterpret_cast<void*>((uintptr_t)gameModule + 0x117b430);//0x117AE90);
+    auto config = Utils::ReadSimpleIni(iniPath);
+    auto it = config.find("maxfov");
+    if (it != config.end()) {
+        try {
+            g_maxFov = std::stoi(it->second);
+            dbgprintf("[%s] Loaded maxfov from ini: %d\n", kPluginName, g_maxFov);
+        }
+        catch (...) {
+            dbgprintf("[%s] Invalid maxfov value in ini. Using default: %d\n", kPluginName, g_maxFov);
+        }
+    }
+    else {
+        dbgprintf("[%s] maxfov not found in ini. Using default: %d\n", kPluginName, g_maxFov);
+    }
 
-    //CheckMH(MH_CreateHook(onInitAddr, &OnInit_Hook, reinterpret_cast<void**>(&OriginalOnInit)));
-    //CheckMH(MH_CreateHook(adjustSliderAddr, &AdjustSlider_Hook, reinterpret_cast<void**>(&OriginalAdjustSlider)));
+    //enable hooks
+    HookManager::get().add(std::make_unique<UIOptionSliderHook>());
+    HookManager::get().add(std::make_unique<MenuOptionsGameHook>());
+}
+
+extern "C" __declspec(dllexport) void PostInitialize(IGame* pIGame) {
+    dbgprintf("[%s] PostInitialize\n", kPluginName);
+    dbgprintf("IGame Ptr: %p\n", pIGame);
 }
