@@ -33,25 +33,26 @@ namespace Utils
 		return result;
 	}
 
+	//match CGame::GetDefaultLocaleID, fixes a few things
 	std::string ConvertSteamLangToWebLang(const std::string& steamLang) {
 		static const std::map<std::string, std::string> langMap = {
-			{"english", "en"},
-			{"brazilian", "br"},
-			{"spanish", "es"},
-			{"german", "de"},
-			{"french", "fr"},
-			{"italian", "it"},
-			{"polish", "pl"},
-			{"tchinese", "tw"},
-			{"schinese", "cn"},
-			{"turkish", "tr"},
-			{"thai", "th"},
-			{"russian", "ru"},
-			{"koreana", "ko"},
-			{"japanese", "ja"},
-			{"dutch", "nl"},
-			{"czech", "cs"},
-			{"latam", "es"},
+			{"english", "En"},
+			{"german", "De"},
+			{"french", "Fr"},
+			{"italian", "It"},
+			{"spanish", "Es"},
+			{"russian", "Ru"},
+			{"japanese", "Jp"},
+			{"polish", "Pl"},
+			{"dutch", "Nl"},
+			{"brazilian", "Br"},
+			{"koreana", "Ko"},
+			{"schinese", "Cn"},
+			{"tchinese", "Tw"},
+			{"latam", "El"},
+			{"turkish", "Tr"},
+			{"thai", "Th"},
+			{"czech", "Cs"},
 		};
 
 		auto it = langMap.find(steamLang); 

@@ -1,8 +1,13 @@
 // Precompiled Header
 #include <pch.h>
 
-// SDK / External
+// Platform & SDK
+#ifdef STEAM_PLATFORM
 #include "Core/Sdk/Steam/steam_api.h"
+typedef uint32 AppId_t;
+const AppId_t k_uAppId = 239140;
+#endif
+
 #include "Core/Sdk/Filesystem/Filesystem.h"
 #include "Core/Sdk/Engine/engine.h"
 #include "Core/Sdk/Engine/ILevel.h"
@@ -19,23 +24,19 @@
 
 // Loader and Hooks
 #include "Loader.h"
-//#include "Hooks.h"
-
-#include <filesystem>
 #include "Hooks/HookManager.h"
 #include "Hooks/PackLoader.h"
 #include "Hooks/CTechniquesIni.h"
 
-typedef uint32 AppId_t;
-const AppId_t k_uAppId = 239140;
+#include <filesystem>
 
 constexpr const char* kGameDir = "DW"; // Dead World
-//constexpr const char* KLocale = "En";
 constexpr const char* kSubPath = "DyingLight";
 constexpr const char* kCacheSubPath = "out/cache";
+
 std::string working_directory;
 
-// Initialize Steam API, restart if not run through steam, error if failure
+#ifdef STEAM_PLATFORM
 bool SteamInit() {
 	if (SteamAPI_RestartAppIfNecessary(k_uAppId))
 		return EXIT_FAILURE;
@@ -47,6 +48,7 @@ bool SteamInit() {
 	}
 	return EXIT_SUCCESS;
 }
+#endif
 
 // Main game rendering and message loop
 void GameLoop(IGame* pIGame) {
@@ -99,9 +101,14 @@ void __cdecl LogCallback(enum Log::ELevel::TYPE level, const char* category, con
 	printf("%s", message);
 }
 
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
-	// Initialize Steam and game base systems
-	if (SteamInit() || !Main())
+#ifdef STEAM_PLATFORM
+	if (SteamInit())
+		return EXIT_FAILURE;
+#endif
+
+	if (!Main())
 		return EXIT_FAILURE;
 
 #ifdef _DEBUG
@@ -114,65 +121,89 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	working_directory = Utils::GetWorkingDirectory().string();
 
-	// Get user's Steam language and convert it
-	const std::string steam_language = SteamApps()->GetCurrentGameLanguage();
-	const std::string KLocale = Utils::ConvertSteamLangToWebLang(steam_language);
+	std::string KLocale;
 
-	// Load splash screen, icon, etc.
+	ttl::string_base<char> defaultLocale = IGame::GetDefaultLocaleID();
+	std::string KLocale_default = defaultLocale.c_str();
+
+	ttl::string_base<char> fallbackLocale = IGame::GetFallbackLocaleID();
+	std::string KLocale_fallback = fallbackLocale.c_str();
+
+#ifdef STEAM_PLATFORM
+	const std::string steam_language = SteamApps()->GetCurrentGameLanguage();
+	KLocale = Utils::ConvertSteamLangToWebLang(steam_language);
+#else
+	KLocale = KLocale_default;
+#endif
+
+	// Splashscreen
 	auto hSplash = MAKEINTRESOURCE(IDB_SplashA);
 	auto hText = MAKEINTRESOURCE(IDS_Title);
 	auto hIcon = MAKEINTRESOURCE(IDI_ICON);
 
-	// Load icon images
 	auto smallIcon = (HICON)LoadImage(hInstance, hIcon, IMAGE_ICON, GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), 0);
 	auto largeIcon = (HICON)LoadImage(hInstance, hIcon, IMAGE_ICON, GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON), 0);
 
-	// Show splash screen
 	ShowSplashscreen(hInstance, hSplash, hText, smallIcon);
 
-	//Init filesystem, index mods, enable hooks
+	// Initialization
 	FilesystemInit();
 	Loader::IndexMods();
 	Loader::LoadNativeMods();
 
+	auto& hookManager = HookManager::get();
+	hookManager.add(std::make_unique<PackLoader>());
+	hookManager.add(std::make_unique<CTechniquesIni>());
 
-	HookManager::get().add(std::make_unique<PackLoader>());
-	HookManager::get().add(std::make_unique<CTechniquesIni>());
-	//auto Hooks = new HookManager();
-	//Hooks->setup();
-	//Hooks->enable();
-	//Hooks::Init();
-	//Hooks::Enable();
-
-	//get assetmanager and call setgame (required for rpack stuff/dlc)
 	auto s_AssetManagerImpl = GetAssetManager();
 	s_AssetManagerImpl->SetGame(kGameDir, working_directory.c_str(), 0, NULL, nullptr);
 
-	// Define file paths
 	std::string basePath = working_directory + kGameDir;
 	std::string dataPath = basePath + "\\Data";
-	std::string localePath = dataPath + KLocale;
-	std::string localePak = localePath + ".pak";
-	std::string speechPath = basePath + "\\Speech" + KLocale;
-	std::string speechPak = speechPath + ".pak";
 
-	// Add Game/DW folder
+	auto resourcesExist = [&](const std::string& locale) -> bool {
+		std::string localePath = dataPath + locale;
+		std::string localePak = localePath + ".pak";
+		std::string speechPath = basePath + "\\Speech" + locale;
+		std::string speechPak = speechPath + ".pak";
+
+		return std::filesystem::exists(localePath) ||
+			std::filesystem::exists(localePak) ||
+			std::filesystem::exists(speechPath) ||
+			std::filesystem::exists(speechPak);
+		};
+
+	std::string chosenLocale;
+	if (resourcesExist(KLocale)) {
+		chosenLocale = KLocale;
+	}
+	else if (resourcesExist(KLocale_default)) {
+		chosenLocale = KLocale_default;
+	}
+	else {
+		chosenLocale = KLocale_fallback;
+	}
+
+	// Mount game data
 	fs::add_source(basePath.c_str(), (FFSAddSourceFlags::ENUM)258);
 
-	// Add data0.pak to data3.pak
 	for (int i = 0; i < 4; ++i) {
 		std::string dataPakPath = std::format("{}\\Data{}.pak", basePath, i);
 		fs::add_source(dataPakPath.c_str(), FFSAddSourceFlags::SUBDIRS);
 	}
 
-	// Add other important game resources
 	fs::add_source(dataPath.c_str(), (FFSAddSourceFlags::ENUM)7);
+
+	std::string localePath = dataPath + chosenLocale;
+	std::string localePak = localePath + ".pak";
+	std::string speechPath = basePath + "\\Speech" + chosenLocale;
+	std::string speechPak = speechPath + ".pak";
+
 	fs::add_source(localePath.c_str(), (FFSAddSourceFlags::ENUM)265);
 	fs::add_source(localePak.c_str(), (FFSAddSourceFlags::ENUM)9);
 	fs::add_source(speechPath.c_str(), (FFSAddSourceFlags::ENUM)265);
 	fs::add_source(speechPak.c_str(), (FFSAddSourceFlags::ENUM)9);
 
-	//load custom paks
 	Loader::LoadModPaks();
 
 	if (!IGame::InitializeOnlineServices(nullptr)) {
@@ -196,7 +227,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//hide splash and call preinit in asi mods
 	HideSplashscreen();
 	Loader::PreInitialize();
-
+	 
 	//Init Game
 	if (pIGame->Initialize(lpCmdLine, nShowCmd, smallIcon, largeIcon, 0, 0, nullptr) != 0) {
 		dbgprintf("IGame::Initialize() failed\n");
@@ -207,34 +238,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//get material manager
 	//Hooks::MaterialMgrInit();
 	auto s_ResourceLoadingRuntime = CResourceLoadingRuntime::Get();
-
-	//need to do this better somehow
-	auto EngineDll = GetModuleHandleA("engine_x64_rwdi.dll");
-
-	//CreateMaterialManager is inlined into CMaterialMgr::Initialize
-	//should be roughly
-	/*
-	CMaterialMgr *this;
-  
-	this = (CMaterialMgr *)malloc(0xb8);
-	CMaterialMgr::CMaterialMgr(this);
-	r_MatMgr = this;
-	CMaterialMgr::Initialize(this,param_1);
-	g_pMatMgr = r_MatMgr;
-	return;
-	*/
-
-
-	//instead of using DAT_180a402b0 directly, I can hook CTechniquesIni::Create, capture the first (argument-1) and that should give me r_MatMgr
-	/*
-	  DAT_180a402b0 = plVar7;
-	  FUN_18076fd20(uVar5,param_2,param_3,param_4);
-	  CTechniquesIni::Create((void **)(plVar7 + 1),param_2,param_3,param_4);
-	*/
-
-    //auto r_MatMgr = *reinterpret_cast<void**>(reinterpret_cast<uintptr_t>(EngineDll) + 0xa402b0);
-    auto g_pMatMgr = reinterpret_cast<CMaterialMgr*>(r_MatMgr);
-
+    auto g_pMatMgr = std::bit_cast<CMaterialMgr*>(r_MatMgr);
 
 	//load matpaks, rpacks, call post init for asi mods
 	Loader::LoadMaterialPacks(g_pMatMgr);
@@ -243,7 +247,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Loader::PostInitialize(pIGame);
 
 	//set custom title because I can
-	pIGame->SetGameName(ttl::string_base<char>("Dying Light (CE6DL)"));
+	pIGame->SetGameName(ttl::string_base<char>("Dying Light (DLCE)"));
 
 	//gameloop
 	GameLoop(pIGame);

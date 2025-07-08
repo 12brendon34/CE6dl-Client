@@ -428,6 +428,17 @@ public:
 
     virtual class ttl::string_base<char> const& GetTitleStorageFullGameProductId_FUCKINGAGAINLIKEIMADAMWARLOCK(class ttl::string_base<char> const&) const; //again
 
+
+
+
+
+    //
+    CGame* m_CGame;
+
+
+
+
+
     //idk DAT_1808d1390
 
 
