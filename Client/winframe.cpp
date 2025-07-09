@@ -135,7 +135,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	dbgprintf("KLocale: %s\nKLocale_default: %s\nKLocale_fallback: %s\n", KLocale.c_str(), KLocale_default.c_str(), KLocale_fallback.c_str());
 	dbgprintf("Working Directory: %s\n", working_directory.c_str());
-	dbgprintf("Platform Steam: %d\n", STEAM_PLATFORM);
+	
+#ifdef STEAM_PLATFORM
+	dbgprintf("Platform: Steam\n");
+#else
+	dbgprintf("Platform: GOG\n");
+#endif
 
 	while (!::IsDebuggerPresent())
 		::Sleep(100);
