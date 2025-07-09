@@ -2,8 +2,8 @@
 // Microsoft Visual C++ generated include file.
 // Used by Resource.rc
 //
-#define IDS_Title                       100
-#define IDB_SplashA                     101
+#define IDS_TITLE                       100
+#define IDB_SPLASH                      101
 #define IDI_ICON                        102
 
 // Next default values for new objects

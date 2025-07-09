@@ -142,8 +142,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 #endif
 
 	// Splashscreen
-	auto hSplash = MAKEINTRESOURCE(IDB_SplashA);
-	auto hText = MAKEINTRESOURCE(IDS_Title);
+	auto hSplash = MAKEINTRESOURCE(IDB_SPLASH);
+	auto hText = MAKEINTRESOURCE(IDS_TITLE);
 	auto hIcon = MAKEINTRESOURCE(IDI_ICON);
 
 	auto smallIcon = (HICON)LoadImage(hInstance, hIcon, IMAGE_ICON, GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), 0);
