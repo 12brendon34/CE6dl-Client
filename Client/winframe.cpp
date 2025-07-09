@@ -96,11 +96,12 @@ bool FilesystemInit(bool fallback = false) {
 	return fs::init(fallbackPath.string().c_str(), (FFSAddSourceFlags::ENUM)5, kCacheSubPath, false, true, nullptr);
 }
 
+#ifdef _DEBUG
 // Console log callback
-void __cdecl LogCallback(enum Log::ELevel::TYPE level, const char* category, const char* message) {
-	printf("%s", message);
+void __cdecl LogCallback(enum Log::ELevel::TYPE, const char*, const char* message) {
+	dbgprintf("%s", message);
 }
-
+#endif
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
 #ifdef STEAM_PLATFORM
@@ -110,14 +111,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	if (!Main())
 		return EXIT_FAILURE;
-
-#ifdef _DEBUG
-	Utils::InitConsole();
-	LogSetPrintCallback(LogCallback);
-
-	while (!::IsDebuggerPresent())
-		::Sleep(100);
-#endif
 
 	working_directory = Utils::GetWorkingDirectory().string();
 
@@ -134,6 +127,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	KLocale = Utils::ConvertSteamLangToWebLang(steam_language);
 #else
 	KLocale = KLocale_default;
+#endif
+
+#ifdef _DEBUG
+	Utils::InitConsole();
+	LogSetPrintCallback(LogCallback);
+
+	dbgprintf("KLocale: %s\nKLocale_default: %s\nKLocale_fallback: %s\n", KLocale.c_str(), KLocale_default.c_str(), KLocale_fallback.c_str());
+	dbgprintf("Working Directory: %s\n", working_directory.c_str());
+	dbgprintf("Platform Steam: %d\n", STEAM_PLATFORM);
+
+	while (!::IsDebuggerPresent())
+		::Sleep(100);
 #endif
 
 	// Splashscreen
@@ -161,17 +166,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	std::string basePath = working_directory + kGameDir;
 	std::string dataPath = basePath + "\\Data";
 
-	auto resourcesExist = [&](const std::string& locale) -> bool {
+	auto resourcesExist = [&](const std::string& locale) {
 		std::string localePath = dataPath + locale;
 		std::string localePak = localePath + ".pak";
 		std::string speechPath = basePath + "\\Speech" + locale;
 		std::string speechPak = speechPath + ".pak";
 
-		return std::filesystem::exists(localePath) ||
-			std::filesystem::exists(localePak) ||
+		//return std::filesystem::exists(localePath) || // this folder usually doesn't exist.
+		return std::filesystem::exists(localePak) ||
 			std::filesystem::exists(speechPath) ||
 			std::filesystem::exists(speechPak);
-		};
+	};
 
 	std::string chosenLocale;
 	if (resourcesExist(KLocale)) {
@@ -217,6 +222,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	//create game and set wd
 	IGame* pIGame = CreateGame("GameDI", hInstance, true, kGameDir);
+
+	pIGame->SetLocaleID(chosenLocale.c_str());
+	pIGame->SetSpeechID(chosenLocale.c_str(), false);
 	pIGame->SetRootDirectory(working_directory.c_str());
 
 	//create game mounthelper (loads dlcs)
