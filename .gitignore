@@ -1,9 +1,1 @@
-*.vs
-x64/
-Debug
-packages
-RandomStuff_IDontwanapush
-/Client/HooksOLD
-/vcpkg_installed
-/PriorityLoader
-/CrashPatch
+/.idea

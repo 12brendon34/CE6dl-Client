@@ -1,0 +1,8 @@
+//
+// Created by Brendon on 1/12/2026.
+//
+
+#ifndef DYINGLIGHTGAME_LOBBYSTEAM_H
+#define DYINGLIGHTGAME_LOBBYSTEAM_H
+
+#endif //DYINGLIGHTGAME_LOBBYSTEAM_H

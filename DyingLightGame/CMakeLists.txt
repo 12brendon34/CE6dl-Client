@@ -1,0 +1,54 @@
+cmake_minimum_required(VERSION 3.20)
+project(DyingLightGame LANGUAGES CXX)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
+include(${CMAKE_SOURCE_DIR}/cmake/CPM.cmake)
+
+if (STEAM_PLATFORM)
+    add_definitions(-DSTEAM_PLATFORM=1)
+endif (STEAM_PLATFORM)
+
+add_executable(DyingLightGame WIN32
+        resources/Resource.rc
+        src/engine/Game/WinFrame.cpp
+        src/engine/engine/CustomSplash.cpp
+        src/engine/engine/CustomSplash.h
+        src/engine/Hook/HookManager.cpp
+        src/engine/Hook/HookManager.h
+        src/engine/Hook/Hooks/Hook.cpp
+        src/engine/Hook/Hooks/Hook.h
+        src/engine/Hook/Hooks/Render/OnPaint.cpp
+        src/engine/Hook/Hooks/Render/OnPaint.h
+        src/engine/ModLoader.cpp
+        src/engine/ModLoader.h
+        src/engine/ModInstance.cpp
+        src/engine/ModInstance.h
+        src/engine/ModAPI.cpp
+        src/engine/ModAPI.h
+)
+
+target_compile_features(DyingLightGame PUBLIC cxx_std_20)
+target_include_directories(DyingLightGame
+        PRIVATE
+        src
+        libs/Engine/include
+        libs/Filesystem/include
+        libs/Steam/include
+        resources
+)
+
+CPMAddPackage("gh:BasedInc/libhat@0.9.0")
+CPMAddPackage("gh:zyantific/zydis@4.1.1")
+CPMAddPackage("gh:cursey/safetyhook@0.6.9")
+CPMAddPackage(NAME nlohmann_json GITHUB_REPOSITORY nlohmann/json VERSION 3.12.0)
+target_link_libraries(DyingLightGame
+        PRIVATE
+        libhat::libhat
+        safetyhook::safetyhook
+        nlohmann_json::nlohmann_json
+
+        ChromeEngine::Engine
+        ChromeEngine::GameDLL
+        ChromeEngine::Filesystem
+        Steam::API
+)
