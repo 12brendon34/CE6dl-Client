@@ -153,9 +153,6 @@ void Loader::ParseMods(std::vector<std::filesystem::path> modPaths) {
                     if (path.is_relative())
                         path = entry / path;
 
-                    if (path.is_relative())
-                        path = m_Root / path;
-
                     if (type == "dll") {
                         // dll instance
                         auto inst = std::make_unique<DllModInstance>();

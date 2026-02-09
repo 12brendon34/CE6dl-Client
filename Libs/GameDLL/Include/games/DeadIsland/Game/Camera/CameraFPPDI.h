@@ -4,4 +4,7 @@
 
 #pragma once
 
-class CameraFPPDI {};
+class CameraFPPDI : public IBaseCamera {
+public:
+    
+};

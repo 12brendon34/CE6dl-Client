@@ -3,13 +3,10 @@
 //
 #pragma once
 #include "CBaseCamera.h"
-#include "engine/Export.h"
 #include "engine/ChromeTypes.h"
+#include "engine/Export.h"
 #include "engine/Kernel/ttl/String.h"
-
-//unimp
-class CRTTI {
-};
+#include "engine/engine/Rtti/RTTI.h"
 
 class ECameraMode {
 public:
@@ -85,4 +82,7 @@ public:
     virtual void SetEngineObject(CGSObject*);
     */
     CBaseCamera *m_CBC;
+    char _pad[0x40];
+
 };
+static_assert(sizeof(IBaseCamera) == 0x50u);

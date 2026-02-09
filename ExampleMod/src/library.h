@@ -9,4 +9,4 @@
 extern "C" __declspec(dllexport) void OnLoad();
 extern "C" __declspec(dllexport) void OnUnload();
 
-extern "C" __declspec(dllexport) void OnPaint(const IGame *pIGame); //OnPaint Hook
+extern "C" __declspec(dllexport) void OnPaint(IGame *pIGame); //OnPaint Hook

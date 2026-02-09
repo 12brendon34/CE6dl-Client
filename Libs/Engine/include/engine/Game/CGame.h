@@ -4,11 +4,15 @@
 
 
 #include <cstdint>
+#include "engine/Export.h"
+#include "engine/engine/Rtti/RTTI.h"
 
 class IGame;
 
-class CGame {
+class ENGINE_API CGame {
 public:
+    static CRTTI m_RTTI;
+
     char pad_0000[24]; //0x0000
     IGame *m_IGame;
 
@@ -53,6 +57,6 @@ public:
     int32_t N0000061F; //0x06D0
     char pad_06D4[1264]; //0x06D4
 
-    virtual void Function0();
+    virtual ~CGame();
 }; //Size: 0x0BA8
 static_assert(sizeof(CGame) == 0xBA8);

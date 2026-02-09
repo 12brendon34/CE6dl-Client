@@ -11,7 +11,8 @@ add_library(ChromeEngine::GameDLL SHARED IMPORTED GLOBAL
         Include/games/DeadIsland/Game/Player/PlayerDI.h
         Include/games/DeadIsland/Game/Camera/CameraFPPDI.h
         Include/games/DeadIsland/Game/Camera/BaseCameraDI.h
-        Include/games/GameEngine/engine/camera.h)
+        Include/games/GameEngine/engine/camera.h
+        Include/games/DeadIsland/Game/Camera/CameraManagerDI.hh)
 
 set_target_properties(ChromeEngine::GameDLL PROPERTIES
         IMPORTED_IMPLIB "${CMAKE_CURRENT_LIST_DIR}/gamedll_x64_rwdi.lib"

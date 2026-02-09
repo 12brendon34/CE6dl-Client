@@ -1,1 +1,3 @@
 /.idea
+/cmake-build-debug-visual-studio
+/cmake-build-minsizerel-visual-studio

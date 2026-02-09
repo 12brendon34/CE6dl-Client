@@ -446,8 +446,9 @@ public:
     virtual bool Stripped137();
     virtual void Stripped139();
 
+    //8 bytes
     CGame *m_CGame;
-    char pad_0028[336];
+    char pad_0028[392];
     char *m_Username; //0x0198
     char pad_01A0[920]; //0x01A0
     ContentManagerDI *m_ContentManagerDI; //0x0538

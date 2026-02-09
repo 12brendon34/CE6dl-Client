@@ -30,11 +30,12 @@ add_executable(DyingLightGame WIN32
 target_compile_features(DyingLightGame PUBLIC cxx_std_20)
 target_include_directories(DyingLightGame
         PRIVATE
-        src
-        libs/Engine/include
-        libs/Filesystem/include
-        libs/Steam/include
+        ${CMAKE_SOURCE_DIR}/libs/Engine/include
+        ${CMAKE_SOURCE_DIR}/libs/Filesystem/include
+        ${CMAKE_SOURCE_DIR}/libs/GameDLL/include
+        ${CMAKE_SOURCE_DIR}/libs/Steam/include
         resources
+        src
 )
 
 CPMAddPackage("gh:BasedInc/libhat@0.9.0")

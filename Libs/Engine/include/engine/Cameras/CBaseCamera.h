@@ -2,12 +2,13 @@
 // Created by Brendon on 1/13/2026.
 //
 #pragma once
-#include "engine/Export.h"
 #include "engine/ChromeTypes.h"
-#include "engine/filesystem/File.h"
+#include "engine/Export.h"
 #include "engine/Kernel3D/Matrix.h"
+#include "engine/engine/Rtti/RTTI.h"
+#include "engine/filesystem/File.h"
 
-//unimp
+// unimp
 class CLevelView {
 };
 
@@ -50,6 +51,7 @@ class ENGINE_API CBaseCamera : public CCamera {
 public:
     static void DeleteMemento(CBaseCameraMemento const *);
     static CBaseCameraMemento const *LoadMemento(fs::ifile &);
+    static CRTTI m_RTTI;
 
     virtual ~CBaseCamera();
     virtual void Save(fs::ifile* param_2);

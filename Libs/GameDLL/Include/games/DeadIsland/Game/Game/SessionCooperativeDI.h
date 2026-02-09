@@ -4,8 +4,7 @@
 #pragma once
 #include "LevelDI.h"
 #include "LocalClientDI.h"
-
-class CameraManagerDI {};
+#include "games/DeadIsland/Game/Camera/CameraManagerDI.h"
 
 class SessionCooperativeDI {
 public:

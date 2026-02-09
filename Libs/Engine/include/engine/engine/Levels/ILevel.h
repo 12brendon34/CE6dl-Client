@@ -49,7 +49,7 @@ class ILevel {
 public:
 	ILevel();
 	ILevel(ILevel const&);
-	//static CRTTI const* GetNativeClass();
+	static CRTTI const* GetNativeClass();
 	//static void SetUIUseNewUpdateScheme(bool);
 
 	void Activate();

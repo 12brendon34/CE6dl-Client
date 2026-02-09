@@ -9,10 +9,10 @@ add_library(ExampleMod SHARED
 target_compile_features(ExampleMod PUBLIC cxx_std_20)
 target_include_directories(ExampleMod
         PRIVATE
+        ${CMAKE_SOURCE_DIR}/libs/Engine/include
+        ${CMAKE_SOURCE_DIR}/libs/Filesystem/include
+        ${CMAKE_SOURCE_DIR}/libs/GameDLL/include
         src
-        libs/Engine/include
-        libs/Filesystem/include
-        libs/Steam/include
 )
 
 target_link_libraries(ExampleMod

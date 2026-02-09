@@ -8,3 +8,4 @@ add_subdirectory(libs/Steam)
 
 add_subdirectory(DyingLightGame)
 add_subdirectory(ExampleMod)
+add_subdirectory(MFCProject)

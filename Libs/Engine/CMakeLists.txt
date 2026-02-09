@@ -14,6 +14,16 @@ add_library(ChromeEngine::Engine SHARED IMPORTED GLOBAL
         include/engine/engine/resourcemanagement/MountHelper.h
         include/engine/engine/Levels/ILevel.h
         include/engine/engine/Levels/CLevel.h
+        include/engine/engine/interfaces/RTTI/RTTIField.h
+        include/engine/engine/Rtti/RTTI.h
+        include/engine/engine/interfaces/IModelObject.h
+        include/engine/engine/FNode/MeshLinker.h
+        include/engine/engine/CtrlOBJ/ModelObject.h
+        include/engine/engine/Editor/IEngineImpl.h
+        include/engine/engine/Editor/EditorData.h
+        include/engine/engine/GameObject.h
+        include/engine/engine/interfaces/RTTI/RTTIObject.h
+        include/engine/engine/GameScript/GSObject.h
 )
 
 set_target_properties(ChromeEngine::Engine PROPERTIES
