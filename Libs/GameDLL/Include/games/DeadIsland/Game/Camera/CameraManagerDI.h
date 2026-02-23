@@ -3,8 +3,9 @@
 //
 
 #pragma once
+class CameraFPPDI;
 
-//taken from Dead Island, might be wrong
+// taken from Dead Island, might be wrong
 class ECameraTypeDI {
     public:
     enum TYPE {

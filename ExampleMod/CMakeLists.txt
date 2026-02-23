@@ -21,4 +21,5 @@ target_link_libraries(ExampleMod
         ChromeEngine::GameDLL
         ChromeEngine::Filesystem
         #Steam::API
+        libhat::libhat
 )
