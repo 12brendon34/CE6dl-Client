@@ -38,6 +38,8 @@ public:
     using on_load_t = bool(*)();
     using on_unload_t = void(*)();
     using on_paint_t = void(*)(IGame*);
+    using on_key_t = void(*)(int, bool);
+    using on_imgui_t = void(*)(void*);
 
     HMODULE m_hMod = nullptr;
     std::filesystem::path m_dllPath;
@@ -45,6 +47,8 @@ public:
     on_load_t onLoad_ = nullptr;
     on_unload_t onUnload_ = nullptr;
     on_paint_t onPaint_ = nullptr;
+    on_key_t onKey_ = nullptr;
+    on_imgui_t onImGui_ = nullptr;
 
     [[nodiscard]] virtual ModLoadPhase GetLoadPhase() const;
 

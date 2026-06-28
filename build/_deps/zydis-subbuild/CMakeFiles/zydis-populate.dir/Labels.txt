@@ -1,0 +1,14 @@
+# Target labels
+ zydis-populate
+# Source files and their labels
+C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-subbuild/CMakeFiles/zydis-populate
+C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-subbuild/CMakeFiles/a2bab2d7a6f4bda4c43eb3ea9f0103c9/zydis-populate.rule
+C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-subbuild/CMakeFiles/2d02329f1f1b7e2da0cf4621aa7f3f99/zydis-populate-complete.rule
+C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-subbuild/CMakeFiles/6dbc2af640f83a6d24383d59f3f0dfb8/zydis-populate-build.rule
+C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-subbuild/CMakeFiles/6dbc2af640f83a6d24383d59f3f0dfb8/zydis-populate-configure.rule
+C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-subbuild/CMakeFiles/6dbc2af640f83a6d24383d59f3f0dfb8/zydis-populate-download.rule
+C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-subbuild/CMakeFiles/6dbc2af640f83a6d24383d59f3f0dfb8/zydis-populate-install.rule
+C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-subbuild/CMakeFiles/6dbc2af640f83a6d24383d59f3f0dfb8/zydis-populate-mkdir.rule
+C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-subbuild/CMakeFiles/6dbc2af640f83a6d24383d59f3f0dfb8/zydis-populate-patch.rule
+C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-subbuild/CMakeFiles/6dbc2af640f83a6d24383d59f3f0dfb8/zydis-populate-test.rule
+C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-subbuild/CMakeFiles/6dbc2af640f83a6d24383d59f3f0dfb8/zydis-populate-update.rule

@@ -10,13 +10,15 @@
 
 #include "engine/Debug.h"
 #include <libhat/scanner.hpp>
+#include <imgui.h>
 
 #include "games/DeadIsland/Game/Camera/CameraManagerDI.h"
 #include "games/DeadIsland/Game/Game/LocalClientDI.h"
 using namespace hat::literals; // for _sig / _sigv UDLs
 
-void OnLoad() {
+bool OnLoad() {
     std::cout << "Hello, World!" << std::endl;
+    return true;
 }
 
 //haven't bothered implementing yet
@@ -56,42 +58,32 @@ void OnPaint(IGame *pIGame) {
     //    camera->SetOrthoView(ECameraMode::BACK);
 
 
-    //set CamManager->m_ActiveType to ECameraTypeDI::TPPCAMERA
-    constexpr auto pattern = "48 89 6C 24 ? 48 89 74 24 ? 41 56 48 83 EC ? 48 8B 41 ? 4D 8B F0"_sig;
+    // draw custom ui or do per-frame logic here
+}
 
-    static void* cached_addr = nullptr;
-    if (!cached_addr) {
-        std::optional<hat::process::module> ntdll = hat::process::get_module("gamedll_x64_rwdi.dll");
-        assert(ntdll.has_value());
-        hat::scan_result result = hat::find_pattern(pattern, ".text", *ntdll);
+#include <atomic>
+std::atomic<bool> g_show_ui = false;
 
-        const std::byte* match = nullptr;
-        try {
-            match = result.get();
-        } catch (...) {
-            match = nullptr;
+void OnImGui(void* ctx) {
+    ImGui::SetCurrentContext((ImGuiContext*)ctx);
+
+    bool bShow = g_show_ui.load();
+    if (bShow) {
+        ImGui::Begin("Dying Light Custom Edition", &bShow);
+        ImGui::Text("Hello from ExampleMod!");
+        ImGui::Text("Press F1 to toggle this menu.");
+        if (ImGui::Button("Close")) {
+            bShow = false;
         }
-
-        if (!match) {
-            dbgprintf("ChangeCamera pattern not found\n");
-            return;
-        }
-        cached_addr = (void*)match;
-        dbgprintf("Found ChangeCamera at %p\n", cached_addr);
-        MessageBoxA(nullptr, "Zamn", nullptr, 0);
+        ImGui::End();
+        g_show_ui.store(bShow);
     }
+}
 
-    using ChangeCameraFn = void(*)(CameraManagerDI* /*thisptr*/, ECameraTypeDI::TYPE /*type*/, PlayerDI* /*obj*/);
-
-
-    const ChangeCameraFn ChangeCamera = reinterpret_cast<ChangeCameraFn>(cached_addr);
-    if (!ChangeCamera) {
-        dbgprintf("ChangeCamera: null function pointer\n");
-        return;
+void OnKey(int key, bool isDown) {
+    if (key == VK_F1 && isDown) {
+        g_show_ui = !g_show_ui;
     }
-
-    auto desiredType = ECameraTypeDI::BOATCAMERA;
-
-    if (CamManager->m_ActiveType != desiredType && CamManager->m_ActiveType != ECameraTypeDI::NONE)
-        ChangeCamera(CamManager, desiredType, pIGame->m_Session->m_LocalClient->m_PlayerObject);
+    // log key event
+    dbgprintf("key: %d down: %d\n", key, isDown);
 }

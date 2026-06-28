@@ -1,0 +1,19 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/cmake_install.cmake",
+		"C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/libs/Engine/cmake_install.cmake",
+		"C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/libs/Filesystem/cmake_install.cmake",
+		"C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/libs/GameDLL/cmake_install.cmake",
+		"C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/libs/Steam/cmake_install.cmake",
+		"C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/DyingLightGame/cmake_install.cmake",
+		"C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/libhat-build/cmake_install.cmake",
+		"C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-build/cmake_install.cmake",
+		"C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-build/zycore/cmake_install.cmake",
+		"C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/safetyhook-build/cmake_install.cmake",
+		"C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/nlohmann_json-build/cmake_install.cmake",
+		"C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/ExampleMod/cmake_install.cmake",
+		"C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/MFCProject/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

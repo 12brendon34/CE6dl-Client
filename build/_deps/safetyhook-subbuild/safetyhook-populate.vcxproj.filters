@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-subbuild\CMakeFiles\e3d423faee6eb6f5e4087c441177c87f\safetyhook-populate-mkdir.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-subbuild\CMakeFiles\e3d423faee6eb6f5e4087c441177c87f\safetyhook-populate-download.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-subbuild\CMakeFiles\e3d423faee6eb6f5e4087c441177c87f\safetyhook-populate-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-subbuild\CMakeFiles\e3d423faee6eb6f5e4087c441177c87f\safetyhook-populate-patch.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-subbuild\CMakeFiles\e3d423faee6eb6f5e4087c441177c87f\safetyhook-populate-configure.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-subbuild\CMakeFiles\e3d423faee6eb6f5e4087c441177c87f\safetyhook-populate-build.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-subbuild\CMakeFiles\e3d423faee6eb6f5e4087c441177c87f\safetyhook-populate-install.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-subbuild\CMakeFiles\e3d423faee6eb6f5e4087c441177c87f\safetyhook-populate-test.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-subbuild\CMakeFiles\bae420d2b524d2f3d144963aedb22596\safetyhook-populate-complete.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-subbuild\CMakeFiles\ae6918916a882056fb49eda2b9ec42b6\safetyhook-populate.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-subbuild\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-subbuild\CMakeFiles\safetyhook-populate" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{433563E6-66D9-3CC5-A285-854FA24D3FC8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

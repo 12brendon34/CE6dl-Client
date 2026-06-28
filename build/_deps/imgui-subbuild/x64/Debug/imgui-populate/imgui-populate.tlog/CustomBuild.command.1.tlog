@@ -1,0 +1,150 @@
+^C:\USERS\LIMON\DESKTOP\ALL\ALL PROJECTS (CODE)\DYING-LIGHT-CE-MAIN\BUILD\_DEPS\IMGUI-SUBBUILD\CMAKEFILES\CDDD6ECF223BF77BD20B0B2FB98EE8BD\IMGUI-POPULATE-MKDIR.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -Dcfgdir=/Debug -P "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/imgui-populate-prefix/tmp/imgui-populate-mkdirs.cmake"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/imgui-populate-prefix/src/imgui-populate-stamp/Debug/imgui-populate-mkdir"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\LIMON\DESKTOP\ALL\ALL PROJECTS (CODE)\DYING-LIGHT-CE-MAIN\BUILD\_DEPS\IMGUI-SUBBUILD\CMAKEFILES\CDDD6ECF223BF77BD20B0B2FB98EE8BD\IMGUI-POPULATE-DOWNLOAD.RULE
+setlocal
+cd "C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps"
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/imgui-populate-prefix/tmp/imgui-populate-gitclone.cmake"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/imgui-populate-prefix/src/imgui-populate-stamp/Debug/imgui-populate-download"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\LIMON\DESKTOP\ALL\ALL PROJECTS (CODE)\DYING-LIGHT-CE-MAIN\BUILD\_DEPS\IMGUI-SUBBUILD\CMAKEFILES\CDDD6ECF223BF77BD20B0B2FB98EE8BD\IMGUI-POPULATE-UPDATE.RULE
+setlocal
+cd "C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src"
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -Dcan_fetch=YES -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/imgui-populate-prefix/tmp/imgui-populate-gitupdate.cmake"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\LIMON\DESKTOP\ALL\ALL PROJECTS (CODE)\DYING-LIGHT-CE-MAIN\BUILD\_DEPS\IMGUI-SUBBUILD\CMAKEFILES\CDDD6ECF223BF77BD20B0B2FB98EE8BD\IMGUI-POPULATE-PATCH.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/imgui-populate-prefix/src/imgui-populate-stamp/Debug/imgui-populate-patch"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\LIMON\DESKTOP\ALL\ALL PROJECTS (CODE)\DYING-LIGHT-CE-MAIN\BUILD\_DEPS\IMGUI-SUBBUILD\CMAKEFILES\CDDD6ECF223BF77BD20B0B2FB98EE8BD\IMGUI-POPULATE-CONFIGURE.RULE
+setlocal
+cd "C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-build"
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/imgui-populate-prefix/src/imgui-populate-stamp/Debug/imgui-populate-configure"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\LIMON\DESKTOP\ALL\ALL PROJECTS (CODE)\DYING-LIGHT-CE-MAIN\BUILD\_DEPS\IMGUI-SUBBUILD\CMAKEFILES\CDDD6ECF223BF77BD20B0B2FB98EE8BD\IMGUI-POPULATE-BUILD.RULE
+setlocal
+cd "C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-build"
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/imgui-populate-prefix/src/imgui-populate-stamp/Debug/imgui-populate-build"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\LIMON\DESKTOP\ALL\ALL PROJECTS (CODE)\DYING-LIGHT-CE-MAIN\BUILD\_DEPS\IMGUI-SUBBUILD\CMAKEFILES\CDDD6ECF223BF77BD20B0B2FB98EE8BD\IMGUI-POPULATE-INSTALL.RULE
+setlocal
+cd "C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-build"
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/imgui-populate-prefix/src/imgui-populate-stamp/Debug/imgui-populate-install"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\LIMON\DESKTOP\ALL\ALL PROJECTS (CODE)\DYING-LIGHT-CE-MAIN\BUILD\_DEPS\IMGUI-SUBBUILD\CMAKEFILES\CDDD6ECF223BF77BD20B0B2FB98EE8BD\IMGUI-POPULATE-TEST.RULE
+setlocal
+cd "C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-build"
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/imgui-populate-prefix/src/imgui-populate-stamp/Debug/imgui-populate-test"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\LIMON\DESKTOP\ALL\ALL PROJECTS (CODE)\DYING-LIGHT-CE-MAIN\BUILD\_DEPS\IMGUI-SUBBUILD\CMAKEFILES\53CB5EA85611A7211BB0115FB1E267CC\IMGUI-POPULATE-COMPLETE.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/CMakeFiles/Debug"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/CMakeFiles/Debug/imgui-populate-complete"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/imgui-populate-prefix/src/imgui-populate-stamp/Debug/imgui-populate-done"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\LIMON\DESKTOP\ALL\ALL PROJECTS (CODE)\DYING-LIGHT-CE-MAIN\BUILD\_DEPS\IMGUI-SUBBUILD\CMAKEFILES\11FCB6369BBC5E9571C9B0CA89BCB430\IMGUI-POPULATE.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\LIMON\DESKTOP\ALL\ALL PROJECTS (CODE)\DYING-LIGHT-CE-MAIN\BUILD\_DEPS\IMGUI-SUBBUILD\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild" "-BC:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild" --check-stamp-file "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

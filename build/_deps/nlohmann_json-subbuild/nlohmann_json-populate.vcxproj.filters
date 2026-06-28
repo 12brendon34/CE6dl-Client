@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-subbuild\CMakeFiles\9938b3485153135b094d581cd9ef93bf\nlohmann_json-populate-mkdir.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-subbuild\CMakeFiles\9938b3485153135b094d581cd9ef93bf\nlohmann_json-populate-download.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-subbuild\CMakeFiles\9938b3485153135b094d581cd9ef93bf\nlohmann_json-populate-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-subbuild\CMakeFiles\9938b3485153135b094d581cd9ef93bf\nlohmann_json-populate-patch.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-subbuild\CMakeFiles\9938b3485153135b094d581cd9ef93bf\nlohmann_json-populate-configure.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-subbuild\CMakeFiles\9938b3485153135b094d581cd9ef93bf\nlohmann_json-populate-build.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-subbuild\CMakeFiles\9938b3485153135b094d581cd9ef93bf\nlohmann_json-populate-install.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-subbuild\CMakeFiles\9938b3485153135b094d581cd9ef93bf\nlohmann_json-populate-test.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-subbuild\CMakeFiles\ccad00217976716f02d62b2731da723e\nlohmann_json-populate-complete.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-subbuild\CMakeFiles\8c43621c85f175eb8b1bdb193e473b61\nlohmann_json-populate.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-subbuild\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-subbuild\CMakeFiles\nlohmann_json-populate" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{6948EF87-CAAE-33C5-9E7E-3B0DCA9BBE1C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

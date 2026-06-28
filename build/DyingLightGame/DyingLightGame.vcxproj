@@ -1,0 +1,438 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{27BB7507-E571-3F57-A2F9-E04CAE539DA3}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>DyingLightGame</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\DyingLightGame\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">DyingLightGame.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">DyingLightGame</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\DyingLightGame\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">DyingLightGame.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">DyingLightGame</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\DyingLightGame\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">DyingLightGame.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">DyingLightGame</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\DyingLightGame\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">DyingLightGame.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">DyingLightGame</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\resources;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\backends;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/libs/Engine/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/libs/Filesystem/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/libs/Steam/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/libhat-src/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/safetyhook-src/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-src/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-build" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-src/dependencies/zycore/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-build/zycore" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/libs/GameDLL/Include"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4201</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <SuppressStartupBanner></SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;STEAM_PLATFORM=1;LIBHAT_HINT_X86_64;ZYDIS_STATIC_BUILD;ZYCORE_STATIC_BUILD;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;STEAM_PLATFORM=1;LIBHAT_HINT_X86_64;ZYDIS_STATIC_BUILD;ZYCORE_STATIC_BUILD;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\resources;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\backends;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Engine\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Filesystem\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Steam\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\libhat-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-src\dependencies\zycore\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build\zycore;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\resources;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\backends;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Engine\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Filesystem\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Steam\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\libhat-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-src\dependencies\zycore\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build\zycore;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\_deps\libhat-build\Debug\libhat.lib;..\_deps\safetyhook-build\Debug\safetyhook.lib;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Engine\engine_x64_rwdi.lib;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\gamedll_x64_rwdi.lib;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Filesystem\filesystem_x64_rwdi.lib;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Steam\steam_api64.lib;d3d11.lib;dxgi.lib;..\_deps\zydis-build\Debug\Zydis.lib;..\_deps\zydis-build\zycore\Debug\Zycore.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <DataExecutionPrevention></DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers></ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/DyingLightGame/Debug/DyingLightGame.lib</ImportLibrary>
+      <LinkErrorReporting></LinkErrorReporting>
+      <ProgramDataBaseFile>C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/DyingLightGame/Debug/DyingLightGame.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress></RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\resources;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\backends;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/libs/Engine/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/libs/Filesystem/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/libs/Steam/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/libhat-src/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/safetyhook-src/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-src/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-build" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-src/dependencies/zycore/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-build/zycore" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/libs/GameDLL/Include"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <DisableSpecificWarnings>4201</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <SuppressStartupBanner></SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;STEAM_PLATFORM=1;LIBHAT_HINT_X86_64;ZYDIS_STATIC_BUILD;ZYCORE_STATIC_BUILD;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;STEAM_PLATFORM=1;LIBHAT_HINT_X86_64;ZYDIS_STATIC_BUILD;ZYCORE_STATIC_BUILD;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\resources;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\backends;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Engine\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Filesystem\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Steam\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\libhat-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-src\dependencies\zycore\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build\zycore;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\resources;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\backends;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Engine\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Filesystem\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Steam\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\libhat-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-src\dependencies\zycore\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build\zycore;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\_deps\libhat-build\Release\libhat.lib;..\_deps\safetyhook-build\Release\safetyhook.lib;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Engine\engine_x64_rwdi.lib;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\gamedll_x64_rwdi.lib;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Filesystem\filesystem_x64_rwdi.lib;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Steam\steam_api64.lib;d3d11.lib;dxgi.lib;..\_deps\zydis-build\Release\Zydis.lib;..\_deps\zydis-build\zycore\Release\Zycore.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <DataExecutionPrevention></DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers></ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/DyingLightGame/Release/DyingLightGame.lib</ImportLibrary>
+      <LinkErrorReporting></LinkErrorReporting>
+      <ProgramDataBaseFile>C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/DyingLightGame/Release/DyingLightGame.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress></RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\resources;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\backends;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/libs/Engine/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/libs/Filesystem/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/libs/Steam/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/libhat-src/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/safetyhook-src/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-src/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-build" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-src/dependencies/zycore/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-build/zycore" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/libs/GameDLL/Include"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <DisableSpecificWarnings>4201</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <SuppressStartupBanner></SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;STEAM_PLATFORM=1;LIBHAT_HINT_X86_64;ZYDIS_STATIC_BUILD;ZYCORE_STATIC_BUILD;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;STEAM_PLATFORM=1;LIBHAT_HINT_X86_64;ZYDIS_STATIC_BUILD;ZYCORE_STATIC_BUILD;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\resources;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\backends;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Engine\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Filesystem\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Steam\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\libhat-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-src\dependencies\zycore\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build\zycore;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\resources;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\backends;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Engine\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Filesystem\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Steam\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\libhat-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-src\dependencies\zycore\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build\zycore;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\_deps\libhat-build\MinSizeRel\libhat.lib;..\_deps\safetyhook-build\MinSizeRel\safetyhook.lib;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Engine\engine_x64_rwdi.lib;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\gamedll_x64_rwdi.lib;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Filesystem\filesystem_x64_rwdi.lib;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Steam\steam_api64.lib;d3d11.lib;dxgi.lib;..\_deps\zydis-build\MinSizeRel\Zydis.lib;..\_deps\zydis-build\zycore\MinSizeRel\Zycore.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <DataExecutionPrevention></DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers></ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/DyingLightGame/MinSizeRel/DyingLightGame.lib</ImportLibrary>
+      <LinkErrorReporting></LinkErrorReporting>
+      <ProgramDataBaseFile>C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/DyingLightGame/MinSizeRel/DyingLightGame.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress></RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\resources;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\backends;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/libs/Engine/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/libs/Filesystem/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/libs/Steam/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/libhat-src/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/safetyhook-src/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-src/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-build" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-src/dependencies/zycore/include" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/zydis-build/zycore" /external:I "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/libs/GameDLL/Include"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4201</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <SuppressStartupBanner></SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;STEAM_PLATFORM=1;LIBHAT_HINT_X86_64;ZYDIS_STATIC_BUILD;ZYCORE_STATIC_BUILD;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;STEAM_PLATFORM=1;LIBHAT_HINT_X86_64;ZYDIS_STATIC_BUILD;ZYCORE_STATIC_BUILD;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\resources;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\backends;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Engine\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Filesystem\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Steam\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\libhat-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-src\dependencies\zycore\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build\zycore;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\resources;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\backends;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Engine\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Filesystem\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Steam\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\libhat-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-src\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-src\dependencies\zycore\include;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build\zycore;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\_deps\libhat-build\RelWithDebInfo\libhat.lib;..\_deps\safetyhook-build\RelWithDebInfo\safetyhook.lib;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Engine\engine_x64_rwdi.lib;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\GameDLL\gamedll_x64_rwdi.lib;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Filesystem\filesystem_x64_rwdi.lib;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\libs\Steam\steam_api64.lib;d3d11.lib;dxgi.lib;..\_deps\zydis-build\RelWithDebInfo\Zydis.lib;..\_deps\zydis-build\zycore\RelWithDebInfo\Zycore.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <DataExecutionPrevention></DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers></ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/DyingLightGame/RelWithDebInfo/DyingLightGame.lib</ImportLibrary>
+      <LinkErrorReporting></LinkErrorReporting>
+      <ProgramDataBaseFile>C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/DyingLightGame/RelWithDebInfo/DyingLightGame.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress></RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/DyingLightGame/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main" "-BC:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build" --check-stamp-file "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/DyingLightGame/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\CMake\share\cmake-4.2\Modules\ExternalProject\shared_internal_commands.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FetchContent.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FetchContent\CMakeLists.cmake.in;C:\Program Files\CMake\share\cmake-4.2\Modules\FindGit.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindPackageMessage.cmake;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\cmake\CPM.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\DyingLightGame\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/DyingLightGame/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main" "-BC:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build" --check-stamp-file "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/DyingLightGame/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\CMake\share\cmake-4.2\Modules\ExternalProject\shared_internal_commands.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FetchContent.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FetchContent\CMakeLists.cmake.in;C:\Program Files\CMake\share\cmake-4.2\Modules\FindGit.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindPackageMessage.cmake;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\cmake\CPM.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\DyingLightGame\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/DyingLightGame/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main" "-BC:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build" --check-stamp-file "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/DyingLightGame/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Program Files\CMake\share\cmake-4.2\Modules\ExternalProject\shared_internal_commands.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FetchContent.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FetchContent\CMakeLists.cmake.in;C:\Program Files\CMake\share\cmake-4.2\Modules\FindGit.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindPackageMessage.cmake;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\cmake\CPM.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\DyingLightGame\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/DyingLightGame/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main" "-BC:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build" --check-stamp-file "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/DyingLightGame/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\CMake\share\cmake-4.2\Modules\ExternalProject\shared_internal_commands.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FetchContent.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FetchContent\CMakeLists.cmake.in;C:\Program Files\CMake\share\cmake-4.2\Modules\FindGit.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindPackageMessage.cmake;C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\cmake\CPM.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\DyingLightGame\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\resources\Resource.rc" />
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src\engine\Game\WinFrame.cpp" />
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src\engine\engine\CustomSplash.cpp" />
+    <ClInclude Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src\engine\engine\CustomSplash.h" />
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src\engine\Hook\HookManager.cpp" />
+    <ClInclude Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src\engine\Hook\HookManager.h" />
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src\engine\Hook\Hooks\Hook.cpp" />
+    <ClInclude Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src\engine\Hook\Hooks\Hook.h" />
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src\engine\Hook\Hooks\Render\OnPaint.cpp" />
+    <ClInclude Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src\engine\Hook\Hooks\Render\OnPaint.h" />
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src\engine\Hook\Hooks\Render\D3D11Hook.cpp" />
+    <ClInclude Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src\engine\Hook\Hooks\Render\D3D11Hook.h" />
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src\engine\ModLoader.cpp" />
+    <ClInclude Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src\engine\ModLoader.h" />
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src\engine\ModInstance.cpp" />
+    <ClInclude Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src\engine\ModInstance.h" />
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src\engine\ModAPI.cpp" />
+    <ClInclude Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\DyingLightGame\src\engine\ModAPI.h" />
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\imgui.cpp" />
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\imgui_draw.cpp" />
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\imgui_tables.cpp" />
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\imgui_widgets.cpp" />
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\imgui-src\backends\imgui_impl_dx11.cpp" />
+    <Natvis Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\nlohmann_json-src\nlohmann_json.natvis">
+    </Natvis>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\ZERO_CHECK.vcxproj">
+      <Project>{4F670059-2EF6-35A4-ADC8-08A31CAA6C37}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build\zycore\Zycore.vcxproj">
+      <Project>{08F4FF67-DCFB-399E-8565-620FE2A5DC95}</Project>
+      <Name>Zycore</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\zydis-build\Zydis.vcxproj">
+      <Project>{28F673BB-A574-3570-A30D-3B7A5803E587}</Project>
+      <Name>Zydis</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\libhat-build\libhat.vcxproj">
+      <Project>{43A3BC5B-1592-3EFB-95E6-07BCD0EE775C}</Project>
+      <Name>libhat</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\build\_deps\safetyhook-build\safetyhook.vcxproj">
+      <Project>{D5ECDF4B-71F7-30BF-AEDD-7F1CDC038FAF}</Project>
+      <Name>safetyhook</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -4,10 +4,12 @@
 
 #include "HookManager.h"
 #include "Hooks/Render/OnPaint.h"
+#include "Hooks/Render/D3D11Hook.h"
 
 std::vector<std::shared_ptr<Hook> > HookManager::hooks;
 
 void HookManager::initHooks() {
+    D3D11Hook::Initialize();
     addHook<OnPaintHook>();
 
     for (const auto &hook: hooks)
@@ -15,5 +17,6 @@ void HookManager::initHooks() {
 }
 
 void HookManager::uninitHooks() {
+    D3D11Hook::Shutdown();
     hooks.clear();
 }

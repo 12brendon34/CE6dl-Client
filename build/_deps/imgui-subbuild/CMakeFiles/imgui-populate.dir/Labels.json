@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/CMakeFiles/imgui-populate"
+		},
+		{
+			"file" : "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/CMakeFiles/11fcb6369bbc5e9571c9b0ca89bcb430/imgui-populate.rule"
+		},
+		{
+			"file" : "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/CMakeFiles/53cb5ea85611a7211bb0115fb1e267cc/imgui-populate-complete.rule"
+		},
+		{
+			"file" : "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/CMakeFiles/cddd6ecf223bf77bd20b0b2fb98ee8bd/imgui-populate-build.rule"
+		},
+		{
+			"file" : "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/CMakeFiles/cddd6ecf223bf77bd20b0b2fb98ee8bd/imgui-populate-configure.rule"
+		},
+		{
+			"file" : "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/CMakeFiles/cddd6ecf223bf77bd20b0b2fb98ee8bd/imgui-populate-download.rule"
+		},
+		{
+			"file" : "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/CMakeFiles/cddd6ecf223bf77bd20b0b2fb98ee8bd/imgui-populate-install.rule"
+		},
+		{
+			"file" : "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/CMakeFiles/cddd6ecf223bf77bd20b0b2fb98ee8bd/imgui-populate-mkdir.rule"
+		},
+		{
+			"file" : "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/CMakeFiles/cddd6ecf223bf77bd20b0b2fb98ee8bd/imgui-populate-patch.rule"
+		},
+		{
+			"file" : "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/CMakeFiles/cddd6ecf223bf77bd20b0b2fb98ee8bd/imgui-populate-test.rule"
+		},
+		{
+			"file" : "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/imgui-subbuild/CMakeFiles/cddd6ecf223bf77bd20b0b2fb98ee8bd/imgui-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"imgui-populate"
+		],
+		"name" : "imgui-populate"
+	}
+}

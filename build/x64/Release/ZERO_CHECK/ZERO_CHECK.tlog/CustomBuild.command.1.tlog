@@ -1,0 +1,10 @@
+^C:\USERS\LIMON\DESKTOP\ALL\ALL PROJECTS (CODE)\DYING-LIGHT-CE-MAIN\BUILD\CMAKEFILES\F954D0207E03AAE2DA2B91D9AB85EE9C\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main" "-BC:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/DLCE.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

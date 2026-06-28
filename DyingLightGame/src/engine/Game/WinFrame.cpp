@@ -16,6 +16,7 @@
 #include "engine/Game/IGame.h"
 #include "../Hook/HookManager.h"
 #include "engine/ModLoader.h"
+#include "engine/ModAPI.h"
 
 #ifdef STEAM_PLATFORM
 #include "steam/steam_api.h"
@@ -28,6 +29,17 @@ constexpr bool bUseMyDocuments = true;
 constexpr auto kGameDir = "DW"; // Dead World
 constexpr auto kSubPath = "DyingLight";
 constexpr auto kCacheSubPath = "out/cache";
+
+LONG WINAPI DLCECrashHandler(EXCEPTION_POINTERS* pExceptionPointers) {
+    dbgprintf("\n--- DLCE CRASH DETECTED ---\n");
+    if (pExceptionPointers && pExceptionPointers->ExceptionRecord) {
+        dbgprintf("Exception Code: 0x%X\n", pExceptionPointers->ExceptionRecord->ExceptionCode);
+        dbgprintf("Exception Address: 0x%p\n", pExceptionPointers->ExceptionRecord->ExceptionAddress);
+    }
+    dbgprintf("Press ENTER to close this window...\n");
+    getchar(); // wait for user input
+    return EXCEPTION_EXECUTE_HANDLER;
+}
 
 //I just felt like putting these below WinMain
 bool CheckMultipleInstances(const char *command_line);
@@ -58,6 +70,13 @@ void GameLoop(IGame *pIGame) {
         }
         if (msg.message == WM_QUIT)
             break;
+
+        if (msg.message == WM_KEYDOWN || msg.message == WM_SYSKEYDOWN) {
+            ModAPI::CallOnKeyCallbacks(static_cast<int>(msg.wParam), true);
+        } else if (msg.message == WM_KEYUP || msg.message == WM_SYSKEYUP) {
+            ModAPI::CallOnKeyCallbacks(static_cast<int>(msg.wParam), false);
+        }
+
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
@@ -72,13 +91,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         return EXIT_FAILURE;
 #endif
 
+    SetUnhandledExceptionFilter(DLCECrashHandler);
+    
+    // clear the debug log on startup
+    FILE* fClear;
+    if (fopen_s(&fClear, "dlce_debug.log", "w") == 0) fclose(fClear);
+
 #ifdef STEAM_PLATFORM
     dbgprintf("Platform: Steam\n");
 #else
     dbgprintf("Platform: GOG\n");
 #endif
 
-#ifdef _DEBUG
     FILE *fp;
     if (!AttachConsole(ATTACH_PARENT_PROCESS)) {
         AllocConsole();
@@ -86,6 +110,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     freopen_s(&fp, "CONOUT$", "w", stdout);
     freopen_s(&fp, "CONOUT$", "w", stderr);
 
+#ifdef _DEBUG
     while (!::IsDebuggerPresent())
         ::Sleep(100);
 #endif

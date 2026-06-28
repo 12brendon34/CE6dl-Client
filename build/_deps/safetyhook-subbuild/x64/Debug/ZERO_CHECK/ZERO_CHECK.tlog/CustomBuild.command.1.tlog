@@ -1,0 +1,10 @@
+^C:\USERS\LIMON\DESKTOP\ALL\ALL PROJECTS (CODE)\DYING-LIGHT-CE-MAIN\BUILD\_DEPS\SAFETYHOOK-SUBBUILD\CMAKEFILES\AE6918916A882056FB49EDA2B9EC42B6\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/safetyhook-subbuild" "-BC:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/safetyhook-subbuild" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/Users/limon/Desktop/All/All Projects (Code)/Dying-Light-CE-main/build/_deps/safetyhook-subbuild/safetyhook-populate.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

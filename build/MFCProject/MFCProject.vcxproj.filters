@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\MFCProject\src\MFCApplication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\MFCProject\src\MainFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\MFCProject\src\ChildView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\MFCProject\resources\targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\MFCProject\resources\Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\MFCProject\src\MFCApplication.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\MFCProject\src\MainFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\MFCProject\src\ChildView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\MFCProject\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="C:\Users\limon\Desktop\All\All Projects (Code)\Dying-Light-CE-main\MFCProject\resources\MFCApplication.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{89BAE6F7-4FA5-335D-B280-58CAD7F151E0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{90999C01-72CA-385B-A200-D7DE65A6A647}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -24,6 +24,8 @@ bool DllModInstance::OnLoad() {
     onLoad_ = reinterpret_cast<on_load_t>(GetProcAddress(m_hMod, "OnLoad"));
     onUnload_ = reinterpret_cast<on_unload_t>(GetProcAddress(m_hMod, "OnUnload"));
     onPaint_ = reinterpret_cast<on_paint_t>(GetProcAddress(m_hMod, "OnPaint"));
+    onKey_ = reinterpret_cast<on_key_t>(GetProcAddress(m_hMod, "OnKey"));
+    onImGui_ = reinterpret_cast<on_imgui_t>(GetProcAddress(m_hMod, "OnImGui"));
 
     if (onLoad_) {
         try {
@@ -31,18 +33,30 @@ bool DllModInstance::OnLoad() {
                 std::cerr << "Mod_OnLoad returned false for " << GetName() << "\n";
                 if (onPaint_)
                     ModAPI::UnregisterOnPaint(onPaint_);
+                if (onKey_)
+                    ModAPI::UnregisterOnKey(onKey_);
+                if (onImGui_)
+                    ModAPI::UnregisterOnImGui(onImGui_);
                 return false;
             }
         } catch (...) {
             std::cerr << "Exception calling OnLoad for " << GetName() << "\n";
             if (onPaint_)
                 ModAPI::UnregisterOnPaint(onPaint_);
+            if (onKey_)
+                ModAPI::UnregisterOnKey(onKey_);
+            if (onImGui_)
+                ModAPI::UnregisterOnImGui(onImGui_);
             return false;
         }
     }
 
     if (onPaint_)
         ModAPI::RegisterOnPaint(onPaint_);
+    if (onKey_)
+        ModAPI::RegisterOnKey(onKey_);
+    if (onImGui_)
+        ModAPI::RegisterOnImGui(onImGui_);
     return true;
 }
 
@@ -57,6 +71,16 @@ void DllModInstance::OnUnload() {
     if (onPaint_) {
         ModAPI::UnregisterOnPaint(onPaint_);
         onPaint_ = nullptr;
+    }
+
+    if (onKey_) {
+        ModAPI::UnregisterOnKey(onKey_);
+        onKey_ = nullptr;
+    }
+
+    if (onImGui_) {
+        ModAPI::UnregisterOnImGui(onImGui_);
+        onImGui_ = nullptr;
     }
 
     if (m_hMod) {

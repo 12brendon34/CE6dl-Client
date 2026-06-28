@@ -9,6 +9,13 @@
 namespace {
     std::vector<mod_onpaint_t> g_onpaint_callbacks;
     std::mutex g_onpaint_mutex;
+
+    std::vector<mod_onkey_t> g_onkey_callbacks;
+    std::mutex g_onkey_mutex;
+
+    std::vector<mod_on_imgui_t> g_on_imgui_callbacks;
+    std::mutex g_on_imgui_mutex;
+    void* g_imgui_context = nullptr;
 }
 
 void ModAPI::RegisterOnPaint(mod_onpaint_t cb) {
@@ -39,4 +46,66 @@ void ModAPI::CallOnPaintCallbacks(IGame* pThis) {
             std::cerr << "Exception in mod OnPaint callback\n";
         }
     }
+}
+
+void ModAPI::RegisterOnKey(mod_onkey_t cb) {
+    if (!cb) return;
+    std::lock_guard lock(g_onkey_mutex);
+    if (std::ranges::find(g_onkey_callbacks, cb) == g_onkey_callbacks.end())
+        g_onkey_callbacks.push_back(cb);
+}
+
+void ModAPI::UnregisterOnKey(const mod_onkey_t cb) {
+    std::lock_guard lock(g_onkey_mutex);
+    auto it = std::ranges::remove(g_onkey_callbacks, cb).begin();
+    if (it != g_onkey_callbacks.end()) g_onkey_callbacks.erase(it, g_onkey_callbacks.end());
+}
+
+void ModAPI::CallOnKeyCallbacks(int key, bool isDown) {
+    std::vector<mod_onkey_t> copy;
+    {
+        std::lock_guard lock(g_onkey_mutex);
+        copy = g_onkey_callbacks;
+    }
+
+    for (const auto cb : copy) {
+        try {
+            if (cb) cb(key, isDown);
+        } catch (...) {
+            std::cerr << "exception in mod onkey callback\n";
+        }
+    }
+}
+
+void ModAPI::RegisterOnImGui(mod_on_imgui_t cb) {
+    if (!cb) return;
+    std::lock_guard lock(g_on_imgui_mutex);
+    if (std::ranges::find(g_on_imgui_callbacks, cb) == g_on_imgui_callbacks.end())
+        g_on_imgui_callbacks.push_back(cb);
+}
+
+void ModAPI::UnregisterOnImGui(const mod_on_imgui_t cb) {
+    std::lock_guard lock(g_on_imgui_mutex);
+    auto it = std::ranges::remove(g_on_imgui_callbacks, cb).begin();
+    if (it != g_on_imgui_callbacks.end()) g_on_imgui_callbacks.erase(it, g_on_imgui_callbacks.end());
+}
+
+void ModAPI::CallOnImGuiCallbacks() {
+    std::vector<mod_on_imgui_t> copy;
+    {
+        std::lock_guard lock(g_on_imgui_mutex);
+        copy = g_on_imgui_callbacks;
+    }
+
+    for (const auto cb : copy) {
+        try {
+            if (cb) cb(g_imgui_context);
+        } catch (...) {
+            std::cerr << "exception in mod onimgui callback\n";
+        }
+    }
+}
+
+void ModAPI::SetImGuiContext(void* ctx) {
+    g_imgui_context = ctx;
 }
