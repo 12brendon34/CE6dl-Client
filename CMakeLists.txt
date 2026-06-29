@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.20)
 project(DLCE LANGUAGES CXX)
 
-add_definitions(-DSTEAM_PLATFORM=1)
-
+option(STEAM_PLATFORM "Build Steam version" ON)
+if (STEAM_PLATFORM)
+  add_compile_definitions(STEAM_PLATFORM=1)
+endif()
 add_subdirectory(libs/Engine)
 add_subdirectory(libs/Filesystem)
 add_subdirectory(libs/GameDLL)
