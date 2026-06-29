@@ -1,8 +1,13 @@
 cmake_minimum_required(VERSION 3.20)
 project(MFCProject LANGUAGES CXX)
 
+find_package(MFC)
+if (NOT MFC_FOUND)
+    message(STATUS "Install MFC!!!!!!!")
+    return()
+endif()
+
 include(${CMAKE_SOURCE_DIR}/cmake/CPM.cmake)
-find_package(MFC REQUIRED)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_MFC_FLAG 2)
 

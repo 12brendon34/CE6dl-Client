@@ -71,7 +71,7 @@ void OnImGui(void* ctx) {
     if (bShow) {
         ImGui::Begin("Dying Light Custom Edition", &bShow);
         ImGui::Text("Hello from ExampleMod!");
-        ImGui::Text("Press F1 to toggle this menu.");
+        ImGui::Text("Press INSERT to toggle this menu.");
         if (ImGui::Button("Close")) {
             bShow = false;
         }
@@ -81,9 +81,26 @@ void OnImGui(void* ctx) {
 }
 
 void OnKey(int key, bool isDown) {
-    if (key == VK_F1 && isDown) {
+    if (key == VK_INSERT && isDown) {
         g_show_ui = !g_show_ui;
     }
     // log key event
-    dbgprintf("key: %d down: %d\n", key, isDown);
+    char keyName[128] = {0};
+    UINT scanCode = MapVirtualKeyA(key, MAPVK_VK_TO_VSC);
+    
+    // For extended keys, GetKeyNameText requires the extended bit (bit 24)
+    LONG lParam = (scanCode << 16);
+    switch (key) {
+        case VK_LEFT: case VK_UP: case VK_RIGHT: case VK_DOWN:
+        case VK_RCONTROL: case VK_RMENU:
+        case VK_LWIN: case VK_RWIN: case VK_APPS:
+        case VK_PRIOR: case VK_NEXT: case VK_END: case VK_HOME:
+        case VK_INSERT: case VK_DELETE: case VK_DIVIDE: case VK_NUMLOCK:
+            lParam |= (1 << 24);
+            break;
+    }
+
+    GetKeyNameTextA(lParam, keyName, sizeof(keyName));
+    
+    dbgprintf("name: %s key: %d down: %d\n", keyName, key, isDown);
 }

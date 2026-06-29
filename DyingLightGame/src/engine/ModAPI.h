@@ -29,4 +29,10 @@ namespace ModAPI {
     void UnregisterOnImGui(mod_on_imgui_t cb);
     void CallOnImGuiCallbacks();
     void SetImGuiContext(void* ctx);
+
+    void SetMenuKey(int vkey);
+    int GetMenuKey();
+    void ToggleMenu();
+    bool IsMenuOpen();
+    void SetMenuOpen(bool open);
 }

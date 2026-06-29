@@ -5,6 +5,7 @@
 #include "ModAPI.h"
 #include <algorithm>
 #include <iostream>
+#include "engine/Game/IGame.h"
 
 namespace {
     std::vector<mod_onpaint_t> g_onpaint_callbacks;
@@ -92,14 +93,16 @@ void ModAPI::UnregisterOnImGui(const mod_on_imgui_t cb) {
 
 void ModAPI::CallOnImGuiCallbacks() {
     std::vector<mod_on_imgui_t> copy;
+    void* ctx = nullptr;
     {
         std::lock_guard lock(g_on_imgui_mutex);
         copy = g_on_imgui_callbacks;
+        ctx = g_imgui_context;
     }
 
     for (const auto cb : copy) {
         try {
-            if (cb) cb(g_imgui_context);
+            if (cb) cb(ctx);
         } catch (...) {
             std::cerr << "exception in mod onimgui callback\n";
         }
@@ -107,5 +110,39 @@ void ModAPI::CallOnImGuiCallbacks() {
 }
 
 void ModAPI::SetImGuiContext(void* ctx) {
+    std::lock_guard lock(g_on_imgui_mutex);
     g_imgui_context = ctx;
+}
+
+#include <atomic>
+
+namespace {
+    int g_MenuKey = 0x2D; // VK_INSERT default
+    std::atomic<bool> g_MenuOpen = false;
+    std::mutex g_MenuMutex; // Only used for g_MenuKey now
+}
+
+void ModAPI::SetMenuKey(int vkey) {
+    std::lock_guard lock(g_MenuMutex);
+    g_MenuKey = vkey;
+}
+
+int ModAPI::GetMenuKey() {
+    std::lock_guard lock(g_MenuMutex);
+    return g_MenuKey;
+}
+
+void ModAPI::ToggleMenu() {
+    bool current = g_MenuOpen.load();
+    g_MenuOpen.store(!current);
+    if (!current) ClipCursor(nullptr); // Only clip when opening
+}
+
+bool ModAPI::IsMenuOpen() {
+    return g_MenuOpen.load();
+}
+
+void ModAPI::SetMenuOpen(bool open) {
+    g_MenuOpen.store(open);
+    if (open) ClipCursor(nullptr);
 }

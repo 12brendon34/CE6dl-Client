@@ -1,22 +1,22 @@
 //
 // Created by Brendon on 1/12/2026.
 //
-#include <shlobj.h>
 #include <filesystem>
 #include <iostream>
+#include <shlobj.h>
 #include <windows.h>
 
-#include "resource.h"
-#include "engine/Debug.h"
-#include "engine/engine/ChromeEngine.h"
-#include "engine/engine/resourcemanagement/AssetManager.h"
-#include "engine/filesystem/Filesystem.h"
-#include "engine/engine/CustomSplash.h"
-#include "engine/engine/resourcemanagement/MountHelper.h"
-#include "engine/Game/IGame.h"
 #include "../Hook/HookManager.h"
-#include "engine/ModLoader.h"
+#include "engine/Debug.h"
+#include "engine/Game/IGame.h"
 #include "engine/ModAPI.h"
+#include "engine/ModLoader.h"
+#include "engine/engine/ChromeEngine.h"
+#include "engine/engine/CustomSplash.h"
+#include "engine/engine/resourcemanagement/AssetManager.h"
+#include "engine/engine/resourcemanagement/MountHelper.h"
+#include "engine/filesystem/Filesystem.h"
+#include "resource.h"
 
 #ifdef STEAM_PLATFORM
 #include "steam/steam_api.h"
@@ -30,18 +30,20 @@ constexpr auto kGameDir = "DW"; // Dead World
 constexpr auto kSubPath = "DyingLight";
 constexpr auto kCacheSubPath = "out/cache";
 
-LONG WINAPI DLCECrashHandler(EXCEPTION_POINTERS* pExceptionPointers) {
+LONG WINAPI DLCECrashHandler(EXCEPTION_POINTERS *pExceptionPointers) {
     dbgprintf("\n--- DLCE CRASH DETECTED ---\n");
     if (pExceptionPointers && pExceptionPointers->ExceptionRecord) {
         dbgprintf("Exception Code: 0x%X\n", pExceptionPointers->ExceptionRecord->ExceptionCode);
         dbgprintf("Exception Address: 0x%p\n", pExceptionPointers->ExceptionRecord->ExceptionAddress);
     }
-    dbgprintf("Press ENTER to close this window...\n");
-    getchar(); // wait for user input
+
+    // fuck getchar
+    MessageBoxA(nullptr, "check dlce_debug.log for details", "DLCE crashed", MB_OK | MB_ICONERROR | MB_SYSTEMMODAL);
+
     return EXCEPTION_EXECUTE_HANDLER;
 }
 
-//I just felt like putting these below WinMain
+// I just felt like putting these below WinMain
 bool CheckMultipleInstances(const char *command_line);
 bool CheckFreeDiskSpaceAndDisplayWarning(const char *drivePath);
 
@@ -52,7 +54,7 @@ bool SteamInit() {
 
     if (!SteamAPI_Init()) {
         dbgprintf("SteamAPI_Init() failed\n");
-        //Utils::Alert("Fatal Error", "Steam must be running to play Dying Light (SteamAPI_Init() failed).");
+        // Utils::Alert("Fatal Error", "Steam must be running to play Dying Light (SteamAPI_Init() failed).");
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;
@@ -72,7 +74,9 @@ void GameLoop(IGame *pIGame) {
             break;
 
         if (msg.message == WM_KEYDOWN || msg.message == WM_SYSKEYDOWN) {
-            ModAPI::CallOnKeyCallbacks(static_cast<int>(msg.wParam), true);
+            if ((msg.lParam & 0x40000000) == 0) {
+                ModAPI::CallOnKeyCallbacks(static_cast<int>(msg.wParam), true);
+            }
         } else if (msg.message == WM_KEYUP || msg.message == WM_SYSKEYUP) {
             ModAPI::CallOnKeyCallbacks(static_cast<int>(msg.wParam), false);
         }
@@ -92,10 +96,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 #endif
 
     SetUnhandledExceptionFilter(DLCECrashHandler);
-    
-    // clear the debug log on startup
-    FILE* fClear;
-    if (fopen_s(&fClear, "dlce_debug.log", "w") == 0) fclose(fClear);
+
+    // clears the debug log on startup
+    FILE *fClear;
+    if (fopen_s(&fClear, "dlce_debug.log", "w") == 0)
+        fclose(fClear);
 
 #ifdef STEAM_PLATFORM
     dbgprintf("Platform: Steam\n");
@@ -103,17 +108,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     dbgprintf("Platform: GOG\n");
 #endif
 
+#ifdef _DEBUG
     FILE *fp;
     if (!AttachConsole(ATTACH_PARENT_PROCESS)) {
         AllocConsole();
     }
     freopen_s(&fp, "CONOUT$", "w", stdout);
     freopen_s(&fp, "CONOUT$", "w", stderr);
-
-#ifdef _DEBUG
-    while (!::IsDebuggerPresent())
-        ::Sleep(100);
 #endif
+
+
 
     if (!Main())
         return EXIT_FAILURE;
@@ -122,7 +126,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         return EXIT_FAILURE;
 
     if (strstr(lpCmdLine, "--wd")) {
-        //read from current working directory (instead of the exe's dir)
+        // read from current working directory (instead of the exe's dir)
         GetCurrentDirectory(BUF_SIZE, szCurrDir);
         strcat_s(szCurrDir, BUF_SIZE, "\\");
     } else {
@@ -137,7 +141,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         strcpy_s(szCurrDir, BUF_SIZE, szExeDir);
     }
 
-    //Choose documents or current directory to write out to
+    // Choose documents or current directory to write out to
     FFSAddSourceFlags::ENUM write_path_flags = FFSAddSourceFlags::SUBDIRS;
     if (bUseMyDocuments && SHGetFolderPath(nullptr, CSIDL_PERSONAL, nullptr, 0, szPath) >= 0) {
         strcat_s(szPath, BUF_SIZE, "\\");
@@ -152,14 +156,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     if (!CheckFreeDiskSpaceAndDisplayWarning(szPath))
         return EXIT_FAILURE;
 
-    //Hooks/Plugins
+    // Hooks/Plugins
     HookManager::initHooks();
     const auto ModLoader = new Loader();
     ModLoader->IndexMods();
 
     // Splashscreen
     const auto hSplash = MAKEINTRESOURCE(IDB_SPLASH);
-    //auto hText = MAKEINTRESOURCE(IDS_TITLE);
+    // auto hText = MAKEINTRESOURCE(IDS_TITLE);
     const auto hIcon = MAKEINTRESOURCE(IDI_ICON);
 
     const auto smallIcon = static_cast<HICON>(LoadImage(hInstance, hIcon, IMAGE_ICON, GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), 0));
@@ -171,26 +175,26 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     if (!bInitSuccess)
         return EXIT_FAILURE;
 
-    //load mod dll's
+    // load mod dll's
     ModLoader->LoadPhase(ModLoadPhase::DllPhase);
 
     const auto s_AssetManagerImpl = GetAssetManager();
     s_AssetManagerImpl->SetGame(kGameDir, szCurrDir, 0, NULL, nullptr);
 
-    //Get DW path
+    // Get DW path
     char sBaseDir[BUF_SIZE] = {};
     strcpy_s(sBaseDir, BUF_SIZE, szCurrDir);
     strcat_s(sBaseDir, BUF_SIZE, kGameDir);
     fs::add_source(sBaseDir, FFSAddSourceFlags::APPEND);
 
-    //add each datapak
+    // add each datapak
     for (int i = 0; i < 4; ++i) {
         char sPakPath[BUF_SIZE] = {};
         sprintf_s(sPakPath, "%s\\Data%d.pak", sBaseDir, i);
         fs::add_source(sPakPath, FFSAddSourceFlags::SUBDIRS);
     }
 
-    //Add Game Data dir (DW\Data)
+    // Add Game Data dir (DW\Data)
     char sDataDir[BUF_SIZE] = {};
     strcpy_s(sDataDir, BUF_SIZE, sBaseDir);
     strcat_s(sDataDir, BUF_SIZE, "\\Data");
@@ -201,7 +205,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         ExitProcess(1);
     }
 
-    //Get locale or fallback locale
+    // Get locale or fallback locale
     auto LocaleID = IGame::GetDefaultLocaleID();
     char sLocalePath[BUF_SIZE] = {};
     strcpy_s(sLocalePath, BUF_SIZE, sDataDir);
@@ -213,14 +217,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         strcat_s(sLocalePath, BUF_SIZE, LocaleID.c_str());
     }
 
-    //add DW/DataEn source
+    // add DW/DataEn source
     fs::add_source(sLocalePath, FFSAddSourceFlags::SUBDIRS | FFSAddSourceFlags::BROWSABLE);
 
-    //add DW/DataEn.pak
+    // add DW/DataEn.pak
     strcat_s(sLocalePath, BUF_SIZE, ".pak");
     fs::add_source(sLocalePath, FFSAddSourceFlags::SUBDIRS | FFSAddSourceFlags::BROWSABLE);
 
-    //same thing, but with speech paks
+    // same thing, but with speech paks
     auto SpeechID = IGame::GetDefaultSpeechID(LocaleID);
     char sSpeechPath[BUF_SIZE] = {};
     strcpy_s(sSpeechPath, BUF_SIZE, sBaseDir);
@@ -234,10 +238,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         strcat_s(sSpeechPath, BUF_SIZE, SpeechID.c_str());
     }
 
-    //add DW/SpeechEn source
+    // add DW/SpeechEn source
     fs::add_source(sSpeechPath, FFSAddSourceFlags::SUBDIRS | FFSAddSourceFlags::BROWSABLE);
 
-    //add DW/SpeechEn.pak
+    // add DW/SpeechEn.pak
     strcat_s(sSpeechPath, BUF_SIZE, ".pak");
     fs::add_source(sSpeechPath, FFSAddSourceFlags::SUBDIRS | FFSAddSourceFlags::BROWSABLE);
 
@@ -245,11 +249,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     strcpy_s(szGameScriptDLL, BUF_SIZE, szCurrDir);
     strcat_s(szGameScriptDLL, BUF_SIZE, "gamedll");
 
-    //load mod pak's
+    // load mod pak's
     ModLoader->LoadPhase(ModLoadPhase::PakPhase);
     InitializeGameScript(szGameScriptDLL, false);
 
     IGame *pIGame = CreateGame("GameDI", hInstance, true, kGameDir);
+    
     pIGame->SetLocaleID(LocaleID.c_str());
     pIGame->SetSpeechID(SpeechID.c_str(), false);
     pIGame->SetRootDirectory(szCurrDir);
@@ -261,11 +266,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     HideCustomSplashscreen();
     if (pIGame->Initialize(lpCmdLine, nShowCmd, smallIcon, largeIcon, 0, 0, nullptr) != 0) {
         dbgprintf("IGame::Initialize() failed\n");
-        //Utils::Alert("Fatal Error", "Game failed to initialize.");
+        // Utils::Alert("Fatal Error", "Game failed to initialize.");
         return EXIT_FAILURE;
     }
 
-    //Get Window Title, append DLCE
+    // Get Window Title, append DLCE
     char sWindowTitle[BUF_SIZE] = {};
     GetWindowText(pIGame->GethWnd(), sWindowTitle, BUF_SIZE);
     strcat_s(sWindowTitle, BUF_SIZE, " [DLCE]");
@@ -273,7 +278,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     pIGame->SetGameName(ttl::string_base(sWindowTitle));
     GameLoop(pIGame);
 
-    //Shutdown
+    // Shutdown
 
     ModLoader->UnLoadPhase(ModLoadPhase::DllPhase);
     ModLoader->UnLoadPhase(ModLoadPhase::PakPhase);
@@ -300,7 +305,7 @@ bool CheckMultipleInstances(const char *command_line) {
     if (!h && err != ERROR_ACCESS_DENIED)
         return true;
 
-    MessageBox(nullptr, "Dying Light is already running", "Dying Light Error",MB_ICONERROR);
+    MessageBox(nullptr, "Dying Light is already running", "Dying Light Error", MB_ICONERROR);
     return false;
 }
 
@@ -309,7 +314,7 @@ bool CheckFreeDiskSpaceAndDisplayWarning(const char *drivePath) {
 
     ULARGE_INTEGER freeBytesAvailable = {};
     if (!GetDiskFreeSpaceEx(drivePath, &freeBytesAvailable, nullptr, nullptr)) {
-        //unable to check disk space, assume that there is enough space instead of closing for possibly no reason
+        // unable to check disk space, assume that there is enough space instead of closing for possibly no reason
         return true;
     }
 

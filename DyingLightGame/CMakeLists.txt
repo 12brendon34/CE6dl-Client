@@ -46,7 +46,7 @@ CPMAddPackage("gh:cursey/safetyhook@0.6.9")
 CPMAddPackage(NAME nlohmann_json GITHUB_REPOSITORY nlohmann/json VERSION 3.12.0)
 CPMAddPackage("gh:ocornut/imgui@1.90.4")
 
-if (imgui_ADDED)
+if (imgui_ADDED OR imgui_SOURCE_DIR)
     target_sources(DyingLightGame PRIVATE
             ${imgui_SOURCE_DIR}/imgui.cpp
             ${imgui_SOURCE_DIR}/imgui_draw.cpp
