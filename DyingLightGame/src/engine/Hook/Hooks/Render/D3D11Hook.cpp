@@ -173,14 +173,35 @@ namespace D3D11Hook {
         return true;
     }
 
-    void Shutdown() {
-        if (g_ImGuiInitialized) {
+void Shutdown() {
+    std::lock_guard<std::recursive_mutex> lock(g_ImGuiMutex);
+
+    if (g_ImGuiInitialized) {
+        if (g_Window && g_OriginalWndProcHandler)
             SetWindowLongPtr(g_Window, GWLP_WNDPROC, (LONG_PTR)g_OriginalWndProcHandler);
-            ImGui_ImplDX11_Shutdown();
-            ImGui_ImplWin32_Shutdown();
-            ImGui::DestroyContext();
+
+        CleanupRenderTarget();
+
+        ImGui_ImplDX11_Shutdown();
+        ImGui_ImplWin32_Shutdown();
+        ImGui::DestroyContext();
+
+        ModAPI::SetImGuiContext(nullptr);
+
+        if (g_pContext) {
+            g_pContext->Release();
+            g_pContext = nullptr;
         }
-        g_PresentHook.reset();
-        g_ResizeBuffersHook.reset();
+        if (g_pDevice) {
+            g_pDevice->Release();
+            g_pDevice = nullptr;
+        }
+
+        g_Window = nullptr;
+        g_OriginalWndProcHandler = nullptr;
+        g_ImGuiInitialized = false;
     }
+
+    g_PresentHook.reset();
+    g_ResizeBuffersHook.reset();
 }
